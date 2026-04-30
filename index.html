@@ -127,21 +127,21 @@ a{color:var(--accent);}
 <div id="tab-overview" class="tab active">
   <div id="sc-overview" class="sg"></div>
   <div class="cg t">
-    <div class="cc"><div class="ct"><span class="d"></span>Annual Totals</div><canvas id="ch-annual" height="220"></canvas></div>
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>Battalion Share</div><canvas id="ch-pie" height="220"></canvas></div>
+    <div class="cc"><div class="ct"><span class="d"></span>Annual Totals</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-annual"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>Battalion Share</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-pie"></canvas></div></div>
   </div>
   <div class="cg">
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Average Monthly Pattern</div><canvas id="ch-mavg" height="200"></canvas></div>
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--green)"></span>Stacked by Battalion</div><canvas id="ch-stack" height="200"></canvas></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Average Monthly Pattern</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-mavg"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--green)"></span>Stacked by Battalion</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-stack"></canvas></div></div>
   </div>
 </div>
 <!-- TRENDS -->
 <div id="tab-trends" class="tab">
   <div class="sh">Year-Over-Year Analysis</div>
-  <div class="cc" style="margin-bottom:16px"><div class="ct"><span class="d"></span>Annual Totals with 3-Year Rolling Average</div><canvas id="ch-trend" height="200"></canvas></div>
+  <div class="cc" style="margin-bottom:16px"><div class="ct"><span class="d"></span>Annual Totals with 3-Year Rolling Average</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-trend"></canvas></div></div>
   <div class="cg">
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>YoY Change</div><canvas id="ch-yoy" height="200"></canvas></div>
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Battalion Trends (First 3 vs Last 3 Yr Avg)</div><canvas id="ch-btrd" height="200"></canvas></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>YoY Change</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-yoy"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Battalion Trends (First 3 vs Last 3 Yr Avg)</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-btrd"></canvas></div></div>
   </div>
   <div class="sh">Summary Table</div>
   <div class="tw"><table id="tbl-trend"></table></div>
@@ -151,8 +151,8 @@ a{color:var(--accent);}
   <div class="sh">Filter by Year</div>
   <div class="yp" id="bat-pills"></div>
   <div class="cg">
-    <div class="cc"><div class="ct"><span class="d"></span>Battalion Totals — <span id="bat-yr-lbl">All Years</span></div><canvas id="ch-batbar" height="220"></canvas></div>
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Monthly by Battalion</div><canvas id="ch-batmo" height="220"></canvas></div>
+    <div class="cc"><div class="ct"><span class="d"></span>Battalion Totals — <span id="bat-yr-lbl">All Years</span></div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-batbar"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Monthly by Battalion</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-batmo"></canvas></div></div>
   </div>
   <div class="sh">Battalion Summary</div>
   <div class="tw"><table id="tbl-bat"></table></div>
@@ -184,10 +184,10 @@ a{color:var(--accent);}
   <div class="yp" id="ip-pills"></div>
   <div id="sc-ip" class="sg"></div>
   <div class="cg">
-    <div class="cc"><div class="ct"><span class="d"></span>Actual vs Projected — <span id="ip-yr-lbl">2025</span></div><canvas id="ch-ip-mo" height="240"></canvas></div>
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>vs Historical Min / Avg / Max</div><canvas id="ch-ip-rng" height="240"></canvas></div>
+    <div class="cc"><div class="ct"><span class="d"></span>Actual vs Projected — <span id="ip-yr-lbl">2025</span></div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-ip-mo"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>vs Historical Min / Avg / Max</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-ip-rng"></canvas></div></div>
   </div>
-  <div class="cc" style="margin-bottom:16px"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Projected Year-End vs All Historical Years</div><canvas id="ch-ip-proj" height="180"></canvas></div>
+  <div class="cc" style="margin-bottom:16px"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Projected Year-End vs All Historical Years</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-ip-proj"></canvas></div></div>
   <div class="sh">Department Breakdown</div>
   <div class="ctrl"><label>Battalion:</label><select id="ip-bat" onchange="renderIPTable()"><option value="all">All Battalions</option></select></div>
   <div class="tw"><table id="tbl-ip"></table></div>
@@ -314,7 +314,7 @@ function switchCounty(county, btn){
   // Restore overview tab structure if it was replaced
   var ov=document.getElementById('tab-overview');
   if(ov.querySelector('.suffolk-placeholder')){
-    ov.innerHTML='<div id="sc-overview" class="sg"></div><div class="cg t"><div class="cc"><div class="ct"><span class="d"></span>Annual Totals</div><canvas id="ch-annual" height="220"></canvas></div><div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>Battalion Share</div><canvas id="ch-pie" height="220"></canvas></div></div><div class="cg"><div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Average Monthly Pattern</div><canvas id="ch-mavg" height="200"></canvas></div><div class="cc"><div class="ct"><span class="d" style="background:var(--green)"></span>Stacked by Battalion</div><canvas id="ch-stack" height="200"></canvas></div></div>';
+    ov.innerHTML='<div id="sc-overview" class="sg"></div><div class="cg t"><div class="cc"><div class="ct"><span class="d"></span>Annual Totals</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-annual"></canvas></div></div><div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>Battalion Share</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-pie"></canvas></div></div></div><div class="cg"><div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Average Monthly Pattern</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-mavg"></canvas></div></div><div class="cc"><div class="ct"><span class="d" style="background:var(--green)"></span>Stacked by Battalion</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-stack"></canvas></div></div></div>';
   }
   initAll();
 }

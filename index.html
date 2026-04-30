@@ -13,6 +13,7 @@ body{background:var(--bg);color:var(--text);font-family:"Segoe UI",Arial,sans-se
 @keyframes fireGrad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes spinFire{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .tab.active{animation:fadeIn .2s ease}
 header{background:linear-gradient(270deg,#0a0c10,#1a0d05,#0d0810,#0a0c10);background-size:400% 400%;animation:fireGrad 8s ease infinite;border-bottom:2px solid var(--accent);padding:0 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(232,80,10,.3);gap:12px;}
 .hdr{display:flex;align-items:center;gap:14px;padding:11px 0;}
@@ -97,7 +98,7 @@ select:focus,input:focus{outline:none;border-color:var(--accent);}
 .mi label{font-size:.64rem;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;}
 .mi input{width:100%;text-align:center;}
 #loading{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:999;}
-.spin{font-size:2.5rem;animation:fireGrad 1s linear infinite;}
+.spin{font-size:2.5rem;display:inline-block;animation:spinFire 1s linear infinite;}
 footer{text-align:center;padding:18px;color:var(--text2);font-size:.7rem;border-top:1px solid var(--border);margin-top:28px;}
 </style>
 </head>
@@ -413,7 +414,7 @@ function buildTrends(){
 
 function buildBatUI(){
   var yrs=getHYrs();
-  document.getElementById('bat-pills').innerHTML='<span class="active" onclick="selBatYear('all',this)">All Years</span>'+yrs.map(function(y){return '<span onclick="selBatYear('+y+',this)">'+y+'</span>';}).join('');
+  document.getElementById('bat-pills').innerHTML='<span class="active" onclick="selBatYear(\'all\',this)">All Years</span>'+yrs.map(function(y){return '<span onclick="selBatYear('+y+',this)">'+y+'</span>';}).join('');
   getBats().forEach(function(b){var d=document.getElementById('dept-bat'),ip=document.getElementById('ip-bat');if(d)d.add(new Option(b,b));if(ip)ip.add(new Option(b,b));});
   renderBatCharts();renderBatTable();
 }
@@ -442,7 +443,7 @@ function buildHeatmap(){
   var yrs=getHYrs(),allv=[];
   yrs.forEach(function(y){MO.forEach(function(_,m){allv.push(getMonthly(y)[m]);});});
   var mx=Math.max.apply(null,allv),curMo=new Date().getMonth();
-  var rows=yrs.map(function(y){var mo=getMonthly(y),tot=mo.reduce(function(a,b){return a+b;},0);return '<tr><td style="text-align:left;font-weight:700;cursor:pointer" onclick="this.closest('tr').classList.toggle('br')">'+y+'</td>'+mo.map(function(v,mi){return '<td class="fc '+hc(v,mx)+'" style="'+(mi===curMo?'outline:2px solid var(--yellow);outline-offset:-2px;':'')+'">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+tot+'</td></tr>';});
+  var rows=yrs.map(function(y){var mo=getMonthly(y),tot=mo.reduce(function(a,b){return a+b;},0);return '<tr><td style="text-align:left;font-weight:700;cursor:pointer" onclick="this.closest(\'tr\').classList.toggle(\'br\')">'+y+'</td>'+mo.map(function(v,mi){return '<td class="fc '+hc(v,mx)+'" style="'+(mi===curMo?'outline:2px solid var(--yellow);outline-offset:-2px;':'')+'">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+tot+'</td></tr>';});
   var ar='<tr style="background:rgba(232,80,10,.15)"><td style="text-align:left;font-weight:700;color:var(--accent)">Avg</td>'+MO.map(function(_,m){var a=Math.round(yrs.reduce(function(x,y){return x+getMonthly(y)[m];},0)/yrs.length*10)/10;return '<td class="fc '+hc(a,mx)+'" style="color:var(--accent)">'+a+'</td>';}).join('')+'<td style="font-weight:700;color:var(--accent)">'+Math.round(yrs.reduce(function(a,y){return a+getTotal(y);},0)/yrs.length)+'</td></tr>';
   document.getElementById('tbl-heat').innerHTML='<thead><tr><th style="text-align:left">Year</th>'+MO.map(function(m,i){return '<th style="'+(i===curMo?'color:var(--yellow)':'')+'">'+m+'</th>';}).join('')+'<th>Total</th></tr></thead><tbody>'+rows.join('')+ar+'</tbody>';
   var hs=document.getElementById('heat-bat');getBats().forEach(function(b){hs.add(new Option(b,b));});

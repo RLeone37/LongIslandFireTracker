@@ -223,7 +223,7 @@ let D=null,AC={},selBatYr='all',selIPYr=2025;
 
 async function loadData(){
 try{
-const r=await fetch(‘data/fires.json’);
+const r=await fetch(‘https://rleone37.github.io/nassau-fires/data/fires.json’);
 D=await r.json();
 document.getElementById(‘loading’).style.display=‘none’;
 document.getElementById(‘lu’).innerHTML=`Last updated: ${D.metadata.last_updated}`;

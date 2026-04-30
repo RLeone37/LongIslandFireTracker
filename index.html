@@ -5,113 +5,150 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Long Island Fire Tracker</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root{--bg:#0d0f14;--surface:#161a22;--surface2:#1e2330;--border:#2a3045;--accent:#e8500a;--blue:#2e75b6;--text:#e8eaf0;--text2:#8a93a8;--green:#22c55e;--yellow:#f59e0b;--red:#ef4444;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:"Segoe UI",Arial,sans-serif;min-height:100vh;}
-header{background:linear-gradient(135deg,#0a0c10,#1a0d05 50%,#0a0c10);border-bottom:2px solid var(--accent);padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(232,80,10,.3);}
-.hdr{display:flex;align-items:center;gap:16px;padding:12px 0;}
-.fi{font-size:2rem;filter:drop-shadow(0 0 8px rgba(232,80,10,.8));}
-.ht h1{font-size:1.2rem;font-weight:700;letter-spacing:.05em;}
-.ht p{font-size:.72rem;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;}
-/* County switcher */
-.county-sw{display:flex;gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-right:8px;}
-.county-sw button{background:var(--surface2);border:none;color:var(--text2);padding:7px 16px;font-size:.78rem;font-weight:700;cursor:pointer;letter-spacing:.05em;transition:all .15s;border-right:1px solid var(--border);}
+@keyframes fireGrad{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+@keyframes spin{to{transform:rotate(360deg);}}
+.tab.active{animation:fadeIn .25s ease;}
+header{background:linear-gradient(270deg,#0a0c10,#1a0d05,#0d0810,#0a0c10);background-size:400% 400%;animation:fireGrad 8s ease infinite;border-bottom:2px solid var(--accent);padding:0 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(232,80,10,.3);gap:12px;}
+.hdr{display:flex;align-items:center;gap:14px;padding:11px 0;min-width:0;flex-shrink:1;}
+.fi{font-size:1.9rem;filter:drop-shadow(0 0 8px rgba(232,80,10,.9));flex-shrink:0;}
+.ht h1{font-size:1.1rem;font-weight:700;letter-spacing:.03em;}
+.hdr-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.county-sw{display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.county-sw button{background:var(--surface2);border:none;color:var(--text2);padding:6px 12px;font-size:.74rem;font-weight:700;cursor:pointer;letter-spacing:.03em;transition:all .15s;border-right:1px solid var(--border);white-space:nowrap;}
 .county-sw button:last-child{border-right:none;}
 .county-sw button.active{background:var(--accent);color:#fff;}
 .county-sw button.soon{color:#3a4055;cursor:default;}
-.hdr-right{display:flex;align-items:center;gap:12px;}
-#lu{font-size:.7rem;color:var(--text2);text-align:right;}
-nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:4px;overflow-x:auto;}
-nav button{background:none;border:none;color:var(--text2);cursor:pointer;padding:11px 16px;font-size:.8rem;font-weight:600;letter-spacing:.04em;border-bottom:3px solid transparent;transition:all .15s;white-space:nowrap;}
+#lu{font-size:.63rem;color:var(--text2);text-align:right;white-space:nowrap;}
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;display:flex;gap:2px;overflow-x:auto;}
+nav::-webkit-scrollbar{height:3px;}
+nav::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+nav button{background:none;border:none;color:var(--text2);cursor:pointer;padding:10px 14px;font-size:.78rem;font-weight:600;letter-spacing:.03em;border-bottom:3px solid transparent;transition:all .15s;white-space:nowrap;}
 nav button:hover{color:var(--text);}
 nav button.active{color:var(--accent);border-bottom-color:var(--accent);}
-main{padding:20px 24px;max-width:1400px;margin:0 auto;}
+main{padding:18px 20px;max-width:1400px;margin:0 auto;}
 .tab{display:none;}.tab.active{display:block;}
-/* Suffolk placeholder */
-.suffolk-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:20px;text-align:center;}
-.suffolk-placeholder .icon{font-size:4rem;opacity:.4;}
-.suffolk-placeholder h2{font-size:1.4rem;color:var(--text2);}
-.suffolk-placeholder p{font-size:.9rem;color:var(--text2);max-width:400px;line-height:1.6;}
-.suffolk-placeholder .badge{background:var(--surface2);border:1px dashed var(--border);color:var(--text2);padding:8px 20px;border-radius:20px;font-size:.78rem;}
 /* Stat cards */
-.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;}
-.sc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;position:relative;overflow:hidden;}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px;}
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;position:relative;overflow:hidden;transition:border-color .2s;}
+.sc:hover{border-color:var(--accent);}
 .sc::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);}
 .sc.bl::before{background:var(--blue);}.sc.gr::before{background:var(--green);}.sc.ye::before{background:var(--yellow);}
-.sl{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);margin-bottom:6px;}
-.sv{font-size:1.9rem;font-weight:700;line-height:1;}
-.ss{font-size:.72rem;color:var(--text2);margin-top:4px;}
-.sd{font-size:.74rem;font-weight:600;margin-top:4px;}
+.sl{font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:5px;line-height:1.3;}
+.sv{font-size:1.6rem;font-weight:700;line-height:1.1;word-break:break-word;overflow-wrap:break-word;}
+.ss{font-size:.68rem;color:var(--text2);margin-top:3px;word-break:break-word;}
+.sd{font-size:.72rem;font-weight:600;margin-top:3px;}
 .sd.up{color:var(--green);}.sd.dn{color:var(--red);}
-/* Chart grid */
-.cg{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+/* Sparkline */
+.spark-row{display:flex;align-items:center;gap:6px;}
+.spark{flex-shrink:0;}
+/* Charts */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
 .cg.t{grid-template-columns:2fr 1fr;}
 @media(max-width:900px){.cg,.cg.t{grid-template-columns:1fr;}}
-.cc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;}
-.ct{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text2);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.ct .d{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+.cc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;}
+.ct{font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.ct .d{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+.ch-wrap{position:relative;height:240px;width:100%;}
 /* In-progress banner */
-.pb{background:linear-gradient(90deg,rgba(232,80,10,.15),rgba(240,144,10,.1));border:1px solid rgba(232,80,10,.4);border-radius:8px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
-.pb strong{color:var(--accent);}.pb p{font-size:.82rem;color:var(--text2);}
+.pb{background:linear-gradient(90deg,rgba(232,80,10,.15),rgba(240,144,10,.1));border:1px solid rgba(232,80,10,.4);border-radius:8px;padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;}
+.pb strong{color:var(--accent);}.pb p{font-size:.8rem;color:var(--text2);}
 /* Tables */
 .tw{overflow-x:auto;border-radius:8px;border:1px solid var(--border);margin-bottom:16px;}
-table{width:100%;border-collapse:collapse;font-size:.8rem;}
+.tw::-webkit-scrollbar{height:4px;}
+.tw::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+table{width:100%;border-collapse:collapse;font-size:.78rem;}
 thead tr{background:var(--surface2);}
-thead th{padding:9px 10px;text-align:right;font-weight:700;text-transform:uppercase;font-size:.66rem;letter-spacing:.08em;color:var(--text2);border-bottom:1px solid var(--border);white-space:nowrap;}
+thead th{padding:8px 10px;text-align:right;font-weight:700;text-transform:uppercase;font-size:.64rem;letter-spacing:.07em;color:var(--text2);border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none;}
 thead th:first-child,thead th:nth-child(2){text-align:left;}
+thead th:hover{color:var(--text);}
 tbody tr{border-bottom:1px solid var(--border);transition:background .1s;}
 tbody tr:hover{background:var(--surface2);}
-tbody tr.br{background:rgba(46,117,182,.12);}
+tbody tr.br{background:rgba(46,117,182,.1);}
 tbody tr.br td{font-weight:700;color:var(--blue);}
 td{padding:7px 10px;text-align:right;color:var(--text);}
-td:first-child,td:nth-child(2){text-align:left;color:var(--text2);font-size:.76rem;}
+td:first-child,td:nth-child(2){text-align:left;color:var(--text2);font-size:.75rem;}
 td.fc{font-weight:600;}td.zr{color:#3a4055;}
 .h1{background:rgba(232,80,10,.15);}.h2{background:rgba(232,80,10,.30);}.h3{background:rgba(232,80,10,.50);color:#fff!important;}.h4{background:rgba(232,80,10,.75);color:#fff!important;font-weight:700!important;}
+/* Trend arrows */
+.arr-up{color:var(--red);font-size:.9rem;}
+.arr-dn{color:var(--green);font-size:.9rem;}
+.arr-eq{color:var(--text2);font-size:.9rem;}
 /* Controls */
-.ctrl{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center;}
-.ctrl label{font-size:.73rem;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;}
-select,input{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:5px;font-size:.8rem;}
+.ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+.ctrl label{font-size:.72rem;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;}
+select,input{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:5px;font-size:.78rem;}
 select:focus,input:focus{outline:none;border-color:var(--accent);}
-.btn{background:var(--accent);color:#fff;border:none;padding:7px 14px;border-radius:5px;font-size:.8rem;font-weight:600;cursor:pointer;}
+.btn{background:var(--accent);color:#fff;border:none;padding:6px 14px;border-radius:5px;font-size:.78rem;font-weight:600;cursor:pointer;transition:background .15s;}
 .btn:hover{background:#c4420a;}.btn.o{background:transparent;border:1px solid var(--accent);color:var(--accent);}
+.btn.sm{padding:4px 10px;font-size:.72rem;}
 /* Year pills */
-.yp{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
-.yp span{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:4px 12px;border-radius:20px;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .15s;}
+.yp{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.yp span{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:4px 11px;border-radius:20px;font-size:.74rem;font-weight:600;cursor:pointer;transition:all .15s;}
 .yp span.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 .yp span.ip{border-style:dashed;border-color:var(--yellow);color:var(--yellow);}
 .yp span.ip.active{background:var(--yellow);color:#000;}
-.sh{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--text2);border-bottom:1px solid var(--border);padding-bottom:8px;margin:20px 0 14px;display:flex;align-items:center;gap:8px;}
-.sh::before{content:"▐";color:var(--accent);}
+.sh{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:var(--text2);border-bottom:1px solid var(--border);padding-bottom:7px;margin:18px 0 12px;display:flex;align-items:center;justify-content:space-between;}
+.sh-left{display:flex;align-items:center;gap:8px;}
+.sh-left::before{content:"▐";color:var(--accent);}
 .ld{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:4px;animation:pulse 1.5s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+/* Records cards */
+.rec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:18px;}
+.rec-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative;overflow:hidden;}
+.rec-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);}
+.rec-card.gold::before{background:#f59e0b;}
+.rec-card.blue::before{background:var(--blue);}
+.rec-card.green::before{background:var(--green);}
+.rec-card.red::before{background:var(--red);}
+.rec-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text2);margin-bottom:6px;}
+.rec-value{font-size:1.4rem;font-weight:700;line-height:1.1;word-break:break-word;}
+.rec-sub{font-size:.68rem;color:var(--text2);margin-top:3px;}
+/* Comparison */
+.comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
+@media(max-width:700px){.comp-grid{grid-template-columns:1fr;}}
+/* Suffolk placeholder */
+.suffolk-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:18px;text-align:center;}
+.suffolk-placeholder .icon{font-size:3.5rem;opacity:.4;}
+.suffolk-placeholder h2{font-size:1.3rem;color:var(--text2);}
+.suffolk-placeholder p{font-size:.88rem;color:var(--text2);max-width:380px;line-height:1.6;}
+.suffolk-placeholder .badge{background:var(--surface2);border:1px dashed var(--border);color:var(--text2);padding:7px 18px;border-radius:20px;font-size:.76rem;}
 /* Update form */
-.uc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:20px;}
-.ugr{display:grid;grid-template-columns:repeat(auto-fill,minmax(95px,1fr));gap:8px;margin:12px 0;}
-.mi{display:flex;flex-direction:column;gap:4px;}
-.mi label{font-size:.66rem;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;}
+.uc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:18px;}
+.ugr{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:7px;margin:10px 0;}
+.mi{display:flex;flex-direction:column;gap:3px;}
+.mi label{font-size:.64rem;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;}
 .mi input{width:100%;text-align:center;}
-footer{text-align:center;padding:20px;color:var(--text2);font-size:.7rem;border-top:1px solid var(--border);margin-top:30px;}
+/* Print styles */
+@media print{
+  header,nav,.county-sw,#lu,.btn,.ctrl,.yp,.sh button{display:none!important;}
+  .tab{display:block!important;}
+  .cc{break-inside:avoid;border:1px solid #ccc;}
+  body{background:#fff;color:#000;}
+}
+footer{text-align:center;padding:18px;color:var(--text2);font-size:.7rem;border-top:1px solid var(--border);margin-top:28px;}
 a{color:var(--accent);}
+.tooltip-wrap{position:relative;display:inline-block;}
+.tooltip-wrap .tip{display:none;position:absolute;bottom:120%;left:50%;transform:translateX(-50%);background:#1e2330;border:1px solid var(--border);border-radius:4px;padding:5px 9px;font-size:.72rem;white-space:nowrap;z-index:50;pointer-events:none;color:var(--text);}
+.tooltip-wrap:hover .tip{display:block;}
 </style>
 </head>
 <body>
 <header>
   <div class="hdr">
     <div class="fi">🔥</div>
-    <div class="ht">
-      <h1>Long Island Fire Tracker</h1>
-
-```
-</div>
-```
-
+    <div class="ht"><h1>Long Island Fire Tracker</h1></div>
   </div>
   <div class="hdr-right">
     <div class="county-sw">
-      <button id="btn-nassau" class="active" onclick="switchCounty('nassau',this)">Nassau County</button>
-      <button id="btn-suffolk" class="soon" onclick="switchCounty('suffolk',this)">Suffolk County</button>
+      <button id="btn-nassau" class="active" onclick="switchCounty('nassau',this)">Nassau</button>
+      <button id="btn-suffolk" class="soon" onclick="switchCounty('suffolk',this)">Suffolk</button>
     </div>
     <div id="lu"></div>
   </div>
@@ -123,107 +160,166 @@ a{color:var(--accent);}
   <button onclick="showTab('heatmap',this)">🌡️ Heatmap</button>
   <button onclick="showTab('departments',this)">🏠 Departments</button>
   <button onclick="showTab('inprogress',this)">⚡ In Progress</button>
+  <button onclick="showTab('records',this)">🏆 Records</button>
+  <button onclick="showTab('compare',this)">⚖️ Compare</button>
   <button onclick="showTab('update',this)">🔒 Update Data</button>
 </nav>
 <main>
+
 <!-- OVERVIEW -->
+
 <div id="tab-overview" class="tab active">
   <div id="sc-overview" class="sg"></div>
   <div class="cg t">
-    <div class="cc"><div class="ct"><span class="d"></span>Annual Totals</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-annual"></canvas></div></div>
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>Battalion Share</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-pie"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d"></span>Annual Totals</div><div class="ch-wrap"><canvas id="ch-annual"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>Battalion Share</div><div class="ch-wrap"><canvas id="ch-pie"></canvas></div></div>
   </div>
   <div class="cg">
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Average Monthly Pattern</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-mavg"></canvas></div></div>
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--green)"></span>Stacked by Battalion</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-stack"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Average Monthly Pattern</div><div class="ch-wrap"><canvas id="ch-mavg"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--green)"></span>Stacked by Battalion</div><div class="ch-wrap"><canvas id="ch-stack"></canvas></div></div>
   </div>
 </div>
+
 <!-- TRENDS -->
+
 <div id="tab-trends" class="tab">
-  <div class="sh">Year-Over-Year Analysis</div>
-  <div class="cc" style="margin-bottom:16px"><div class="ct"><span class="d"></span>Annual Totals with 3-Year Rolling Average</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-trend"></canvas></div></div>
+  <div class="sh"><div class="sh-left">Year-Over-Year Analysis</div></div>
+  <div class="cc" style="margin-bottom:14px"><div class="ct"><span class="d"></span>Annual Totals with 3-Year Rolling Average</div><div class="ch-wrap"><canvas id="ch-trend"></canvas></div></div>
   <div class="cg">
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>YoY Change</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-yoy"></canvas></div></div>
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Battalion Trends (First 3 vs Last 3 Yr Avg)</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-btrd"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>YoY Change</div><div class="ch-wrap"><canvas id="ch-yoy"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Battalion Trends (First 3 vs Last 3 Yr Avg)</div><div class="ch-wrap"><canvas id="ch-btrd"></canvas></div></div>
   </div>
-  <div class="sh">Summary Table</div>
+  <div class="sh"><div class="sh-left">Summary Table</div></div>
   <div class="tw"><table id="tbl-trend"></table></div>
 </div>
+
 <!-- BATTALIONS -->
+
 <div id="tab-battalions" class="tab">
-  <div class="sh">Filter by Year</div>
+  <div class="sh"><div class="sh-left">Filter by Year</div></div>
   <div class="yp" id="bat-pills"></div>
   <div class="cg">
-    <div class="cc"><div class="ct"><span class="d"></span>Battalion Totals — <span id="bat-yr-lbl">All Years</span></div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-batbar"></canvas></div></div>
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Monthly by Battalion</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-batmo"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d"></span>Battalion Totals — <span id="bat-yr-lbl">All Years</span></div><div class="ch-wrap"><canvas id="ch-batbar"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Monthly by Battalion</div><div class="ch-wrap"><canvas id="ch-batmo"></canvas></div></div>
   </div>
-  <div class="sh">Battalion Summary</div>
+  <div class="sh"><div class="sh-left">Battalion Summary</div></div>
   <div class="tw"><table id="tbl-bat"></table></div>
 </div>
+
 <!-- HEATMAP -->
+
 <div id="tab-heatmap" class="tab">
-  <div class="sh">Monthly Heatmap — County Total</div>
+  <div class="sh"><div class="sh-left">Monthly Heatmap — County Total</div></div>
+  <p style="font-size:.75rem;color:var(--text2);margin-bottom:10px">Click a year row to highlight it.</p>
   <div class="tw"><table id="tbl-heat"></table></div>
-  <div class="sh">Battalion Heatmap</div>
+  <div class="sh"><div class="sh-left">Battalion Heatmap</div></div>
   <div class="ctrl"><label>Battalion:</label><select id="heat-bat" onchange="renderBatHeat()"></select></div>
   <div class="tw"><table id="tbl-batheat"></table></div>
 </div>
+
 <!-- DEPARTMENTS -->
+
 <div id="tab-departments" class="tab">
   <div class="ctrl">
     <label>Battalion:</label><select id="dept-bat" onchange="renderDepts()"><option value="all">All Battalions</option></select>
     <label>Sort:</label>
     <select id="dept-sort" onchange="renderDepts()">
-      <option value="total">All-Time Total</option><option value="avg">Avg/Year</option>
-      <option value="name">Name</option><option value="recent">Most Recent Year</option>
+      <option value="total">All-Time Total</option>
+      <option value="avg">Avg/Year</option>
+      <option value="name">Name</option>
+      <option value="recent">Most Recent Year</option>
     </select>
-    <input id="dept-search" placeholder="Search department..." oninput="renderDepts()" style="min-width:180px">
+    <input id="dept-search" placeholder="Search department..." oninput="renderDepts()" style="min-width:160px">
   </div>
   <div class="tw"><table id="tbl-dept"></table></div>
 </div>
+
 <!-- IN PROGRESS -->
+
 <div id="tab-inprogress" class="tab">
-  <div class="pb"><div style="font-size:1.4rem">📡</div><div><strong>Live Year Tracking with Projection</strong><p>Solid = actual fires · Yellow = projected remainder based on historical monthly averages</p></div></div>
+  <div class="pb"><div style="font-size:1.3rem">📡</div><div><strong>Live Year Tracking with Projection</strong><p>Solid = actual fires · Yellow = projected remainder based on historical monthly averages</p></div></div>
   <div class="yp" id="ip-pills"></div>
   <div id="sc-ip" class="sg"></div>
   <div class="cg">
-    <div class="cc"><div class="ct"><span class="d"></span>Actual vs Projected — <span id="ip-yr-lbl">2025</span></div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-ip-mo"></canvas></div></div>
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>vs Historical Min / Avg / Max</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-ip-rng"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d"></span>Actual vs Projected — <span id="ip-yr-lbl">2026</span></div><div class="ch-wrap"><canvas id="ch-ip-mo"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>vs Historical Min / Avg / Max</div><div class="ch-wrap"><canvas id="ch-ip-rng"></canvas></div></div>
   </div>
-  <div class="cc" style="margin-bottom:16px"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Projected Year-End vs All Historical Years</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-ip-proj"></canvas></div></div>
-  <div class="sh">Department Breakdown</div>
+  <div class="cc" style="margin-bottom:14px"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Projected Year-End vs All Historical Years</div><div class="ch-wrap"><canvas id="ch-ip-proj"></canvas></div></div>
+  <div class="sh"><div class="sh-left">Department Breakdown</div></div>
   <div class="ctrl"><label>Battalion:</label><select id="ip-bat" onchange="renderIPTable()"><option value="all">All Battalions</option></select></div>
   <div class="tw"><table id="tbl-ip"></table></div>
 </div>
+
+<!-- RECORDS -->
+
+<div id="tab-records" class="tab">
+  <div class="sh"><div class="sh-left">All-Time County Records</div></div>
+  <div class="rec-grid" id="rec-county"></div>
+  <div class="sh"><div class="sh-left">Department Records</div></div>
+  <div class="rec-grid" id="rec-dept"></div>
+  <div class="sh"><div class="sh-left">Monthly Records</div></div>
+  <div class="rec-grid" id="rec-monthly"></div>
+  <div class="sh"><div class="sh-left">Zero-Fire Streaks by Department</div></div>
+  <div class="tw"><table id="tbl-zeros"></table></div>
+</div>
+
+<!-- COMPARE -->
+
+<div id="tab-compare" class="tab">
+  <div class="sh"><div class="sh-left">Year-to-Year Comparison</div></div>
+  <div class="ctrl">
+    <label>Year A:</label><select id="cmp-a"></select>
+    <label>Year B:</label><select id="cmp-b"></select>
+    <button class="btn" onclick="runCompare()">Compare</button>
+    <button class="btn o sm" onclick="window.print()">🖨️ Print / Export</button>
+  </div>
+  <div id="cmp-stats" class="sg" style="margin-bottom:18px"></div>
+  <div class="cg">
+    <div class="cc"><div class="ct"><span class="d"></span>Monthly Breakdown</div><div class="ch-wrap"><canvas id="ch-cmp-mo"></canvas></div></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>Battalion Comparison</div><div class="ch-wrap"><canvas id="ch-cmp-bat"></canvas></div></div>
+  </div>
+  <div class="sh"><div class="sh-left">Department-Level Diff</div></div>
+  <div class="ctrl">
+    <label>Battalion:</label><select id="cmp-bat-filter" onchange="renderCmpTable()"><option value="all">All</option></select>
+  </div>
+  <div class="tw"><table id="tbl-cmp"></table></div>
+</div>
+
 <!-- UPDATE -->
+
 <div id="tab-update" class="tab">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+    <h2 style="font-size:1rem;color:var(--accent)">🔒 Update Data</h2>
+    <button class="btn o sm" onclick="showTab('overview',document.querySelectorAll('nav button')[0])">← Back to Dashboard</button>
+  </div>
   <div class="uc">
-    <h2 style="font-size:1rem;margin-bottom:8px">How to Update Fire Data</h2>
-    <p style="font-size:.82rem;color:var(--text2);line-height:1.7">All data is embedded in <code style="background:var(--surface2);padding:2px 6px;border-radius:3px">index.html</code>. To update: open GitHub → click <code>index.html</code> → ✏️ Edit → Ctrl+F to find the department → update the monthly array → Commit.</p>
-    <ol style="font-size:.82rem;color:var(--text2);line-height:2.2;margin:12px 0 0 20px">
-      <li>Visit the fire department website and note new fires by department and month</li>
-      <li>Open GitHub → <code style="background:var(--surface2);padding:2px 5px;border-radius:3px">index.html</code> → ✏️ Edit</li>
-      <li>Ctrl+F → search department name (e.g. <code style="background:var(--surface2);padding:2px 5px;border-radius:3px">720 Hempstead</code>)</li>
-      <li>Update the 12-number monthly array for the year</li>
+    <h3 style="font-size:.88rem;margin-bottom:8px">How to Update</h3>
+    <p style="font-size:.8rem;color:var(--text2);line-height:1.7">All data is in <code style="background:var(--surface2);padding:2px 5px;border-radius:3px">index.html</code> on GitHub. To update: open the file → ✏️ Edit → Ctrl+F to find the department name → update the monthly array → Commit.</p>
+    <ol style="font-size:.8rem;color:var(--text2);line-height:2.2;margin:10px 0 0 18px">
+      <li>Note new fires by department and month from the source</li>
+      <li>GitHub → <code style="background:var(--surface2);padding:2px 5px;border-radius:3px">index.html</code> → ✏️ Edit</li>
+      <li>Ctrl+F → search dept name (e.g. <code style="background:var(--surface2);padding:2px 5px;border-radius:3px">720 Hempstead</code>)</li>
+      <li>Update the 12-number array — Jan first, Dec last</li>
       <li>Commit — site updates in ~60 seconds</li>
     </ol>
   </div>
   <div class="uc">
-    <h2 style="font-size:1rem;margin-bottom:4px">Quick Entry Tool</h2>
-    <p style="font-size:.78rem;color:var(--text2);margin-bottom:14px">Build the correct JSON snippet, then paste into GitHub.</p>
+    <h3 style="font-size:.88rem;margin-bottom:6px">Quick Entry Tool</h3>
+    <p style="font-size:.76rem;color:var(--text2);margin-bottom:12px">Generate the correct JSON to paste into GitHub.</p>
     <div class="ctrl">
       <label>Year:</label><select id="ue-yr"></select>
       <label>Department:</label><select id="ue-dept"></select>
     </div>
-    <div id="ue-cur" style="font-size:.78rem;color:var(--text2);margin:8px 0;padding:8px;background:var(--surface2);border-radius:4px"></div>
+    <div id="ue-cur" style="font-size:.76rem;color:var(--text2);margin:7px 0;padding:7px;background:var(--surface2);border-radius:4px"></div>
     <div class="ugr" id="ue-grid"></div>
-    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn" onclick="genJSON()">Generate</button>
       <button class="btn o" onclick="copyJSON()">Copy to Clipboard</button>
     </div>
-    <div id="ue-out" style="margin-top:12px;background:var(--surface2);border-radius:5px;padding:12px;font-family:monospace;font-size:.8rem;display:none;white-space:pre;overflow-x:auto;border:1px solid var(--border)"></div>
+    <div id="ue-out" style="margin-top:10px;background:var(--surface2);border-radius:5px;padding:10px;font-family:monospace;font-size:.76rem;display:none;white-space:pre;overflow-x:auto;border:1px solid var(--border)"></div>
   </div>
 </div>
+
 </main>
 <footer>Long Island Fire Tracker · Robert Leone</footer>
 
@@ -231,23 +327,18 @@ a{color:var(--accent);}
 const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const BC=['#e8500a','#f0900a','#2e75b6','#22c55e','#a855f7','#ec4899','#14b8a6','#f59e0b','#64748b'];
 const CD={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8a93a8',font:{size:11}}}},scales:{x:{ticks:{color:'#8a93a8',font:{size:11}},grid:{color:'#2a3045'}},y:{ticks:{color:'#8a93a8',font:{size:11}},grid:{color:'#2a3045'}}}};
-var AC={},selBatYr='all',selIPYr=2025,curCounty='nassau';
+var AC={},selBatYr='all',selIPYr=2026,curCounty='nassau',cmpA=2024,cmpB=2025;
 
 const ALLDATA={"metadata":{"last_updated":"2025-12-31","years_complete":[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],"years_in_progress":[2026]},"counties":{"nassau":{"name":"Nassau County","departments":[{"name":"100 Bellerose","battalion":"Battalion 1"},{"name":"110 Bellerose Terrace","battalion":"Battalion 1"},{"name":"120 Floral Park","battalion":"Battalion 1"},{"name":"130 Floral Park Centre","battalion":"Battalion 1"},{"name":"140 Garden City","battalion":"Battalion 1"},{"name":"150 Garden City Park","battalion":"Battalion 1"},{"name":"160 Mineola","battalion":"Battalion 1"},{"name":"170 New Hyde Park","battalion":"Battalion 1"},{"name":"180 South Floral Park","battalion":"Battalion 1"},{"name":"190 Stewart Manor","battalion":"Battalion 1"},{"name":"200 Baldwin","battalion":"Battalion 2"},{"name":"210 Freeport","battalion":"Battalion 2"},{"name":"220 Island Park","battalion":"Battalion 2"},{"name":"230 Long Beach","battalion":"Battalion 2"},{"name":"240 Oceanside","battalion":"Battalion 2"},{"name":"250 Point Lookout-Lido","battalion":"Battalion 2"},{"name":"300 Hewlett","battalion":"Battalion 3"},{"name":"310 Inwood","battalion":"Battalion 3"},{"name":"320 Lawrence-Cedarhurst","battalion":"Battalion 3"},{"name":"330 Meadowmere Park","battalion":"Battalion 3"},{"name":"340 Valley Stream","battalion":"Battalion 3"},{"name":"350 Woodmere","battalion":"Battalion 3"},{"name":"400 East Rockaway","battalion":"Battalion 4"},{"name":"410 Lakeview","battalion":"Battalion 4"},{"name":"420 Lynbrook","battalion":"Battalion 4"},{"name":"430 Malverne","battalion":"Battalion 4"},{"name":"440 Rockville Centre","battalion":"Battalion 4"},{"name":"500 Bayville","battalion":"Battalion 5"},{"name":"510 East Norwich","battalion":"Battalion 5"},{"name":"520 Glen Cove","battalion":"Battalion 5"},{"name":"530 Glenwood","battalion":"Battalion 5"},{"name":"540 Locust Valley","battalion":"Battalion 5"},{"name":"550 Oyster Bay/Atlantic Steamer","battalion":"Battalion 5"},{"name":"560 Roslyn Rescue/590 Roslyn Highlands","battalion":"Battalion 5"},{"name":"570 Sea Cliff","battalion":"Battalion 5"},{"name":"580 Syosset","battalion":"Battalion 5"},{"name":"600 Bellmore","battalion":"Battalion 6"},{"name":"610 East Meadow","battalion":"Battalion 6"},{"name":"620 Levittown","battalion":"Battalion 6"},{"name":"630 Massapequa","battalion":"Battalion 6"},{"name":"640 Merrick","battalion":"Battalion 6"},{"name":"650 North Bellmore","battalion":"Battalion 6"},{"name":"660 North Massapequa","battalion":"Battalion 6"},{"name":"670 North Merrick","battalion":"Battalion 6"},{"name":"680 Seaford","battalion":"Battalion 6"},{"name":"690 Wantagh","battalion":"Battalion 6"},{"name":"700 Elmont","battalion":"Battalion 7"},{"name":"710 Franklin Square & Munson","battalion":"Battalion 7"},{"name":"720 Hempstead","battalion":"Battalion 7"},{"name":"730 Roosevelt","battalion":"Battalion 7"},{"name":"740 South Hempstead","battalion":"Battalion 7"},{"name":"750 Uniondale","battalion":"Battalion 7"},{"name":"760 West Hempstead","battalion":"Battalion 7"},{"name":"800 Albertson","battalion":"Battalion 8"},{"name":"810 East Williston","battalion":"Battalion 8"},{"name":"820 Great Neck Alert","battalion":"Battalion 8"},{"name":"830 Great Neck Vigilant","battalion":"Battalion 8"},{"name":"840 Plandome","battalion":"Battalion 8"},{"name":"850 Port Washington","battalion":"Battalion 8"},{"name":"860 Williston Park","battalion":"Battalion 8"},{"name":"870 Manhasset-Lakeville","battalion":"Battalion 8"},{"name":"900 Bethpage","battalion":"Battalion 9"},{"name":"910 Carle Place","battalion":"Battalion 9"},{"name":"920 Farmingdale","battalion":"Battalion 9"},{"name":"930 Hicksville","battalion":"Battalion 9"},{"name":"940 Jericho","battalion":"Battalion 9"},{"name":"950 Plainview","battalion":"Battalion 9"},{"name":"960 Westbury","battalion":"Battalion 9"},{"name":"970 South Farmingdale","battalion":"Battalion 9"}],"years":{"2016":{"100 Bellerose":[0,0,0,0,0,0,0,0,0,0,0,0],"110 Bellerose Terrace":[0,0,0,0,0,0,0,0,0,0,0,0],"120 Floral Park":[1,0,0,0,0,0,0,0,0,0,2,1],"130 Floral Park Centre":[0,0,0,0,0,0,0,0,0,0,0,0],"140 Garden City":[0,0,0,0,0,1,0,1,0,0,1,1],"150 Garden City Park":[0,2,0,1,0,0,0,0,0,0,0,0],"160 Mineola":[1,0,2,0,0,1,1,0,0,0,0,0],"170 New Hyde Park":[1,0,0,2,1,0,1,0,0,0,1,1],"180 South Floral Park":[0,0,1,0,0,0,0,0,0,0,0,0],"190 Stewart Manor":[0,0,0,0,0,0,0,0,0,0,0,0],"200 Baldwin":[2,0,0,0,0,1,0,1,0,0,0,0],"210 Freeport":[1,0,0,1,0,1,4,1,2,1,0,3],"220 Island Park":[0,0,0,1,0,0,0,0,0,0,0,0],"230 Long Beach":[2,0,1,0,0,1,1,2,0,2,0,1],"240 Oceanside":[1,0,1,2,1,0,0,0,0,0,0,0],"250 Point Lookout-Lido":[0,0,0,0,0,0,0,0,0,1,0,0],"300 Hewlett":[0,1,0,0,1,0,0,0,0,0,0,0],"310 Inwood":[0,0,0,0,1,0,0,0,0,0,0,0],"320 Lawrence-Cedarhurst":[1,0,0,1,0,0,0,1,0,0,1,3],"330 Meadowmere Park":[0,0,0,0,0,0,0,0,0,0,0,0],"340 Valley Stream":[0,0,1,0,2,1,1,0,0,0,2,2],"350 Woodmere":[1,1,0,1,0,0,1,0,0,0,0,0],"400 East Rockaway":[0,0,0,1,0,0,1,0,0,0,0,0],"410 Lakeview":[0,0,1,0,0,0,0,0,1,0,0,0],"420 Lynbrook":[0,1,0,0,0,0,0,0,1,3,0,1],"430 Malverne":[0,2,0,0,0,0,0,0,0,0,0,0],"440 Rockville Centre":[0,0,0,0,0,0,0,0,0,1,0,0],"500 Bayville":[0,0,0,0,0,0,0,1,0,0,0,1],"510 East Norwich":[0,0,0,0,1,0,0,0,0,0,0,0],"520 Glen Cove":[0,1,1,0,0,0,1,0,0,0,0,0],"530 Glenwood":[1,0,0,0,0,0,0,0,0,0,0,0],"540 Locust Valley":[0,0,0,2,0,1,1,0,1,0,1,0],"550 Oyster Bay/Atlantic Steamer":[0,0,0,0,0,0,0,0,0,1,0,0],"560 Roslyn Rescue/590 Roslyn Highlands":[0,0,0,0,1,0,1,1,0,0,0,0],"570 Sea Cliff":[0,0,0,0,0,0,0,0,0,0,0,0],"580 Syosset":[0,0,0,1,1,0,1,0,0,1,1,1],"600 Bellmore":[0,0,0,0,1,0,1,0,0,0,0,1],"610 East Meadow":[0,0,0,1,0,0,0,0,0,0,1,0],"620 Levittown":[0,0,0,0,0,0,0,0,0,0,1,0],"630 Massapequa":[1,1,1,1,0,1,1,0,1,0,0,1],"640 Merrick":[0,0,0,0,0,2,0,0,0,0,1,0],"650 North Bellmore":[0,0,0,1,0,0,1,0,0,1,1,0],"660 North Massapequa":[1,1,0,0,0,0,1,1,0,0,0,0],"670 North Merrick":[0,0,0,0,0,1,0,1,0,0,0,0],"680 Seaford":[0,0,0,0,0,0,0,0,0,0,0,0],"690 Wantagh":[1,0,1,1,1,1,0,0,1,1,0,0],"700 Elmont":[2,1,1,3,0,2,2,1,0,0,1,2],"710 Franklin Square & Munson":[0,2,2,0,0,1,0,0,0,1,0,0],"720 Hempstead":[0,1,1,2,2,2,2,3,1,0,2,4],"730 Roosevelt":[0,0,2,0,0,1,0,0,0,0,0,0],"740 South Hempstead":[0,0,0,0,0,0,0,0,0,0,1,0],"750 Uniondale":[0,0,0,1,2,1,0,0,0,0,1,0],"760 West Hempstead":[2,0,0,1,0,0,0,0,0,0,0,1],"800 Albertson":[0,1,0,0,0,0,0,0,0,0,0,0],"810 East Williston":[0,0,0,0,0,0,0,0,0,0,0,0],"820 Great Neck Alert":[0,0,1,0,0,0,0,0,0,0,0,1],"830 Great Neck Vigilant":[0,0,0,0,1,0,0,0,0,0,0,0],"840 Plandome":[0,0,0,0,0,0,0,0,0,0,0,0],"850 Port Washington":[0,0,0,0,0,1,0,1,0,1,1,1],"860 Williston Park":[0,0,0,0,0,0,0,0,0,0,0,0],"870 Manhasset-Lakeville":[0,1,1,1,1,0,0,1,0,0,1,1],"900 Bethpage":[0,0,0,0,0,0,0,0,0,0,0,0],"910 Carle Place":[1,0,0,0,0,0,1,0,0,0,0,0],"920 Farmingdale":[0,0,0,0,0,0,0,0,0,0,0,0],"930 Hicksville":[0,0,2,0,0,0,0,2,1,1,1,0],"940 Jericho":[1,0,0,0,1,0,0,1,0,0,0,0],"950 Plainview":[0,0,0,0,1,0,0,0,0,0,0,1],"960 Westbury":[0,1,3,1,1,2,0,1,2,1,0,1],"970 South Farmingdale":[0,0,0,0,0,0,0,0,0,0,0,0]},"2017":{"100 Bellerose":[0,0,0,0,0,0,0,0,0,0,0,0],"110 Bellerose Terrace":[0,0,0,0,0,0,0,0,0,0,0,0],"120 Floral Park":[1,0,0,0,0,0,0,0,0,0,0,0],"130 Floral Park Centre":[0,0,0,0,0,0,0,0,0,0,0,0],"140 Garden City":[1,1,0,0,0,0,0,1,0,1,0,0],"150 Garden City Park":[0,0,0,0,0,0,0,1,0,0,0,0],"160 Mineola":[0,0,3,1,1,0,0,0,0,2,0,0],"170 New Hyde Park":[1,0,0,0,0,0,1,0,0,0,0,0],"180 South Floral Park":[0,0,0,0,0,0,0,0,0,0,0,0],"190 Stewart Manor":[0,0,0,0,0,0,0,0,0,0,0,0],"200 Baldwin":[1,0,2,0,0,1,1,0,1,0,0,0],"210 Freeport":[2,2,3,2,3,0,1,1,0,3,0,4],"220 Island Park":[0,1,0,0,1,0,0,0,0,0,1,0],"230 Long Beach":[0,0,3,1,0,1,0,0,1,1,1,0],"240 Oceanside":[1,0,0,0,0,0,0,0,0,0,1,0],"250 Point Lookout-Lido":[0,0,0,0,0,0,0,0,0,0,0,0],"300 Hewlett":[0,0,0,0,0,0,0,0,1,0,0,0],"310 Inwood":[1,0,0,0,0,0,0,0,0,0,0,0],"320 Lawrence-Cedarhurst":[0,0,0,0,0,0,0,1,0,0,0,0],"330 Meadowmere Park":[0,0,0,0,0,0,0,0,0,0,0,0],"340 Valley Stream":[1,4,1,0,1,0,0,2,1,0,1,0],"350 Woodmere":[0,0,0,0,0,0,0,0,0,0,0,0],"400 East Rockaway":[0,0,2,0,0,0,0,1,0,1,1,0],"410 Lakeview":[0,0,1,0,0,0,1,0,0,0,0,0],"420 Lynbrook":[0,1,1,1,0,0,0,0,0,0,0,1],"430 Malverne":[0,0,2,0,0,0,0,0,0,0,0,1],"440 Rockville Centre":[0,0,0,0,0,0,0,0,0,0,0,0],"500 Bayville":[0,0,0,0,1,0,0,0,0,0,0,1],"510 East Norwich":[0,0,0,0,0,0,0,1,0,0,0,0],"520 Glen Cove":[5,0,0,0,0,0,0,0,2,1,0,0],"530 Glenwood":[0,0,0,1,0,0,0,0,0,0,0,0],"540 Locust Valley":[0,1,0,0,0,1,0,0,0,0,0,0],"550 Oyster Bay/Atlantic Steamer":[0,0,0,0,0,0,1,0,0,0,0,0],"560 Roslyn Rescue/590 Roslyn Highlands":[1,0,1,0,0,0,0,0,0,3,1,0],"570 Sea Cliff":[0,0,0,0,0,0,0,0,0,0,0,0],"580 Syosset":[1,0,0,1,0,2,1,0,2,1,0,0],"600 Bellmore":[0,0,0,0,1,0,0,0,0,0,0,0],"610 East Meadow":[0,0,2,0,1,0,0,0,0,0,0,1],"620 Levittown":[1,1,1,1,1,0,0,0,0,0,0,0],"630 Massapequa":[1,0,0,0,0,1,0,0,1,0,1,3],"640 Merrick":[0,0,1,0,1,1,0,0,1,0,0,0],"650 North Bellmore":[0,0,0,0,0,1,1,0,0,1,0,0],"660 North Massapequa":[0,0,0,0,1,0,0,0,1,1,0,0],"670 North Merrick":[0,0,0,0,1,0,0,0,0,0,0,0],"680 Seaford":[0,0,0,0,0,0,0,0,0,0,0,0],"690 Wantagh":[1,2,2,2,1,1,0,0,0,0,0,0],"700 Elmont":[0,4,2,2,0,1,0,1,0,1,2,1],"710 Franklin Square & Munson":[2,0,0,0,0,0,0,0,0,0,0,0],"720 Hempstead":[2,1,1,1,0,0,2,2,1,1,3,3],"730 Roosevelt":[0,0,1,1,2,0,1,0,0,0,0,1],"740 South Hempstead":[0,0,0,1,0,0,0,0,0,0,0,0],"750 Uniondale":[1,0,0,0,0,2,1,0,0,0,0,0],"760 West Hempstead":[1,0,0,0,0,0,0,1,0,0,0,0],"800 Albertson":[0,0,0,0,0,0,0,0,0,0,0,0],"810 East Williston":[0,0,0,0,0,0,0,0,0,0,0,0],"820 Great Neck Alert":[0,0,0,0,0,0,0,0,0,0,1,1],"830 Great Neck Vigilant":[0,0,1,0,0,2,0,0,0,0,0,0],"840 Plandome":[1,0,0,0,0,0,0,0,0,0,0,0],"850 Port Washington":[1,1,0,0,3,0,1,0,0,1,1,2],"860 Williston Park":[0,0,0,0,0,1,0,0,0,0,0,0],"870 Manhasset-Lakeville":[0,0,1,0,0,0,0,0,0,0,0,0],"900 Bethpage":[0,1,0,1,0,0,1,1,1,0,0,0],"910 Carle Place":[0,0,0,1,0,0,0,0,0,0,0,0],"920 Farmingdale":[0,0,0,0,0,0,0,0,0,0,0,0],"930 Hicksville":[1,0,0,2,0,1,0,0,1,0,1,0],"940 Jericho":[0,0,0,0,0,0,0,0,0,0,0,0],"950 Plainview":[1,0,0,0,0,1,0,0,0,0,0,0],"960 Westbury":[2,1,1,2,0,1,1,0,1,1,1,1],"970 South Farmingdale":[0,0,1,1,0,0,0,1,0,0,1,0]},"2018":{"100 Bellerose":[0,0,0,0,0,0,0,0,0,0,0,0],"110 Bellerose Terrace":[0,0,0,0,0,0,0,0,0,0,0,0],"120 Floral Park":[0,0,0,0,0,0,0,0,0,0,0,1],"130 Floral Park Centre":[0,0,0,0,0,0,0,0,0,0,0,0],"140 Garden City":[0,0,0,0,0,0,0,0,0,0,1,0],"150 Garden City Park":[0,0,0,0,0,0,0,0,0,1,0,1],"160 Mineola":[3,0,1,0,0,1,0,0,0,0,1,0],"170 New Hyde Park":[0,0,0,0,0,0,0,1,0,0,0,1],"180 South Floral Park":[0,0,0,0,0,0,0,0,0,0,0,0],"190 Stewart Manor":[0,0,0,0,1,0,0,0,0,1,0,0],"200 Baldwin":[0,0,0,0,1,0,0,0,1,0,1,0],"210 Freeport":[2,1,0,1,0,2,2,1,0,0,0,1],"220 Island Park":[1,0,0,0,0,0,0,1,0,0,0,1],"230 Long Beach":[2,1,1,1,1,0,0,0,0,0,1,0],"240 Oceanside":[0,1,0,0,0,0,0,0,0,0,0,0],"250 Point Lookout-Lido":[0,0,0,0,1,0,0,0,0,0,1,0],"300 Hewlett":[0,1,0,0,0,0,0,0,0,0,0,0],"310 Inwood":[1,0,0,0,0,0,0,0,0,0,0,0],"320 Lawrence-Cedarhurst":[0,1,1,1,0,1,0,1,0,1,1,0],"330 Meadowmere Park":[0,0,0,0,0,0,0,0,0,0,0,0],"340 Valley Stream":[2,1,0,3,2,2,0,0,0,1,2,1],"350 Woodmere":[0,1,0,0,0,0,0,1,0,0,0,0],"400 East Rockaway":[0,0,0,0,1,0,0,0,0,0,0,0],"410 Lakeview":[0,0,0,0,1,0,1,1,1,0,0,0],"420 Lynbrook":[0,1,1,0,1,0,0,0,0,1,0,1],"430 Malverne":[0,1,0,0,0,0,0,0,0,0,0,0],"440 Rockville Centre":[0,0,0,1,0,0,0,0,0,0,0,0],"500 Bayville":[1,0,0,0,0,0,0,0,0,0,1,0],"510 East Norwich":[0,0,0,0,0,0,0,0,1,0,0,0],"520 Glen Cove":[2,1,0,0,0,1,0,1,0,0,1,1],"530 Glenwood":[0,0,0,0,0,0,0,0,0,0,0,0],"540 Locust Valley":[0,0,0,2,0,0,0,1,0,0,0,1],"550 Oyster Bay/Atlantic Steamer":[0,0,0,0,0,2,0,0,1,0,0,2],"560 Roslyn Rescue/590 Roslyn Highlands":[0,0,0,0,0,0,0,1,0,0,0,0],"570 Sea Cliff":[0,0,0,0,0,0,0,0,0,0,0,0],"580 Syosset":[0,1,0,0,2,1,0,0,0,0,0,0],"600 Bellmore":[0,0,0,0,0,1,1,0,0,1,0,1],"610 East Meadow":[0,1,0,0,0,0,1,0,0,0,2,1],"620 Levittown":[0,0,0,0,0,0,0,1,0,0,0,1],"630 Massapequa":[2,0,0,2,0,0,1,0,0,1,4,2],"640 Merrick":[1,0,0,0,0,0,0,0,0,2,0,0],"650 North Bellmore":[1,0,1,0,0,0,0,0,0,0,0,0],"660 North Massapequa":[0,0,1,1,0,0,1,0,0,0,0,0],"670 North Merrick":[0,0,0,0,0,0,0,0,0,0,0,0],"680 Seaford":[0,0,1,0,0,0,0,0,0,0,0,0],"690 Wantagh":[1,1,1,2,1,0,0,1,0,2,0,2],"700 Elmont":[0,3,0,0,3,0,1,0,0,1,2,0],"710 Franklin Square & Munson":[0,0,1,2,0,1,3,1,0,0,0,2],"720 Hempstead":[3,4,0,2,2,1,1,3,1,2,5,5],"730 Roosevelt":[0,0,0,0,2,0,0,0,0,1,0,2],"740 South Hempstead":[0,0,0,0,0,0,0,1,0,0,0,0],"750 Uniondale":[0,0,2,0,0,0,3,1,0,1,0,1],"760 West Hempstead":[0,0,0,1,0,0,0,0,0,0,0,0],"800 Albertson":[0,0,0,0,0,0,0,0,0,0,0,1],"810 East Williston":[0,0,0,0,0,0,0,0,0,0,0,0],"820 Great Neck Alert":[0,0,1,0,1,1,1,0,0,1,0,0],"830 Great Neck Vigilant":[0,0,0,0,0,0,1,0,0,0,0,0],"840 Plandome":[0,0,0,0,0,0,0,0,0,0,0,0],"850 Port Washington":[1,0,0,0,3,0,0,0,0,0,1,0],"860 Williston Park":[0,0,0,1,0,0,0,0,0,0,0,0],"870 Manhasset-Lakeville":[0,0,1,0,0,0,0,0,0,0,0,0],"900 Bethpage":[1,0,0,1,0,1,1,0,0,1,0,1],"910 Carle Place":[0,0,0,0,0,0,0,0,0,0,0,0],"920 Farmingdale":[2,1,0,0,0,0,0,1,0,0,0,0],"930 Hicksville":[0,1,1,2,1,0,2,1,2,1,0,0],"940 Jericho":[0,0,0,0,0,0,0,1,0,0,0,0],"950 Plainview":[1,0,0,0,0,0,1,0,0,0,2,0],"960 Westbury":[1,1,5,0,1,2,0,0,1,1,1,1],"970 South Farmingdale":[0,0,0,0,0,0,1,0,0,0,0,1]},"2019":{"100 Bellerose":[0,0,0,0,0,0,0,0,0,0,0,0],"110 Bellerose Terrace":[0,0,0,0,0,0,0,0,0,0,0,0],"120 Floral Park":[0,0,0,0,0,0,0,0,0,0,0,1],"130 Floral Park Centre":[0,0,0,0,0,0,0,0,0,0,0,0],"140 Garden City":[0,0,0,0,1,0,0,0,0,1,0,0],"150 Garden City Park":[0,1,0,0,0,0,1,0,0,1,0,0],"160 Mineola":[0,0,0,0,0,0,0,0,1,0,0,1],"170 New Hyde Park":[0,1,1,0,0,0,0,0,0,0,0,0],"180 South Floral Park":[1,0,0,0,0,0,0,0,0,0,0,0],"190 Stewart Manor":[1,0,0,0,0,0,0,0,0,0,0,0],"200 Baldwin":[2,0,1,0,0,0,2,1,0,0,0,1],"210 Freeport":[1,1,3,0,1,2,1,1,0,2,0,2],"220 Island Park":[0,0,0,0,0,0,2,0,0,0,0,0],"230 Long Beach":[1,0,1,1,1,1,0,0,3,0,0,1],"240 Oceanside":[0,1,1,2,1,0,0,0,0,0,0,1],"250 Point Lookout-Lido":[1,1,0,0,1,0,0,0,0,0,0,0],"300 Hewlett":[0,0,0,1,1,1,0,0,2,0,0,0],"310 Inwood":[1,0,1,1,0,0,0,0,0,0,0,2],"320 Lawrence-Cedarhurst":[1,0,2,0,2,0,2,0,1,1,1,1],"330 Meadowmere Park":[0,0,0,0,0,0,0,0,0,0,0,0],"340 Valley Stream":[0,1,3,0,0,0,1,0,2,4,0,1],"350 Woodmere":[1,1,0,0,0,0,0,0,0,0,0,0],"400 East Rockaway":[0,0,0,0,0,0,0,2,0,0,0,0],"410 Lakeview":[1,0,1,0,0,0,0,0,0,1,0,1],"420 Lynbrook":[0,1,0,0,0,0,3,0,1,1,0,0],"430 Malverne":[0,0,1,0,0,0,0,0,0,0,0,0],"440 Rockville Centre":[0,1,0,0,1,0,2,0,0,0,0,1],"500 Bayville":[0,0,0,0,0,0,0,0,1,0,2,0],"510 East Norwich":[0,0,1,1,0,1,2,0,0,0,1,0],"520 Glen Cove":[1,0,2,1,2,0,1,0,0,1,1,0],"530 Glenwood":[0,0,0,0,0,1,1,0,0,0,0,0],"540 Locust Valley":[0,0,0,0,0,0,0,0,0,0,0,1],"550 Oyster Bay/Atlantic Steamer":[1,0,0,1,1,0,0,1,0,0,0,1],"560 Roslyn Rescue/590 Roslyn Highlands":[1,0,0,1,1,0,2,1,0,0,0,2],"570 Sea Cliff":[0,0,0,0,0,0,0,0,0,0,0,0],"580 Syosset":[0,0,1,1,0,0,1,0,1,0,1,1],"600 Bellmore":[0,0,1,0,0,0,0,0,0,0,0,1],"610 East Meadow":[0,1,0,0,0,0,0,0,0,0,0,0],"620 Levittown":[1,1,0,0,0,0,2,0,0,0,1,0],"630 Massapequa":[1,0,0,4,0,0,0,0,1,1,1,3],"640 Merrick":[1,1,0,1,0,0,1,0,0,1,0,0],"650 North Bellmore":[1,0,1,2,0,0,2,0,0,0,1,0],"660 North Massapequa":[0,0,0,2,0,1,1,0,0,0,0,1],"670 North Merrick":[0,0,0,0,0,0,0,0,1,0,0,0],"680 Seaford":[0,0,0,0,0,0,0,0,0,0,0,0],"690 Wantagh":[2,0,1,0,0,1,0,4,0,0,0,0],"700 Elmont":[3,2,0,0,0,0,1,0,1,0,1,0],"710 Franklin Square & Munson":[0,1,0,1,1,0,1,1,1,1,0,1],"720 Hempstead":[1,1,1,1,0,0,0,1,0,0,1,1],"730 Roosevelt":[2,1,0,1,0,0,0,1,0,1,0,0],"740 South Hempstead":[0,0,1,0,0,0,0,0,0,0,0,0],"750 Uniondale":[0,0,0,0,0,2,0,1,1,0,3,0],"760 West Hempstead":[0,2,0,0,0,0,0,0,0,0,3,0],"800 Albertson":[0,0,0,0,0,0,0,0,0,0,0,0],"810 East Williston":[1,0,0,0,0,0,0,0,0,0,0,0],"820 Great Neck Alert":[0,0,0,0,0,0,0,0,0,0,0,1],"830 Great Neck Vigilant":[1,0,0,1,0,0,0,0,1,0,0,0],"840 Plandome":[0,0,0,0,0,0,0,0,0,0,0,0],"850 Port Washington":[1,0,0,0,0,0,2,0,1,0,2,3],"860 Williston Park":[1,0,0,0,0,0,0,0,0,0,0,1],"870 Manhasset-Lakeville":[0,1,1,0,0,0,0,1,1,0,2,0],"900 Bethpage":[0,1,0,1,1,1,0,1,1,0,1,1],"910 Carle Place":[1,0,0,0,1,0,2,1,0,1,0,0],"920 Farmingdale":[0,0,0,0,0,0,1,0,0,0,0,0],"930 Hicksville":[0,0,1,3,1,1,2,0,0,0,0,0],"940 Jericho":[1,0,0,0,0,0,0,1,0,0,1,0],"950 Plainview":[0,0,0,0,1,0,1,0,0,1,1,0],"960 Westbury":[2,2,2,0,0,0,1,0,2,1,3,1],"970 South Farmingdale":[0,0,0,1,0,0,1,0,0,0,0,0]},"2020":{"100 Bellerose":[0,0,0,0,0,0,0,0,0,0,0,0],"110 Bellerose Terrace":[0,0,0,0,0,0,0,0,0,0,0,0],"120 Floral Park":[0,0,1,0,0,0,0,0,1,0,2,0],"130 Floral Park Centre":[0,0,0,0,0,0,0,0,0,0,0,0],"140 Garden City":[0,0,0,0,0,0,0,0,1,0,0,1],"150 Garden City Park":[1,0,0,0,0,0,0,0,0,0,0,0],"160 Mineola":[1,0,2,0,0,0,0,1,0,0,1,0],"170 New Hyde Park":[0,0,0,0,1,0,0,0,0,0,0,1],"180 South Floral Park":[0,0,0,0,0,0,0,0,0,0,0,0],"190 Stewart Manor":[0,0,0,0,1,0,0,0,0,0,0,1],"200 Baldwin":[1,1,0,0,0,2,0,0,1,0,1,1],"210 Freeport":[1,0,3,2,0,1,2,1,0,0,1,1],"220 Island Park":[1,0,0,1,1,0,0,0,1,0,0,0],"230 Long Beach":[0,2,1,0,1,0,0,0,0,0,1,1],"240 Oceanside":[0,0,0,0,0,0,0,0,0,0,0,0],"250 Point Lookout-Lido":[0,0,0,0,0,0,0,0,0,0,0,0],"300 Hewlett":[0,0,0,0,1,0,0,0,0,0,0,1],"310 Inwood":[0,0,1,1,1,0,0,1,1,0,0,0],"320 Lawrence-Cedarhurst":[0,0,0,0,0,0,0,0,0,0,0,2],"330 Meadowmere Park":[0,0,0,0,0,0,0,0,0,0,1,0],"340 Valley Stream":[0,1,1,3,0,1,0,1,0,3,1,0],"350 Woodmere":[0,0,0,0,0,0,0,0,0,0,0,0],"400 East Rockaway":[0,0,1,0,0,0,0,0,0,1,0,1],"410 Lakeview":[0,2,0,0,0,0,1,0,0,0,0,1],"420 Lynbrook":[0,0,0,0,0,0,1,0,0,0,0,0],"430 Malverne":[0,0,0,0,0,0,1,1,0,0,0,0],"440 Rockville Centre":[0,0,0,0,0,0,0,0,1,0,0,0],"500 Bayville":[0,0,0,0,0,0,0,0,0,0,0,0],"510 East Norwich":[0,0,0,0,0,0,0,0,0,0,0,0],"520 Glen Cove":[0,1,2,1,2,0,0,1,1,1,1,0],"530 Glenwood":[0,0,0,0,0,0,0,1,0,0,0,0],"540 Locust Valley":[0,0,0,0,0,0,0,1,0,0,0,1],"550 Oyster Bay/Atlantic Steamer":[0,2,0,0,0,0,0,0,1,0,0,0],"560 Roslyn Rescue/590 Roslyn Highlands":[2,1,3,2,2,0,0,0,0,0,0,1],"570 Sea Cliff":[0,0,0,0,0,0,0,0,0,0,0,1],"580 Syosset":[2,0,0,0,0,0,0,0,0,0,0,1],"600 Bellmore":[3,0,0,0,0,1,0,1,0,0,0,0],"610 East Meadow":[0,0,0,0,0,1,1,1,0,0,0,1],"620 Levittown":[0,0,0,0,0,0,0,0,0,0,0,1],"630 Massapequa":[2,1,0,1,0,0,0,1,2,1,1,1],"640 Merrick":[0,0,0,0,0,0,1,0,1,0,0,0],"650 North Bellmore":[0,0,1,1,0,0,0,0,1,0,0,0],"660 North Massapequa":[0,0,0,0,1,0,1,0,0,0,0,0],"670 North Merrick":[0,0,1,0,0,0,0,0,0,0,0,1],"680 Seaford":[0,0,0,1,0,1,0,0,0,0,0,0],"690 Wantagh":[0,2,0,1,1,0,0,0,0,2,1,0],"700 Elmont":[0,0,1,0,2,1,0,0,0,1,1,0],"710 Franklin Square & Munson":[1,0,1,1,2,1,0,0,0,0,0,1],"720 Hempstead":[1,0,1,0,1,1,0,1,3,1,0,2],"730 Roosevelt":[1,0,0,1,0,0,1,0,0,1,0,1],"740 South Hempstead":[0,0,0,1,0,0,0,0,0,1,0,0],"750 Uniondale":[0,0,2,0,0,1,1,1,0,2,0,2],"760 West Hempstead":[0,0,0,0,0,1,0,0,0,0,0,0],"800 Albertson":[0,0,0,0,0,0,0,0,0,0,0,0],"810 East Williston":[0,0,0,0,0,0,1,0,0,0,0,0],"820 Great Neck Alert":[0,0,0,0,0,0,0,2,0,0,0,0],"830 Great Neck Vigilant":[2,0,0,0,0,1,0,0,0,0,0,0],"840 Plandome":[0,0,0,0,0,0,0,1,0,0,0,0],"850 Port Washington":[0,0,1,0,0,1,0,1,0,1,0,0],"860 Williston Park":[0,0,0,0,0,0,0,0,0,0,0,0],"870 Manhasset-Lakeville":[0,0,0,1,0,0,2,2,1,0,0,0],"900 Bethpage":[1,0,0,0,0,2,0,1,2,0,0,0],"910 Carle Place":[0,0,0,0,0,0,0,0,0,0,1,1],"920 Farmingdale":[0,1,1,0,1,1,0,0,0,0,0,0],"930 Hicksville":[3,1,0,0,1,0,0,0,1,1,0,1],"940 Jericho":[0,0,0,0,0,0,0,1,0,0,0,0],"950 Plainview":[3,1,0,0,0,0,0,0,0,0,0,0],"960 Westbury":[0,1,1,3,1,0,1,1,0,1,0,3],"970 South Farmingdale":[0,0,0,0,0,0,0,1,0,0,0,1]},"2021":{"100 Bellerose":[0,0,0,0,0,0,0,0,0,0,0,0],"110 Bellerose Terrace":[0,0,0,0,0,0,0,0,0,0,0,0],"120 Floral Park":[0,0,1,1,0,1,0,0,0,0,0,1],"130 Floral Park Centre":[0,0,0,0,0,0,0,0,0,0,0,0],"140 Garden City":[0,0,1,0,1,1,0,1,0,0,1,0],"150 Garden City Park":[2,1,2,0,0,0,0,0,0,0,0,1],"160 Mineola":[1,1,0,0,1,0,0,0,0,0,0,1],"170 New Hyde Park":[1,0,0,0,0,0,0,0,0,0,0,0],"180 South Floral Park":[0,0,0,1,0,0,1,0,0,0,0,0],"190 Stewart Manor":[0,0,0,0,0,0,0,0,0,0,0,0],"200 Baldwin":[0,0,2,1,0,0,0,0,0,0,0,0],"210 Freeport":[2,1,4,2,0,1,1,3,1,0,1,1],"220 Island Park":[0,0,0,0,0,1,0,0,0,0,0,0],"230 Long Beach":[2,0,0,0,2,0,0,0,1,1,0,0],"240 Oceanside":[0,0,0,1,0,0,0,0,0,0,0,1],"250 Point Lookout-Lido":[0,0,0,0,0,0,0,0,0,0,0,0],"300 Hewlett":[0,0,0,0,0,0,0,0,0,0,0,0],"310 Inwood":[0,0,1,0,0,0,0,0,0,1,0,1],"320 Lawrence-Cedarhurst":[1,1,0,1,0,2,1,1,0,0,0,1],"330 Meadowmere Park":[0,0,0,0,0,0,0,0,0,0,0,0],"340 Valley Stream":[1,2,1,0,1,0,1,0,0,0,1,1],"350 Woodmere":[0,0,0,0,0,0,0,0,0,0,1,1],"400 East Rockaway":[0,0,0,0,0,0,0,0,0,0,0,0],"410 Lakeview":[0,0,0,0,0,0,0,0,1,0,3,0],"420 Lynbrook":[0,1,0,0,0,0,0,0,0,0,0,0],"430 Malverne":[0,0,0,0,0,0,0,0,0,1,0,0],"440 Rockville Centre":[0,0,0,0,0,0,0,0,0,0,0,0],"500 Bayville":[0,0,0,0,0,0,0,1,0,0,0,0],"510 East Norwich":[0,0,0,0,0,0,0,0,0,0,0,0],"520 Glen Cove":[0,2,2,1,1,1,0,1,0,0,0,2],"530 Glenwood":[1,0,0,0,0,0,0,0,0,0,0,1],"540 Locust Valley":[1,0,0,0,0,0,0,0,1,0,0,0],"550 Oyster Bay/Atlantic Steamer":[1,0,0,0,0,0,0,1,0,0,0,0],"560 Roslyn Rescue/590 Roslyn Highlands":[0,1,0,0,0,0,0,0,0,0,0,0],"570 Sea Cliff":[1,0,0,0,0,0,0,0,0,0,0,0],"580 Syosset":[0,0,0,1,0,0,1,0,0,1,1,1],"600 Bellmore":[0,0,0,0,0,0,0,0,0,0,0,0],"610 East Meadow":[1,0,2,0,1,1,0,0,1,1,1,0],"620 Levittown":[0,0,1,1,1,0,0,0,0,1,0,1],"630 Massapequa":[1,2,0,0,2,3,1,0,0,1,1,2],"640 Merrick":[0,0,0,0,0,0,0,1,0,0,0,0],"650 North Bellmore":[1,0,0,0,1,0,1,1,0,0,0,1],"660 North Massapequa":[0,0,0,0,0,0,0,0,0,0,0,0],"670 North Merrick":[1,0,0,0,0,1,0,0,0,0,0,0],"680 Seaford":[0,1,0,0,0,0,0,0,1,0,0,0],"690 Wantagh":[1,1,0,0,0,1,2,0,1,0,1,1],"700 Elmont":[0,1,0,1,1,0,1,1,0,2,1,2],"710 Franklin Square & Munson":[2,0,0,0,0,0,0,1,0,1,1,0],"720 Hempstead":[1,2,4,4,1,1,1,4,0,0,1,2],"730 Roosevelt":[0,0,0,1,1,0,0,0,0,0,0,1],"740 South Hempstead":[0,0,0,0,0,0,0,0,0,0,0,0],"750 Uniondale":[0,0,0,0,0,0,0,0,1,0,0,0],"760 West Hempstead":[0,0,0,0,0,0,0,0,0,0,0,0],"800 Albertson":[0,0,0,1,0,0,0,0,0,0,0,0],"810 East Williston":[0,0,0,0,0,0,0,0,0,0,0,0],"820 Great Neck Alert":[1,0,0,0,0,1,0,1,0,0,0,1],"830 Great Neck Vigilant":[0,0,0,0,0,0,0,0,0,0,0,0],"840 Plandome":[0,0,0,0,0,0,0,0,0,0,0,0],"850 Port Washington":[0,0,0,0,0,0,0,1,1,1,1,1],"860 Williston Park":[0,0,0,0,0,0,0,0,0,0,0,0],"870 Manhasset-Lakeville":[0,0,0,0,0,0,0,0,0,0,0,1],"900 Bethpage":[0,1,0,0,0,0,0,0,0,0,0,0],"910 Carle Place":[0,0,1,0,0,0,0,1,0,0,0,1],"920 Farmingdale":[0,0,0,0,0,0,0,0,0,0,1,0],"930 Hicksville":[0,1,1,1,0,0,3,1,2,0,0,0],"940 Jericho":[1,0,0,0,0,0,0,0,0,0,0,0],"950 Plainview":[0,1,0,0,0,0,1,0,0,1,1,0],"960 Westbury":[2,0,4,1,5,1,0,0,0,0,1,1],"970 South Farmingdale":[0,0,0,0,1,0,1,0,0,0,1,0]},"2022":{"100 Bellerose":[0,0,0,0,0,0,0,0,0,0,0,0],"110 Bellerose Terrace":[0,0,0,0,0,0,0,0,0,0,0,0],"120 Floral Park":[0,0,0,1,0,0,0,0,0,0,0,0],"130 Floral Park Centre":[0,0,0,0,0,0,0,0,0,0,0,0],"140 Garden City":[0,0,0,0,0,0,2,0,0,2,1,0],"150 Garden City Park":[0,1,0,2,0,0,0,0,1,0,0,0],"160 Mineola":[3,0,0,0,0,0,1,0,0,1,0,1],"170 New Hyde Park":[0,0,0,0,0,0,0,0,0,0,0,0],"180 South Floral Park":[0,0,0,0,0,0,0,0,0,0,0,0],"190 Stewart Manor":[0,0,0,0,0,0,0,0,0,0,0,0],"200 Baldwin":[1,0,1,1,0,0,1,1,1,0,0,0],"210 Freeport":[2,1,3,0,2,2,2,2,0,0,0,1],"220 Island Park":[1,0,0,0,0,0,0,0,0,0,1,0],"230 Long Beach":[0,0,0,0,2,0,0,0,0,1,0,1],"240 Oceanside":[1,0,0,0,2,0,0,0,0,1,0,2],"250 Point Lookout-Lido":[0,0,0,0,0,0,0,0,0,0,0,0],"300 Hewlett":[0,0,1,0,0,0,0,0,0,0,0,0],"310 Inwood":[0,0,0,0,0,0,1,0,0,0,0,0],"320 Lawrence-Cedarhurst":[1,1,0,0,2,0,2,0,0,0,0,0],"330 Meadowmere Park":[0,0,0,0,0,0,0,0,0,0,0,0],"340 Valley Stream":[0,0,1,0,0,2,0,1,1,0,0,0],"350 Woodmere":[0,0,0,0,0,1,1,0,0,0,0,1],"400 East Rockaway":[1,0,0,0,0,0,0,0,0,0,0,0],"410 Lakeview":[0,0,0,0,0,0,0,0,0,0,0,0],"420 Lynbrook":[0,0,0,1,0,1,1,0,1,0,0,1],"430 Malverne":[0,0,0,0,0,0,0,0,0,0,0,0],"440 Rockville Centre":[0,1,0,2,0,0,0,0,0,0,0,0],"500 Bayville":[1,0,0,0,0,0,0,0,0,0,1,1],"510 East Norwich":[0,0,0,1,0,0,0,0,0,0,0,0],"520 Glen Cove":[1,0,0,1,1,1,0,0,2,1,0,1],"530 Glenwood":[1,1,1,0,0,0,0,0,0,0,0,0],"540 Locust Valley":[0,0,0,0,0,0,0,0,0,0,0,1],"550 Oyster Bay/Atlantic Steamer":[0,0,0,0,0,0,0,0,2,0,0,0],"560 Roslyn Rescue/590 Roslyn Highlands":[2,0,0,0,2,1,0,0,0,1,1,1],"570 Sea Cliff":[0,0,0,0,1,0,0,0,1,0,0,0],"580 Syosset":[1,0,1,1,0,1,0,0,1,0,1,0],"600 Bellmore":[0,0,0,1,0,0,0,0,0,0,0,0],"610 East Meadow":[1,0,0,1,1,1,0,2,0,0,1,0],"620 Levittown":[0,0,0,0,1,0,1,0,0,0,0,0],"630 Massapequa":[2,0,0,1,1,0,2,0,0,2,2,4],"640 Merrick":[0,0,0,0,0,0,1,0,0,0,0,0],"650 North Bellmore":[0,0,0,0,0,0,0,1,1,0,0,1],"660 North Massapequa":[0,0,0,0,0,0,0,0,0,0,0,0],"670 North Merrick":[0,0,0,1,0,0,0,0,0,0,0,1],"680 Seaford":[0,0,0,1,0,0,0,0,0,0,0,0],"690 Wantagh":[1,0,0,0,0,0,1,0,0,0,0,1],"700 Elmont":[0,2,2,3,3,1,1,2,1,2,1,1],"710 Franklin Square & Munson":[0,0,0,1,0,0,1,2,1,1,0,0],"720 Hempstead":[1,0,0,3,0,1,0,0,1,2,0,1],"730 Roosevelt":[1,2,0,2,0,1,1,0,0,1,2,1],"740 South Hempstead":[1,0,1,0,0,0,0,1,0,0,1,1],"750 Uniondale":[0,0,0,0,0,1,0,0,0,0,1,0],"760 West Hempstead":[0,0,1,0,0,0,0,1,0,0,1,0],"800 Albertson":[0,0,0,0,0,0,0,0,0,0,0,0],"810 East Williston":[0,0,0,0,0,0,0,0,0,0,0,0],"820 Great Neck Alert":[0,0,0,0,0,0,0,1,0,0,1,0],"830 Great Neck Vigilant":[0,0,0,0,0,0,1,0,0,0,0,0],"840 Plandome":[0,0,0,0,0,0,0,0,0,0,0,0],"850 Port Washington":[0,0,0,0,0,0,0,1,0,0,0,1],"860 Williston Park":[1,0,0,0,0,0,0,0,0,0,0,0],"870 Manhasset-Lakeville":[0,0,3,0,0,0,1,0,2,0,0,1],"900 Bethpage":[0,0,1,1,0,0,1,0,0,1,0,1],"910 Carle Place":[0,0,0,1,0,0,0,0,0,0,1,0],"920 Farmingdale":[0,1,0,0,0,1,0,0,0,0,0,0],"930 Hicksville":[0,1,1,2,1,0,1,0,2,0,2,1],"940 Jericho":[2,1,0,0,1,0,0,0,0,0,1,0],"950 Plainview":[1,0,0,0,2,1,1,0,0,1,0,0],"960 Westbury":[1,1,2,1,1,1,3,2,2,1,1,0],"970 South Farmingdale":[0,1,1,0,1,1,0,2,0,0,0,1]},"2023":{"100 Bellerose":[0,0,0,0,0,0,0,0,0,0,0,0],"110 Bellerose Terrace":[0,0,0,0,0,0,0,0,0,0,0,1],"120 Floral Park":[0,0,0,1,0,0,0,0,0,0,0,0],"130 Floral Park Centre":[0,0,0,0,0,0,0,0,0,0,0,0],"140 Garden City":[0,0,0,2,0,0,0,0,1,0,0,0],"150 Garden City Park":[0,0,1,0,1,0,0,0,0,0,0,1],"160 Mineola":[1,0,1,0,0,0,0,0,0,0,0,0],"170 New Hyde Park":[1,1,0,0,0,0,0,0,0,0,0,1],"180 South Floral Park":[0,0,0,0,0,0,0,0,0,0,0,0],"190 Stewart Manor":[0,0,0,0,0,0,0,0,0,0,0,0],"200 Baldwin":[1,1,1,0,0,1,1,1,0,0,1,3],"210 Freeport":[1,1,0,2,2,2,0,0,1,0,3,0],"220 Island Park":[1,1,0,0,0,0,0,0,0,0,0,0],"230 Long Beach":[1,2,1,0,0,1,0,0,0,2,1,1],"240 Oceanside":[0,0,0,0,1,0,0,1,0,1,0,1],"250 Point Lookout-Lido":[0,0,0,0,0,0,0,0,0,0,0,1],"300 Hewlett":[0,0,0,0,1,0,0,0,1,0,0,0],"310 Inwood":[0,0,1,0,0,0,0,0,0,0,0,1],"320 Lawrence-Cedarhurst":[2,1,0,0,0,1,1,2,1,1,3,0],"330 Meadowmere Park":[0,0,0,0,0,0,0,0,0,0,0,0],"340 Valley Stream":[1,0,1,1,1,1,2,0,1,1,2,0],"350 Woodmere":[1,1,0,2,0,0,0,0,0,0,1,0],"400 East Rockaway":[0,0,0,0,0,0,0,0,0,0,0,0],"410 Lakeview":[0,0,0,1,0,0,0,0,1,0,0,0],"420 Lynbrook":[0,0,0,0,0,0,0,0,0,0,0,1],"430 Malverne":[0,0,0,0,0,0,0,0,0,0,0,0],"440 Rockville Centre":[1,0,0,0,0,0,0,1,0,0,0,0],"500 Bayville":[0,0,0,1,0,0,0,1,0,0,0,0],"510 East Norwich":[0,1,0,1,1,0,0,0,0,0,1,0],"520 Glen Cove":[0,0,0,0,0,1,0,2,0,0,0,0],"530 Glenwood":[0,0,0,0,1,0,0,0,0,0,0,0],"540 Locust Valley":[0,0,0,0,0,0,0,1,0,0,0,0],"550 Oyster Bay/Atlantic Steamer":[0,0,0,0,0,0,0,0,0,0,0,0],"560 Roslyn Rescue/590 Roslyn Highlands":[0,1,0,0,1,0,0,0,2,0,0,0],"570 Sea Cliff":[0,0,0,0,0,0,0,0,0,0,0,1],"580 Syosset":[3,0,0,1,0,1,0,0,1,0,0,2],"600 Bellmore":[0,0,1,1,0,0,1,0,0,0,0,0],"610 East Meadow":[0,0,0,1,0,0,0,0,0,1,0,1],"620 Levittown":[0,0,0,0,0,0,2,0,0,0,0,0],"630 Massapequa":[1,1,1,0,1,0,2,1,2,0,0,0],"640 Merrick":[0,0,0,0,0,0,1,0,0,0,0,0],"650 North Bellmore":[0,0,1,0,0,0,1,0,0,0,0,0],"660 North Massapequa":[0,0,1,0,0,0,0,0,0,0,0,0],"670 North Merrick":[0,1,0,0,0,1,0,0,0,0,0,0],"680 Seaford":[0,0,0,0,0,0,0,0,0,0,0,1],"690 Wantagh":[1,1,0,1,0,1,1,0,0,0,0,2],"700 Elmont":[2,0,0,0,0,3,2,0,0,2,2,0],"710 Franklin Square & Munson":[0,0,0,0,1,0,0,1,0,0,1,0],"720 Hempstead":[2,0,1,2,1,1,0,0,3,2,2,2],"730 Roosevelt":[0,0,0,0,0,0,0,0,0,1,1,1],"740 South Hempstead":[0,0,0,0,0,0,0,0,0,0,0,1],"750 Uniondale":[0,0,0,2,0,0,1,0,0,0,0,0],"760 West Hempstead":[1,0,0,0,0,0,0,0,0,0,0,1],"800 Albertson":[1,0,0,0,0,0,0,0,0,0,1,0],"810 East Williston":[0,0,0,0,1,1,0,0,1,0,0,0],"820 Great Neck Alert":[1,1,0,0,0,0,0,2,0,0,0,0],"830 Great Neck Vigilant":[0,0,1,0,0,0,0,0,0,2,0,0],"840 Plandome":[0,0,0,0,0,0,0,0,0,0,0,0],"850 Port Washington":[0,0,0,0,0,0,0,1,0,2,1,0],"860 Williston Park":[0,0,0,0,0,0,0,0,0,0,0,0],"870 Manhasset-Lakeville":[0,0,0,0,0,0,0,0,0,1,1,1],"900 Bethpage":[1,0,0,0,1,1,0,1,0,0,0,0],"910 Carle Place":[0,0,0,0,0,0,0,0,0,0,0,0],"920 Farmingdale":[0,0,0,0,0,0,0,1,0,0,0,0],"930 Hicksville":[1,0,3,2,1,3,0,1,1,0,0,5],"940 Jericho":[0,1,0,0,0,0,0,0,0,0,0,0],"950 Plainview":[0,1,0,0,2,0,0,1,1,1,0,0],"960 Westbury":[0,0,2,1,0,1,0,1,0,1,0,1],"970 South Farmingdale":[0,0,0,0,0,0,0,1,1,0,1,0]},"2024":{"100 Bellerose":[0,0,0,0,0,0,0,0,0,0,0,0],"110 Bellerose Terrace":[0,0,0,0,0,0,0,0,0,0,0,0],"120 Floral Park":[0,0,1,0,0,0,0,0,0,0,0,0],"130 Floral Park Centre":[0,0,0,0,0,0,0,0,0,0,0,0],"140 Garden City":[0,0,0,0,0,0,1,2,0,0,0,1],"150 Garden City Park":[0,0,0,0,1,0,0,0,0,0,0,0],"160 Mineola":[0,0,0,0,1,1,1,0,0,0,0,0],"170 New Hyde Park":[0,0,0,0,0,0,1,0,0,1,0,1],"180 South Floral Park":[0,0,0,0,0,0,0,0,0,0,1,0],"190 Stewart Manor":[0,0,0,0,0,0,0,0,0,0,0,0],"200 Baldwin":[1,0,1,0,1,1,1,0,2,2,0,0],"210 Freeport":[0,0,1,2,1,0,0,2,0,2,2,4],"220 Island Park":[0,0,0,0,0,0,1,0,0,0,0,0],"230 Long Beach":[0,1,1,1,1,0,0,1,0,1,1,0],"240 Oceanside":[0,0,0,0,0,1,1,0,1,1,0,0],"250 Point Lookout-Lido":[0,0,0,0,0,0,0,0,0,0,0,0],"300 Hewlett":[0,0,0,0,0,0,0,1,1,0,0,0],"310 Inwood":[0,0,2,0,0,0,0,0,0,0,1,0],"320 Lawrence-Cedarhurst":[1,0,0,1,0,0,1,2,1,0,0,0],"330 Meadowmere Park":[0,0,0,0,0,0,0,0,0,0,0,0],"340 Valley Stream":[2,3,0,0,1,1,1,0,0,0,1,0],"350 Woodmere":[0,0,0,0,1,0,1,0,0,0,1,1],"400 East Rockaway":[0,0,0,0,0,0,1,0,1,0,0,0],"410 Lakeview":[0,0,1,0,0,0,2,0,0,1,0,1],"420 Lynbrook":[0,1,0,1,0,1,0,0,0,0,2,1],"430 Malverne":[0,0,0,0,0,0,0,0,0,0,1,0],"440 Rockville Centre":[1,1,0,0,0,0,0,0,0,0,0,0],"500 Bayville":[0,0,0,0,0,0,0,0,0,0,0,0],"510 East Norwich":[0,0,0,0,0,0,0,0,0,0,0,0],"520 Glen Cove":[3,1,2,1,0,1,1,1,0,1,2,0],"530 Glenwood":[1,0,0,1,1,0,1,0,0,0,0,0],"540 Locust Valley":[1,0,1,0,0,0,0,0,0,1,0,0],"550 Oyster Bay/Atlantic Steamer":[0,0,0,0,1,0,0,1,0,0,1,0],"560 Roslyn Rescue/590 Roslyn Highlands":[0,0,0,1,0,0,2,0,0,0,2,0],"570 Sea Cliff":[0,0,0,0,0,1,0,0,0,0,0,0],"580 Syosset":[0,0,0,0,0,0,0,0,0,0,0,3],"600 Bellmore":[0,0,0,0,0,0,0,0,0,1,0,0],"610 East Meadow":[1,0,0,0,1,0,0,1,0,2,0,0],"620 Levittown":[0,0,0,0,0,0,0,0,0,1,0,0],"630 Massapequa":[1,1,2,0,0,0,1,1,1,0,0,0],"640 Merrick":[0,0,0,0,0,0,0,0,0,0,0,0],"650 North Bellmore":[1,0,0,1,0,2,0,1,0,0,0,1],"660 North Massapequa":[0,0,0,0,0,0,0,0,0,0,0,0],"670 North Merrick":[0,0,0,0,0,0,0,0,0,0,0,0],"680 Seaford":[0,0,0,0,0,1,0,0,0,1,0,0],"690 Wantagh":[0,3,0,1,1,0,1,0,2,0,1,0],"700 Elmont":[0,2,4,2,0,0,3,1,2,0,1,4],"710 Franklin Square & Munson":[0,0,1,0,1,0,0,1,0,1,0,0],"720 Hempstead":[0,0,1,2,0,5,1,0,2,2,0,5],"730 Roosevelt":[0,0,0,0,0,0,0,0,0,0,0,2],"740 South Hempstead":[0,0,0,0,0,0,0,0,0,0,0,0],"750 Uniondale":[0,2,0,1,0,0,1,0,1,0,0,2],"760 West Hempstead":[0,0,0,1,1,0,0,0,0,0,0,0],"800 Albertson":[0,0,0,0,0,0,0,0,0,0,0,0],"810 East Williston":[0,0,0,0,0,0,0,0,0,0,0,0],"820 Great Neck Alert":[0,0,0,0,0,0,1,0,0,1,0,0],"830 Great Neck Vigilant":[1,1,0,0,0,0,0,1,0,1,0,0],"840 Plandome":[0,0,0,0,0,0,0,0,0,0,0,0],"850 Port Washington":[1,0,1,0,1,0,0,0,0,0,0,2],"860 Williston Park":[0,0,0,0,0,0,0,0,0,0,0,0],"870 Manhasset-Lakeville":[0,0,0,0,0,1,1,0,0,0,0,0],"900 Bethpage":[0,0,0,0,0,0,0,0,0,0,0,0],"910 Carle Place":[1,0,0,0,0,0,0,0,0,0,0,0],"920 Farmingdale":[0,0,0,1,0,0,0,0,0,0,0,0],"930 Hicksville":[1,1,1,0,0,3,2,1,0,0,4,0],"940 Jericho":[0,0,0,0,0,1,0,2,0,0,2,2],"950 Plainview":[0,1,0,1,1,0,0,0,0,0,0,1],"960 Westbury":[0,0,0,1,0,2,1,0,1,0,2,1],"970 South Farmingdale":[0,0,0,1,0,0,1,0,1,0,1,0]},"2025":{"100 Bellerose":[0,0,0,0,0,0,0,0,0,0,0,0],"110 Bellerose Terrace":[0,0,0,0,0,0,0,0,0,0,0,0],"120 Floral Park":[0,0,0,1,0,0,0,0,1,1,0,0],"130 Floral Park Centre":[0,0,0,0,0,0,0,0,0,0,0,0],"140 Garden City":[0,0,0,0,0,0,0,0,1,0,0,0],"150 Garden City Park":[0,1,0,0,0,0,0,0,0,0,0,0],"160 Mineola":[0,0,1,1,0,1,0,0,0,0,0,0],"170 New Hyde Park":[0,1,0,0,0,0,0,0,0,0,0,0],"180 South Floral Park":[0,0,0,0,0,0,0,0,0,0,0,0],"190 Stewart Manor":[0,0,0,0,0,0,1,0,0,0,0,0],"200 Baldwin":[0,0,0,0,0,2,0,2,0,0,2,1],"210 Freeport":[2,0,1,0,2,1,0,1,1,0,0,0],"220 Island Park":[0,0,1,1,0,0,0,0,1,1,0,1],"230 Long Beach":[1,2,2,1,0,0,0,0,2,0,1,3],"240 Oceanside":[1,0,1,0,0,1,0,1,0,1,0,0],"250 Point Lookout-Lido":[0,0,0,0,0,0,0,0,0,0,0,0],"300 Hewlett":[1,0,0,1,0,0,2,0,0,1,0,0],"310 Inwood":[0,0,0,0,0,0,0,0,0,0,0,0],"320 Lawrence-Cedarhurst":[0,2,0,0,0,0,1,0,0,0,0,1],"330 Meadowmere Park":[0,0,0,1,0,0,0,0,0,0,0,0],"340 Valley Stream":[2,0,2,0,0,1,1,0,1,1,1,0],"350 Woodmere":[0,0,1,0,0,0,0,0,1,0,0,0],"400 East Rockaway":[0,0,0,0,0,0,1,1,0,0,0,0],"410 Lakeview":[0,1,0,0,0,0,0,0,0,1,0,0],"420 Lynbrook":[0,0,0,0,0,0,0,0,0,1,0,1],"430 Malverne":[0,1,0,1,0,0,0,0,1,1,0,2],"440 Rockville Centre":[0,0,0,0,1,1,0,0,0,0,0,1],"500 Bayville":[0,0,0,0,0,0,0,0,0,0,0,0],"510 East Norwich":[0,0,0,0,0,0,0,0,0,0,0,0],"520 Glen Cove":[0,0,0,2,0,0,0,2,1,0,0,1],"530 Glenwood":[1,0,0,0,0,0,0,0,0,1,0,0],"540 Locust Valley":[0,0,0,0,0,0,0,1,0,0,0,0],"550 Oyster Bay/Atlantic Steamer":[0,1,0,0,0,0,0,0,0,0,0,1],"560 Roslyn Rescue/590 Roslyn Highlands":[1,0,1,0,2,2,1,0,1,0,0,0],"570 Sea Cliff":[0,0,0,0,0,0,0,0,0,0,0,1],"580 Syosset":[0,1,0,1,0,0,1,1,0,1,1,1],"600 Bellmore":[1,0,1,0,0,0,0,1,0,0,0,1],"610 East Meadow":[1,0,0,0,2,0,0,0,2,0,0,1],"620 Levittown":[0,0,0,0,0,2,1,2,0,0,0,1],"630 Massapequa":[2,1,1,1,1,0,1,0,0,1,1,0],"640 Merrick":[0,0,0,0,0,0,0,0,0,0,0,0],"650 North Bellmore":[0,0,0,0,0,1,0,0,0,2,1,0],"660 North Massapequa":[0,1,0,0,0,0,0,0,0,0,1,0],"670 North Merrick":[0,0,0,0,0,0,0,0,0,0,0,0],"680 Seaford":[0,0,0,1,0,0,0,1,0,0,0,0],"690 Wantagh":[0,0,0,0,0,0,0,4,0,1,1,3],"700 Elmont":[3,1,0,1,2,1,1,0,0,0,1,0],"710 Franklin Square & Munson":[0,1,1,0,0,0,0,0,1,0,1,0],"720 Hempstead":[1,2,0,1,0,3,1,1,2,4,0,2],"730 Roosevelt":[0,0,0,0,0,0,0,0,1,0,0,1],"740 South Hempstead":[0,0,0,0,0,1,0,0,0,0,0,0],"750 Uniondale":[1,0,0,0,0,0,1,0,0,1,0,0],"760 West Hempstead":[1,0,0,0,0,0,0,0,0,0,0,1],"800 Albertson":[0,0,0,0,0,0,0,0,0,1,0,0],"810 East Williston":[0,0,0,0,0,0,0,0,0,0,0,0],"820 Great Neck Alert":[0,0,0,0,0,0,0,0,0,0,0,0],"830 Great Neck Vigilant":[0,0,0,1,0,0,0,0,0,0,0,0],"840 Plandome":[0,0,0,0,0,0,0,0,0,0,0,0],"850 Port Washington":[1,0,1,0,1,0,0,0,0,0,0,2],"860 Williston Park":[0,0,0,0,0,0,0,0,0,0,0,0],"870 Manhasset-Lakeville":[0,0,0,0,0,2,1,1,0,0,2,0],"900 Bethpage":[0,0,1,0,1,0,1,0,0,0,0,1],"910 Carle Place":[0,0,0,0,0,0,0,0,0,0,0,0],"920 Farmingdale":[0,1,0,0,0,0,0,0,0,0,0,0],"930 Hicksville":[0,1,0,0,0,0,0,0,1,1,0,0],"940 Jericho":[1,0,0,0,0,0,0,0,0,0,1,1],"950 Plainview":[1,0,1,0,0,0,1,0,0,0,0,1],"960 Westbury":[3,1,1,1,1,0,0,1,1,0,3,2],"970 South Farmingdale":[0,0,0,1,0,0,0,0,0,0,0,0]},"2026":{"100 Bellerose":[0,0,0,0,0,0,0,0,0,0,0,0],"110 Bellerose Terrace":[0,0,0,0,0,0,0,0,0,0,0,0],"120 Floral Park":[0,0,0,0,0,0,0,0,0,0,0,0],"130 Floral Park Centre":[0,0,0,0,0,0,0,0,0,0,0,0],"140 Garden City":[0,0,0,0,0,0,0,0,0,0,0,0],"150 Garden City Park":[0,0,0,0,0,0,0,0,0,0,0,0],"160 Mineola":[0,0,0,0,0,0,0,0,0,0,0,0],"170 New Hyde Park":[0,0,0,0,0,0,0,0,0,0,0,0],"180 South Floral Park":[0,0,0,0,0,0,0,0,0,0,0,0],"190 Stewart Manor":[0,0,0,0,0,0,0,0,0,0,0,0],"200 Baldwin":[0,0,0,0,0,0,0,0,0,0,0,0],"210 Freeport":[0,0,0,0,0,0,0,0,0,0,0,0],"220 Island Park":[0,0,0,0,0,0,0,0,0,0,0,0],"230 Long Beach":[0,0,0,0,0,0,0,0,0,0,0,0],"240 Oceanside":[0,0,0,0,0,0,0,0,0,0,0,0],"250 Point Lookout-Lido":[0,0,0,0,0,0,0,0,0,0,0,0],"300 Hewlett":[0,0,0,0,0,0,0,0,0,0,0,0],"310 Inwood":[0,0,0,0,0,0,0,0,0,0,0,0],"320 Lawrence-Cedarhurst":[0,0,0,0,0,0,0,0,0,0,0,0],"330 Meadowmere Park":[0,0,0,0,0,0,0,0,0,0,0,0],"340 Valley Stream":[0,0,0,0,0,0,0,0,0,0,0,0],"350 Woodmere":[0,0,0,0,0,0,0,0,0,0,0,0],"400 East Rockaway":[0,0,0,0,0,0,0,0,0,0,0,0],"410 Lakeview":[0,0,0,0,0,0,0,0,0,0,0,0],"420 Lynbrook":[0,0,0,0,0,0,0,0,0,0,0,0],"430 Malverne":[0,0,0,0,0,0,0,0,0,0,0,0],"440 Rockville Centre":[0,0,0,0,0,0,0,0,0,0,0,0],"500 Bayville":[0,0,0,0,0,0,0,0,0,0,0,0],"510 East Norwich":[0,0,0,0,0,0,0,0,0,0,0,0],"520 Glen Cove":[0,0,0,0,0,0,0,0,0,0,0,0],"530 Glenwood":[0,0,0,0,0,0,0,0,0,0,0,0],"540 Locust Valley":[0,0,0,0,0,0,0,0,0,0,0,0],"550 Oyster Bay/Atlantic Steamer":[0,0,0,0,0,0,0,0,0,0,0,0],"560 Roslyn Rescue/590 Roslyn Highlands":[0,0,0,0,0,0,0,0,0,0,0,0],"570 Sea Cliff":[0,0,0,0,0,0,0,0,0,0,0,0],"580 Syosset":[0,0,0,0,0,0,0,0,0,0,0,0],"600 Bellmore":[0,0,0,0,0,0,0,0,0,0,0,0],"610 East Meadow":[0,0,0,0,0,0,0,0,0,0,0,0],"620 Levittown":[0,0,0,0,0,0,0,0,0,0,0,0],"630 Massapequa":[0,0,0,0,0,0,0,0,0,0,0,0],"640 Merrick":[0,0,0,0,0,0,0,0,0,0,0,0],"650 North Bellmore":[0,0,0,0,0,0,0,0,0,0,0,0],"660 North Massapequa":[0,0,0,0,0,0,0,0,0,0,0,0],"670 North Merrick":[0,0,0,0,0,0,0,0,0,0,0,0],"680 Seaford":[0,0,0,0,0,0,0,0,0,0,0,0],"690 Wantagh":[0,0,0,0,0,0,0,0,0,0,0,0],"700 Elmont":[0,0,0,0,0,0,0,0,0,0,0,0],"710 Franklin Square & Munson":[0,0,0,0,0,0,0,0,0,0,0,0],"720 Hempstead":[0,0,0,0,0,0,0,0,0,0,0,0],"730 Roosevelt":[0,0,0,0,0,0,0,0,0,0,0,0],"740 South Hempstead":[0,0,0,0,0,0,0,0,0,0,0,0],"750 Uniondale":[0,0,0,0,0,0,0,0,0,0,0,0],"760 West Hempstead":[0,0,0,0,0,0,0,0,0,0,0,0],"800 Albertson":[0,0,0,0,0,0,0,0,0,0,0,0],"810 East Williston":[0,0,0,0,0,0,0,0,0,0,0,0],"820 Great Neck Alert":[0,0,0,0,0,0,0,0,0,0,0,0],"830 Great Neck Vigilant":[0,0,0,0,0,0,0,0,0,0,0,0],"840 Plandome":[0,0,0,0,0,0,0,0,0,0,0,0],"850 Port Washington":[0,0,0,0,0,0,0,0,0,0,0,0],"860 Williston Park":[0,0,0,0,0,0,0,0,0,0,0,0],"870 Manhasset-Lakeville":[0,0,0,0,0,0,0,0,0,0,0,0],"900 Bethpage":[0,0,0,0,0,0,0,0,0,0,0,0],"910 Carle Place":[0,0,0,0,0,0,0,0,0,0,0,0],"920 Farmingdale":[0,0,0,0,0,0,0,0,0,0,0,0],"930 Hicksville":[0,0,0,0,0,0,0,0,0,0,0,0],"940 Jericho":[0,0,0,0,0,0,0,0,0,0,0,0],"950 Plainview":[0,0,0,0,0,0,0,0,0,0,0,0],"960 Westbury":[0,0,0,0,0,0,0,0,0,0,0,0],"970 South Farmingdale":[0,0,0,0,0,0,0,0,0,0,0,0]}}},"suffolk":{"name":"Suffolk County","departments":[],"years":{"2025":{},"2026":{}}}}};
 
-document.getElementById('lu').innerHTML='Updated: '+ALLDATA.metadata.last_updated;
+document.getElementById('lu').innerHTML='Last pushed: '+ALLDATA.metadata.last_updated;
 
 function CD_(){return ALLDATA.counties[curCounty];}
 function getHYrs(){return ALLDATA.metadata.years_complete;}
 function getIPYrs(){return ALLDATA.metadata.years_in_progress;}
 function getDepts(){return CD_().departments||[];}
-function getBats(){
-  var b={};
-  getDepts().forEach(function(d){if(d.battalion)b[d.battalion]=1;});
-  return Object.keys(b).sort();
-}
+function getBats(){var b={};getDepts().forEach(function(d){if(d.battalion)b[d.battalion]=1;});return Object.keys(b).sort();}
 function getYrData(yr){return(CD_().years||{})[String(yr)]||{};}
-
 function getTotal(yr,bat,dept){
   var yd=getYrData(yr);
   return Object.keys(yd).reduce(function(a,k){
@@ -257,7 +348,6 @@ function getTotal(yr,bat,dept){
     return a+yd[k].reduce(function(x,n){return x+n;},0);
   },0);
 }
-
 function getMonthly(yr,bat){
   var yd=getYrData(yr),res=new Array(12).fill(0);
   Object.keys(yd).forEach(function(k){
@@ -267,44 +357,48 @@ function getMonthly(yr,bat){
   });
   return res;
 }
-
 function histMonthAvg(){
   var yrs=getHYrs();
-  return MO.map(function(_,m){
-    return Math.round(yrs.reduce(function(a,y){return a+getMonthly(y)[m];},0)/yrs.length*10)/10;
-  });
+  return MO.map(function(_,m){return Math.round(yrs.reduce(function(a,y){return a+getMonthly(y)[m];},0)/yrs.length*10)/10;});
 }
-
-function lastDataMonth(yr){
-  var m=getMonthly(yr);
-  for(var i=11;i>=0;i--)if(m[i]>0)return i;
-  return -1;
-}
-
+function lastDataMonth(yr){var m=getMonthly(yr);for(var i=11;i>=0;i--)if(m[i]>0)return i;return -1;}
 function mkChart(id,cfg){
   if(AC[id])AC[id].destroy();
   var c=document.getElementById(id);if(!c)return;
   AC[id]=new Chart(c,cfg);
 }
+function heatClass(v,mx){if(!v)return'';var p=v/mx;return p<.25?'h1':p<.5?'h2':p<.75?'h3':'h4';}
 
+// ── SPARKLINE ──
+function drawSparkline(canvasId, data, color){
+  var c=document.getElementById(canvasId);if(!c)return;
+  var ctx=c.getContext('2d'),w=c.width,h=c.height;
+  ctx.clearRect(0,0,w,h);
+  var mx=Math.max.apply(null,data)||1,mn=Math.min.apply(null,data);
+  var pts=data.map(function(v,i){return{x:i*(w/(data.length-1)),y:h-((v-mn)/(mx-mn||1))*(h-4)-2};});
+  ctx.strokeStyle=color||'#e8500a';ctx.lineWidth=1.5;ctx.beginPath();
+  pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
+  ctx.stroke();
+}
+
+// ── TAB NAVIGATION ──
 function showTab(name,btn){
   if(name==='update'){
-    if(sessionStorage.getItem('updateUnlocked')!=='yes'){
-      var code=prompt('Enter passcode to access Update Data:');
-      if(code===null)return;
-      if(code!=='3165'){alert('Incorrect passcode.');return;}
-      sessionStorage.setItem('updateUnlocked','yes');
-    }
+    var code=prompt('Enter passcode to access Update Data:');
+    if(code===null)return;
+    if(code!=='3165'){alert('Incorrect passcode.');return;}
   }
   document.querySelectorAll('.tab').forEach(function(p){p.classList.remove('active');});
   document.querySelectorAll('nav button').forEach(function(b){b.classList.remove('active');});
   document.getElementById('tab-'+name).classList.add('active');
   if(btn)btn.classList.add('active');
+  // lazy-build tabs
+  if(name==='records')buildRecords();
+  if(name==='compare')buildCompare();
 }
 
-function switchCounty(county, btn){
+function switchCounty(county,btn){
   if(county==='suffolk'){
-    // Show coming soon overlay on overview tab
     document.querySelectorAll('nav button').forEach(function(b){b.classList.remove('active');});
     document.querySelectorAll('.tab').forEach(function(p){p.classList.remove('active');});
     document.getElementById('tab-overview').classList.add('active');
@@ -312,40 +406,34 @@ function switchCounty(county, btn){
     document.getElementById('btn-nassau').classList.remove('active');
     document.getElementById('btn-suffolk').classList.add('active');
     curCounty='suffolk';
-    document.getElementById('sc-overview').innerHTML='';
-    document.getElementById('tab-overview').innerHTML='<div class="suffolk-placeholder"><div class="icon">🚒</div><h2>Suffolk County</h2><p>Suffolk County data is coming soon. Upload the Suffolk fire data to enable this section.</p><div class="badge">Coming Soon — Upload Data to Activate</div></div>';
-    // Destroy charts
+    document.getElementById('tab-overview').innerHTML='<div class="suffolk-placeholder"><div class="icon">🚒</div><h2>Suffolk County</h2><p>Suffolk County data coming soon. Upload Suffolk fire data to activate this section.</p><div class="badge">Coming Soon</div></div>';
     Object.keys(AC).forEach(function(k){if(AC[k])AC[k].destroy();delete AC[k];});
     return;
   }
-  // Restore Nassau
   curCounty='nassau';
   document.getElementById('btn-nassau').classList.add('active');
   document.getElementById('btn-suffolk').classList.remove('active');
-  // Restore overview tab structure if it was replaced
   var ov=document.getElementById('tab-overview');
   if(ov.querySelector('.suffolk-placeholder')){
-    ov.innerHTML='<div id="sc-overview" class="sg"></div><div class="cg t"><div class="cc"><div class="ct"><span class="d"></span>Annual Totals</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-annual"></canvas></div></div><div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>Battalion Share</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-pie"></canvas></div></div></div><div class="cg"><div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Average Monthly Pattern</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-mavg"></canvas></div></div><div class="cc"><div class="ct"><span class="d" style="background:var(--green)"></span>Stacked by Battalion</div><div style="position:relative;height:260px;width:100%;max-height:260px;overflow:hidden"><canvas id="ch-stack"></canvas></div></div></div>';
+    ov.innerHTML='<div id="sc-overview" class="sg"></div><div class="cg t"><div class="cc"><div class="ct"><span class="d"></span>Annual Totals</div><div class="ch-wrap"><canvas id="ch-annual"></canvas></div></div><div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>Battalion Share</div><div class="ch-wrap"><canvas id="ch-pie"></canvas></div></div></div><div class="cg"><div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Average Monthly Pattern</div><div class="ch-wrap"><canvas id="ch-mavg"></canvas></div></div><div class="cc"><div class="ct"><span class="d" style="background:var(--green)"></span>Stacked by Battalion</div><div class="ch-wrap"><canvas id="ch-stack"></canvas></div></div></div>';
   }
   initAll();
 }
 
 function initAll(){
-  // Reset battalion dropdowns
-  ['dept-bat','ip-bat','heat-bat'].forEach(function(id){
-    var el=document.getElementById(id);
-    if(!el)return;
-    while(el.options.length>1)el.remove(1);
-  });
-  selBatYr='all'; selIPYr=getIPYrs()[0];
+  ['dept-bat','ip-bat','heat-bat'].forEach(function(id){var el=document.getElementById(id);if(!el)return;while(el.options.length>1)el.remove(1);});
+  selBatYr='all';selIPYr=getIPYrs()[0];
   buildOverview();buildTrends();buildBatUI();buildHeatmap();buildDeptUI();buildIPUI();buildUpdateUI();
 }
 
+// ── OVERVIEW ──
 function buildOverview(){
   var yrs=getHYrs(),tots=yrs.map(function(y){return getTotal(y);});
   var all=tots.reduce(function(a,b){return a+b;},0);
   var last=tots[tots.length-1],prev=tots[tots.length-2],delta=last-prev;
+  var deltaPct=Math.round(Math.abs(delta)/prev*100);
   var bats=getBats(),peakYr=yrs[tots.indexOf(Math.max.apply(null,tots))];
+  var lowYr=yrs[tots.indexOf(Math.min.apply(null,tots))];
   var topDN='',topDM=0;
   getDepts().forEach(function(dep){
     var t=yrs.reduce(function(a,y){return a+getTotal(y,null,dep.name);},0);
@@ -354,21 +442,22 @@ function buildOverview(){
   var topBN='',topBM=0;
   bats.forEach(function(b){
     var t=yrs.reduce(function(a,y){return a+getTotal(y,b);},0);
-    if(t>topBM){topBM=t;topBN=b;}
+    if(t>topBM){topBM=t;topBN=b.replace('Battalion ','Bn ');}
   });
-  var countyName=CD_().name||'County';
+  var countyName=(CD_().name||'County').replace(' County','');
   var cards=[
-    {l:countyName+' Total (All Yrs)',v:all.toLocaleString(),s:yrs[0]+'–'+yrs[yrs.length-1],c:''},
-    {l:yrs[yrs.length-1]+' Total',v:last,s:yrs[yrs.length-2]+': '+prev,delta:delta,c:'bl'},
+    {l:countyName+' All-Time Total',v:all.toLocaleString(),s:yrs[0]+'–'+yrs[yrs.length-1],c:''},
+    {l:yrs[yrs.length-1]+' Total',v:last,s:yrs[yrs.length-2]+': '+prev,delta:delta,pct:deltaPct,c:'bl'},
     {l:'Annual Average',v:Math.round(all/yrs.length),s:'fires per year',c:'ye'},
-    {l:'Most Active Dept',v:topDN,s:'by all-time total',c:''},
+    {l:'Most Active Dept',v:topDN,s:topDM+' fires all-time',c:''},
     {l:'Most Active Battalion',v:topBN,s:'by all-time total',c:'gr'},
     {l:'Peak Year',v:peakYr,s:Math.max.apply(null,tots)+' fires',c:''},
   ];
-  var sc=document.getElementById('sc-overview');
-  if(!sc)return;
+  var sc=document.getElementById('sc-overview');if(!sc)return;
   sc.innerHTML=cards.map(function(c){
-    return'<div class="sc '+c.c+'"><div class="sl">'+c.l+'</div><div class="sv">'+c.v+'</div><div class="ss">'+c.s+'</div>'+(c.delta!==undefined?'<div class="sd '+(c.delta>=0?'up':'dn')+'">'+(c.delta>=0?'▲':'▼')+' '+Math.abs(c.delta)+' vs prior year</div>':'')+'</div>';
+    return'<div class="sc '+c.c+'"><div class="sl">'+c.l+'</div><div class="sv">'+c.v+'</div><div class="ss">'+c.s+'</div>'
+      +(c.delta!==undefined?'<div class="sd '+(c.delta>=0?'up':'dn')+'">'+(c.delta>=0?'▲':'▼')+' '+Math.abs(c.delta)+' ('+c.pct+'%) vs prior year</div>':'')
+      +'</div>';
   }).join('');
   var roll=tots.map(function(_,i){var s=tots.slice(Math.max(0,i-2),i+1);return Math.round(s.reduce(function(a,b){return a+b;},0)/s.length);});
   mkChart('ch-annual',{type:'bar',data:{labels:yrs,datasets:[
@@ -384,6 +473,7 @@ function buildOverview(){
     options:Object.assign({},CD,{scales:Object.assign({},CD.scales,{x:Object.assign({},CD.scales.x,{stacked:true}),y:Object.assign({},CD.scales.y,{stacked:true})})})});
 }
 
+// ── TRENDS ──
 function buildTrends(){
   var yrs=getHYrs(),tots=yrs.map(function(y){return getTotal(y);});
   var roll=tots.map(function(_,i){var s=tots.slice(Math.max(0,i-2),i+1);return Math.round(s.reduce(function(a,b){return a+b;},0)/s.length);});
@@ -392,7 +482,7 @@ function buildTrends(){
     {label:'3-Yr Avg',data:roll,borderColor:'#f59e0b',borderWidth:2,borderDash:[5,4],fill:false,tension:.4,pointRadius:0}
   ]},options:CD});
   var yoy=yrs.slice(1).map(function(y,i){return getTotal(y)-getTotal(yrs[i]);});
-  mkChart('ch-yoy',{type:'bar',data:{labels:yrs.slice(1),datasets:[{label:'YoY',data:yoy,backgroundColor:yoy.map(function(v){return v>=0?'#22c55e88':'#ef444488';}),borderColor:yoy.map(function(v){return v>=0?'#22c55e':'#ef4444';}),borderWidth:1.5}]},
+  mkChart('ch-yoy',{type:'bar',data:{labels:yrs.slice(1),datasets:[{label:'YoY',data:yoy,backgroundColor:yoy.map(function(v){return v>=0?'#ef444488':'#22c55e88';}),borderColor:yoy.map(function(v){return v>=0?'#ef4444':'#22c55e';}),borderWidth:1.5}]},
     options:Object.assign({},CD,{plugins:Object.assign({},CD.plugins,{legend:{display:false}})})});
   var bats=getBats();
   var ea=bats.map(function(b){return Math.round(yrs.slice(0,3).map(function(y){return getTotal(y,b);}).reduce(function(a,x){return a+x;},0)/3);});
@@ -406,27 +496,27 @@ function buildTrends(){
     var yoyv=pv!==null?t-pv:null,pct=pv?((t-pv)/pv*100).toFixed(1):null;
     var mo=getMonthly(y),peak=MO[mo.indexOf(Math.max.apply(null,mo))],low=MO[mo.indexOf(Math.min.apply(null,mo))];
     var fs=Math.max(0,i-2),rv=Math.round(tots.slice(fs,i+1).reduce(function(a,b){return a+b;},0)/(i-fs+1));
+    var arr=yoyv===null?'':'<span class="'+(yoyv>0?'arr-up':yoyv<0?'arr-dn':'arr-eq')+'">'+(yoyv>0?'▲':yoyv<0?'▼':'—')+'</span>';
     return'<tr><td style="text-align:left;font-weight:700">'+y+'</td><td>'+t+'</td>'
-      +'<td style="color:'+(yoyv===null?'#8a93a8':yoyv>=0?'#22c55e':'#ef4444')+'">'+(yoyv===null?'—':(yoyv>=0?'+':'')+yoyv)+'</td>'
-      +'<td style="color:'+(!pct?'#8a93a8':+pct>=0?'#22c55e':'#ef4444')+'">'+(pct?(+pct>=0?'+':'')+pct+'%':'—')+'</td>'
-      +'<td>'+rv+'</td><td style="color:'+((t-rv)>=0?'#22c55e':'#ef4444')+'">'+(t-rv>=0?'+':'')+(t-rv)+'</td>'
+      +'<td>'+arr+' '+(yoyv===null?'—':(yoyv>=0?'+':'')+yoyv)+'</td>'
+      +'<td style="color:'+(!pct?'#8a93a8':+pct>=0?'#ef4444':'#22c55e')+'">'+(pct?(+pct>=0?'+':'')+pct+'%':'—')+'</td>'
+      +'<td>'+rv+'</td><td style="color:'+((t-rv)>=0?'#ef4444':'#22c55e')+'">'+(t-rv>=0?'+':'')+(t-rv)+'</td>'
       +'<td>'+peak+'</td><td>'+Math.max.apply(null,mo)+'</td><td>'+low+'</td><td>'+Math.min.apply(null,mo)+'</td></tr>';
   });
   document.getElementById('tbl-trend').innerHTML='<thead><tr><th>Year</th><th>Total</th><th>YoY Δ</th><th>YoY %</th><th>3-Yr Avg</th><th>vs Avg</th><th>Peak Mo</th><th>Peak #</th><th>Low Mo</th><th>Low #</th></tr></thead><tbody>'+rows.join('')+'</tbody>';
 }
 
+// ── BATTALIONS ──
 function buildBatUI(){
   var yrs=getHYrs();
-  document.getElementById('bat-pills').innerHTML='<span class="active" onclick="selBatYear(\'all\',this)">All Years</span>'+
+  document.getElementById('bat-pills').innerHTML='<span class="active" onclick="selBatYear('all',this)">All Years</span>'+
     yrs.map(function(y){return'<span onclick="selBatYear('+y+',this)">'+y+'</span>';}).join('');
   getBats().forEach(function(b){
     var d=document.getElementById('dept-bat'),ip=document.getElementById('ip-bat');
-    if(d)d.add(new Option(b,b));
-    if(ip)ip.add(new Option(b,b));
+    if(d)d.add(new Option(b,b));if(ip)ip.add(new Option(b,b));
   });
   renderBatCharts();renderBatTable();
 }
-
 function selBatYear(yr,el){
   selBatYr=yr;
   document.querySelectorAll('#bat-pills span').forEach(function(p){p.classList.remove('active');});
@@ -434,7 +524,6 @@ function selBatYear(yr,el){
   document.getElementById('bat-yr-lbl').textContent=yr==='all'?'All Years':yr;
   renderBatCharts();renderBatTable();
 }
-
 function renderBatCharts(){
   var bats=getBats(),yrs=selBatYr==='all'?getHYrs():[selBatYr];
   var bTots=bats.map(function(b){return yrs.reduce(function(a,y){return a+getTotal(y,b);},0);});
@@ -442,69 +531,103 @@ function renderBatCharts(){
     options:Object.assign({},CD,{plugins:Object.assign({},CD.plugins,{legend:{display:false}})})});
   mkChart('ch-batmo',{type:'line',data:{labels:MO,datasets:bats.map(function(b,i){return{label:b.replace('Battalion ','Bn '),data:MO.map(function(_,m){return yrs.reduce(function(a,y){return a+getMonthly(y,b)[m];},0);}),borderColor:BC[i],backgroundColor:BC[i]+'33',borderWidth:1.5,pointRadius:2,fill:false,tension:.3};})},options:CD});
 }
-
 function renderBatTable(){
   var bats=getBats(),yrs=selBatYr==='all'?getHYrs():[selBatYr];
   var ct=bats.reduce(function(a,b){return a+yrs.reduce(function(x,y){return x+getTotal(y,b);},0);},0);
   var rows=bats.map(function(b,i){
     var yr=yrs.map(function(y){return getTotal(y,b);}),tot=yr.reduce(function(a,x){return a+x;},0);
-    return'<tr><td style="text-align:left;font-weight:700;color:'+BC[i]+'">'+b+'</td>'+yr.map(function(v){return'<td class="fc">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+tot+'</td><td>'+(tot/yrs.length).toFixed(1)+'</td><td>'+(ct?(tot/ct*100).toFixed(1):0)+'%</td></tr>';
+    var spark='<canvas id="spk-bat-'+i+'" class="spark" width="60" height="20"></canvas>';
+    return'<tr><td style="text-align:left;font-weight:700;color:'+BC[i]+'">'+b+'</td>'+yr.map(function(v){return'<td class="fc">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+tot+'</td><td>'+(tot/yrs.length).toFixed(1)+'</td><td>'+(ct?(tot/ct*100).toFixed(1):0)+'%</td><td>'+spark+'</td></tr>';
   });
-  var cr='<tr style="background:rgba(232,80,10,.1);font-weight:700"><td style="text-align:left;color:var(--accent)">TOTAL</td>'+yrs.map(function(y){return'<td style="color:var(--accent)">'+bats.reduce(function(a,b){return a+getTotal(y,b);},0)+'</td>';}).join('')+'<td style="color:var(--accent)">'+ct+'</td><td style="color:var(--accent)">'+(ct/yrs.length).toFixed(1)+'</td><td>100%</td></tr>';
-  document.getElementById('tbl-bat').innerHTML='<thead><tr><th style="text-align:left">Battalion</th>'+yrs.map(function(y){return'<th>'+y+'</th>';}).join('')+'<th>Total</th><th>Avg/Yr</th><th>% Total</th></tr></thead><tbody>'+rows.join('')+cr+'</tbody>';
+  var cr='<tr style="background:rgba(232,80,10,.1);font-weight:700"><td style="text-align:left;color:var(--accent)">TOTAL</td>'+yrs.map(function(y){return'<td style="color:var(--accent)">'+bats.reduce(function(a,b){return a+getTotal(y,b);},0)+'</td>';}).join('')+'<td style="color:var(--accent)">'+ct+'</td><td style="color:var(--accent)">'+(ct/yrs.length).toFixed(1)+'</td><td>100%</td><td></td></tr>';
+  document.getElementById('tbl-bat').innerHTML='<thead><tr><th style="text-align:left">Battalion</th>'+yrs.map(function(y){return'<th>'+y+'</th>';}).join('')+'<th>Total</th><th>Avg/Yr</th><th>%</th><th>Trend</th></tr></thead><tbody>'+rows.join('')+cr+'</tbody>';
+  // Draw sparklines
+  var yrs2=selBatYr==='all'?getHYrs():[selBatYr];
+  getBats().forEach(function(b,i){
+    var data=yrs2.map(function(y){return getTotal(y,b);});
+    drawSparkline('spk-bat-'+i,data,BC[i]);
+  });
 }
 
+// ── HEATMAP ──
 function buildHeatmap(){
   var yrs=getHYrs(),allv=[];
   yrs.forEach(function(y){MO.forEach(function(_,m){allv.push(getMonthly(y)[m]);});});
   var mx=Math.max.apply(null,allv);
-  function hc(v){if(!v)return'';var p=v/mx;return p<.25?'h1':p<.5?'h2':p<.75?'h3':'h4';}
+  var curMo=new Date().getMonth();
   var rows=yrs.map(function(y){
     var mo=getMonthly(y),tot=mo.reduce(function(a,b){return a+b;},0);
-    return'<tr><td style="text-align:left;font-weight:700;cursor:pointer" onclick="this.closest(\'tr\').classList.toggle(\'br\')">'+y+'</td>'+mo.map(function(v){return'<td class="fc '+hc(v)+'">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+tot+'</td></tr>';
+    return'<tr><td style="text-align:left;font-weight:700;cursor:pointer" onclick="this.closest('tr').classList.toggle('br')">'+y+'</td>'+mo.map(function(v,mi){
+      var cur=mi===curMo?'outline:2px solid var(--yellow);outline-offset:-2px;':'';
+      return'<td class="fc '+heatClass(v,mx)+'" style="'+cur+'">'+(v||'')+'</td>';
+    }).join('')+'<td style="font-weight:700">'+tot+'</td></tr>';
   });
   var ar='<tr style="background:rgba(232,80,10,.15)"><td style="text-align:left;font-weight:700;color:var(--accent)">Avg</td>'+MO.map(function(_,m){
     var a=Math.round(yrs.reduce(function(x,y){return x+getMonthly(y)[m];},0)/yrs.length*10)/10;
-    return'<td class="fc '+hc(a)+'" style="color:var(--accent)">'+a+'</td>';
+    return'<td class="fc '+heatClass(a,mx)+'" style="color:var(--accent)">'+a+'</td>';
   }).join('')+'<td style="font-weight:700;color:var(--accent)">'+Math.round(yrs.reduce(function(a,y){return a+getTotal(y);},0)/yrs.length)+'</td></tr>';
-  document.getElementById('tbl-heat').innerHTML='<thead><tr><th style="text-align:left">Year</th>'+MO.map(function(m){return'<th>'+m+'</th>';}).join('')+'<th>Total</th></tr></thead><tbody>'+rows.join('')+ar+'</tbody>';
+  document.getElementById('tbl-heat').innerHTML='<thead><tr><th style="text-align:left">Year</th>'+MO.map(function(m,i){return'<th style="'+(i===curMo?'color:var(--yellow)':'')+'">'+m+'</th>';}).join('')+'<th>Total</th></tr></thead><tbody>'+rows.join('')+ar+'</tbody>';
   var hs=document.getElementById('heat-bat');
   getBats().forEach(function(b){hs.add(new Option(b,b));});
   renderBatHeat();
 }
-
 function renderBatHeat(){
   var bat=document.getElementById('heat-bat').value,yrs=getHYrs();
   var allv=[];yrs.forEach(function(y){MO.forEach(function(_,m){allv.push(getMonthly(y,bat)[m]);});});
   var mx=Math.max.apply(null,allv)||1;
-  function hc(v){if(!v)return'';var p=v/mx;return p<.25?'h1':p<.5?'h2':p<.75?'h3':'h4';}
   var rows=yrs.map(function(y){
     var mo=getMonthly(y,bat),tot=mo.reduce(function(a,b){return a+b;},0);
-    return'<tr><td style="text-align:left;font-weight:700">'+y+'</td>'+mo.map(function(v){return'<td class="fc '+hc(v)+'">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+tot+'</td></tr>';
+    return'<tr><td style="text-align:left;font-weight:700">'+y+'</td>'+mo.map(function(v){return'<td class="fc '+heatClass(v,mx)+'">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+tot+'</td></tr>';
   });
   document.getElementById('tbl-batheat').innerHTML='<thead><tr><th style="text-align:left">Year</th>'+MO.map(function(m){return'<th>'+m+'</th>';}).join('')+'<th>Total</th></tr></thead><tbody>'+rows.join('')+'</tbody>';
 }
 
+// ── DEPARTMENTS ──
 function buildDeptUI(){renderDepts();}
 function renderDepts(){
   var yrs=getHYrs(),bf=document.getElementById('dept-bat').value,so=document.getElementById('dept-sort').value,se=document.getElementById('dept-search').value.toLowerCase();
   var depts=getDepts().filter(function(d){return(!bf||bf==='all'||d.battalion===bf)&&(!se||d.name.toLowerCase().indexOf(se)>=0);});
   var wd=depts.map(function(d){
     var yr=yrs.map(function(y){return getTotal(y,null,d.name);});
-    return{name:d.name,battalion:d.battalion,yr:yr,tot:yr.reduce(function(a,b){return a+b;},0),avg:yr.reduce(function(a,b){return a+b;},0)/yrs.length};
+    var tot=yr.reduce(function(a,b){return a+b;},0);
+    var peakYr=yrs[yr.indexOf(Math.max.apply(null,yr))];
+    var lowYr=yrs[yr.indexOf(Math.min.apply(null,yr))];
+    var zeroYrs=yr.filter(function(v){return v===0;}).length;
+    return{name:d.name,battalion:d.battalion,yr:yr,tot:tot,avg:tot/yrs.length,peak:peakYr,low:lowYr,zeros:zeroYrs};
   });
   if(so==='total')wd.sort(function(a,b){return b.tot-a.tot;});
   else if(so==='avg')wd.sort(function(a,b){return b.avg-a.avg;});
   else if(so==='name')wd.sort(function(a,b){return a.name.localeCompare(b.name);});
   else wd.sort(function(a,b){return b.yr[b.yr.length-1]-a.yr[a.yr.length-1];});
   var mx=Math.max.apply(null,wd.map(function(d){return d.tot;}));
+  // trend arrow: compare last 3 vs first 3
+  function trendArrow(yr){
+    var n=yr.length,early=yr.slice(0,3).reduce(function(a,b){return a+b;},0)/3,late=yr.slice(-3).reduce(function(a,b){return a+b;},0)/3;
+    if(late>early+0.5)return'<span class="arr-up">▲</span>';
+    if(late<early-0.5)return'<span class="arr-dn">▼</span>';
+    return'<span class="arr-eq">—</span>';
+  }
   var rows=wd.map(function(d,i){
-    var bar='<div style="display:inline-block;width:'+Math.round(d.tot/mx*60)+'px;height:4px;background:var(--accent);border-radius:2px;vertical-align:middle;margin-left:6px"></div>';
-    return'<tr><td style="text-align:left;color:var(--text2)">'+(i+1)+'</td><td style="text-align:left">'+d.name+bar+'</td><td style="text-align:left;color:var(--text2)">'+d.battalion+'</td>'+d.yr.map(function(v){return'<td class="'+(v?'fc':'zr')+'">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+d.tot+'</td><td>'+d.avg.toFixed(1)+'</td></tr>';
+    var bar='<div style="display:inline-block;width:'+Math.round(d.tot/mx*50)+'px;height:4px;background:var(--accent);border-radius:2px;vertical-align:middle;margin-left:5px"></div>';
+    var spark='<canvas id="spk-'+i+'" class="spark" width="60" height="18"></canvas>';
+    return'<tr><td style="text-align:left;color:var(--text2)">'+(i+1)+'</td>'
+      +'<td style="text-align:left">'+d.name+bar+'</td>'
+      +'<td style="text-align:left;color:var(--text2)">'+d.battalion.replace('Battalion ','Bn ')+'</td>'
+      +d.yr.map(function(v){return'<td class="'+(v?'fc':'zr')+'">'+(v||'')+'</td>';}).join('')
+      +'<td style="font-weight:700">'+d.tot+'</td>'
+      +'<td>'+d.avg.toFixed(1)+'</td>'
+      +'<td>'+trendArrow(d.yr)+'</td>'
+      +'<td>'+spark+'</td>'
+      +'<td style="color:var(--yellow)">'+d.peak+'</td>'
+      +'<td style="color:var(--text2)">'+d.zeros+'</td>'
+      +'</tr>';
   });
-  document.getElementById('tbl-dept').innerHTML='<thead><tr><th style="text-align:left">#</th><th style="text-align:left">Department</th><th style="text-align:left">Battalion</th>'+yrs.map(function(y){return'<th>'+y+'</th>';}).join('')+'<th>Total</th><th>Avg/Yr</th></tr></thead><tbody>'+rows.join('')+'</tbody>';
+  document.getElementById('tbl-dept').innerHTML='<thead><tr><th style="text-align:left">#</th><th style="text-align:left">Department</th><th style="text-align:left">Bat.</th>'+yrs.map(function(y){return'<th>'+y+'</th>';}).join('')+'<th>Total</th><th>Avg/Yr</th><th>Trend</th><th>Spark</th><th>Best Yr</th><th>Zero Yrs</th></tr></thead><tbody>'+rows.join('')+'</tbody>';
+  // Draw sparklines
+  wd.forEach(function(d,i){drawSparkline('spk-'+i,d.yr);});
 }
 
+// ── IN PROGRESS ──
 function buildIPUI(){
   var ipYrs=getIPYrs();
   document.getElementById('ip-pills').innerHTML=ipYrs.map(function(y,i){
@@ -513,7 +636,6 @@ function buildIPUI(){
   }).join('');
   renderIPTab(ipYrs[0]);
 }
-
 function selIPYear(yr,el){
   selIPYr=yr;
   document.querySelectorAll('#ip-pills span').forEach(function(p){p.classList.remove('active');});
@@ -521,7 +643,6 @@ function selIPYear(yr,el){
   document.getElementById('ip-yr-lbl').textContent=yr;
   renderIPTab(yr);
 }
-
 function renderIPTab(yr){
   var actual=getMonthly(yr),ha=histMonthAvg(),hyrs=getHYrs(),hTots=hyrs.map(function(y){return getTotal(y);});
   var last=lastDataMonth(yr),proj=actual.slice();
@@ -530,11 +651,12 @@ function renderIPTab(yr){
   var projTot=Math.round(proj.reduce(function(a,b){return a+b;},0));
   var pct=last>=0?Math.round((last+1)/12*100):0;
   var haDate=Math.round(ha.slice(0,last+1).reduce(function(a,b){return a+b;},0));
+  var diff=actTot-haDate,diffSign=diff>=0?'+':'';
   var cards=[
     {l:'Fires to Date',v:actTot,s:last>=0?'Through '+MO[last]:'No data yet',c:''},
-    {l:'Projected Full Year',v:projTot,s:'Based on historical avg',c:'bl'},
+    {l:'Projected Full Year',v:projTot,s:'Based on 2016–2025 avg',c:'bl'},
     {l:'Year Progress',v:pct+'%',s:(last+1)+' of 12 months',c:'ye'},
-    {l:'vs Historical Avg',v:(actTot-haDate>=0?'+':'')+(actTot-haDate),s:'Hist avg to date: '+haDate,c:'gr'},
+    {l:'vs Historical Avg',v:diffSign+diff,s:'Hist avg to date: '+haDate,c:diff>=0?'gr':''},
   ];
   document.getElementById('sc-ip').innerHTML=cards.map(function(c){return'<div class="sc '+c.c+'"><div class="sl">'+c.l+'</div><div class="sv">'+c.v+'</div><div class="ss">'+c.s+'</div></div>';}).join('');
   var actD=MO.map(function(_,i){return i<=last?actual[i]:null;});
@@ -552,12 +674,11 @@ function renderIPTab(yr){
     {label:'Min',data:hMin,borderColor:'#22c55e88',borderWidth:1,fill:false,pointRadius:0,tension:.3},
     {label:yr+' Actual',data:actD,borderColor:'#e8500a',borderWidth:2.5,pointRadius:4,fill:false,tension:.2}
   ]},options:CD});
-  var allD=hTots.concat([projTot]),allL=hyrs.concat([yr+' Proj.']);
+  var allD=hTots.concat([projTot]),allL=hyrs.map(String).concat([yr+' Proj.']);
   mkChart('ch-ip-proj',{type:'bar',data:{labels:allL,datasets:[{label:'Total',data:allD,backgroundColor:allL.map(function(l){return l.toString().indexOf('Proj')>=0?'#f59e0b88':'#2e75b633';}),borderColor:allL.map(function(l){return l.toString().indexOf('Proj')>=0?'#f59e0b':'#2e75b6';}),borderWidth:1.5}]},
     options:Object.assign({},CD,{plugins:Object.assign({},CD.plugins,{legend:{display:false}})})});
   renderIPTable();
 }
-
 function renderIPTable(){
   var yr=selIPYr,bf=document.getElementById('ip-bat').value,hyrs=getHYrs();
   var last=lastDataMonth(yr);
@@ -569,11 +690,141 @@ function renderIPTable(){
     return{name:d.name,bat:d.battalion,mo:mo,tot:tot,ha:ha.toFixed(1)};
   }).filter(function(r){return r.tot>0||+r.ha>0.5;}).sort(function(a,b){return b.tot-a.tot;});
   var tr=rows.map(function(r){
-    return'<tr><td style="text-align:left">'+r.name+'</td><td style="text-align:left">'+r.bat+'</td>'+r.mo.map(function(v,i){return'<td class="'+(i<=last?(v?'fc':'zr'):'zr')+'">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+r.tot+'</td><td style="color:var(--text2)">'+r.ha+'</td></tr>';
+    return'<tr><td style="text-align:left">'+r.name+'</td><td style="text-align:left">'+r.bat.replace('Battalion ','Bn ')+'</td>'+r.mo.map(function(v,i){return'<td class="'+(i<=last?(v?'fc':'zr'):'zr')+'">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+r.tot+'</td><td style="color:var(--text2)">'+r.ha+'</td></tr>';
   });
-  document.getElementById('tbl-ip').innerHTML='<thead><tr><th style="text-align:left">Department</th><th style="text-align:left">Battalion</th>'+MO.map(function(m){return'<th>'+m+'</th>';}).join('')+'<th>Total</th><th>Hist Avg</th></tr></thead><tbody>'+tr.join('')+'</tbody>';
+  document.getElementById('tbl-ip').innerHTML='<thead><tr><th style="text-align:left">Department</th><th style="text-align:left">Bat.</th>'+MO.map(function(m){return'<th>'+m+'</th>';}).join('')+'<th>Total</th><th>Hist Avg</th></tr></thead><tbody>'+tr.join('')+'</tbody>';
 }
 
+// ── RECORDS ──
+function buildRecords(){
+  var yrs=getHYrs(),tots=yrs.map(function(y){return getTotal(y);});
+  var peakYr=yrs[tots.indexOf(Math.max.apply(null,tots))];
+  var lowYr=yrs[tots.indexOf(Math.min.apply(null,tots))];
+  // Busiest single month ever
+  var busyMo={v:0,yr:'',mo:''};
+  yrs.forEach(function(y){
+    MO.forEach(function(m,mi){
+      var v=getMonthly(y)[mi];
+      if(v>busyMo.v){busyMo={v:v,yr:y,mo:m};}
+    });
+  });
+  // Quietest month
+  var quietMo={v:999,yr:'',mo:''};
+  yrs.forEach(function(y){
+    MO.forEach(function(m,mi){
+      var v=getMonthly(y)[mi];
+      if(v<quietMo.v){quietMo={v:v,yr:y,mo:m};}
+    });
+  });
+  // Longest streak of consecutive months below average
+  var ha=histMonthAvg(),avgTotal=tots.reduce(function(a,b){return a+b;},0)/tots.length;
+  var countyRecs=[
+    {l:'Peak Year',v:peakYr,s:Math.max.apply(null,tots)+' fires',cls:'gold'},
+    {l:'Lowest Year',v:lowYr,s:Math.min.apply(null,tots)+' fires',cls:'blue'},
+    {l:'Busiest Single Month',v:busyMo.mo+' '+busyMo.yr,s:busyMo.v+' fires',cls:'red'},
+    {l:'Annual Avg',v:Math.round(avgTotal),s:'fires per year',cls:''},
+    {l:'Total All-Time',v:tots.reduce(function(a,b){return a+b;},0).toLocaleString(),s:yrs[0]+'–'+yrs[yrs.length-1],cls:''},
+    {l:'Avg per Month',v:(tots.reduce(function(a,b){return a+b;},0)/(yrs.length*12)).toFixed(1),s:'across all years',cls:'green'},
+  ];
+  document.getElementById('rec-county').innerHTML=countyRecs.map(function(r){
+    return'<div class="rec-card '+r.cls+'"><div class="rec-label">'+r.l+'</div><div class="rec-value">'+r.v+'</div><div class="rec-sub">'+r.s+'</div></div>';
+  }).join('');
+  // Dept records
+  var depts=getDepts();
+  var deptData=depts.map(function(d){
+    var yr=yrs.map(function(y){return getTotal(y,null,d.name);});
+    var tot=yr.reduce(function(a,b){return a+b;},0);
+    var best=Math.max.apply(null,yr),bestYr=yrs[yr.indexOf(best)];
+    var worst=yr.filter(function(v){return v>0;});
+    var zeros=yr.filter(function(v){return v===0;}).length;
+    return{name:d.name,tot:tot,best:best,bestYr:bestYr,zeros:zeros,yr:yr};
+  });
+  var topDept=deptData.slice().sort(function(a,b){return b.tot-a.tot;})[0];
+  var topSingle=deptData.slice().sort(function(a,b){return b.best-a.best;})[0];
+  var mostZeros=deptData.slice().sort(function(a,b){return b.zeros-a.zeros;})[0];
+  var leastZeros=deptData.filter(function(d){return d.tot>0;}).sort(function(a,b){return a.zeros-b.zeros;})[0];
+  var deptRecs=[
+    {l:'Most Fires All-Time',v:topDept.name.split(' ').slice(1).join(' '),s:topDept.tot+' fires ('+yrs[0]+'–'+yrs[yrs.length-1]+')',cls:'gold'},
+    {l:'Best Single Year',v:topSingle.name.split(' ').slice(1).join(' '),s:topSingle.best+' fires in '+topSingle.bestYr,cls:'red'},
+    {l:'Most Zero-Fire Years',v:mostZeros.name.split(' ').slice(1).join(' '),s:mostZeros.zeros+' years with 0 fires',cls:'blue'},
+    {l:'Most Consistent',v:leastZeros.name.split(' ').slice(1).join(' '),s:'only '+leastZeros.zeros+' zero-fire year(s)',cls:'green'},
+  ];
+  document.getElementById('rec-dept').innerHTML=deptRecs.map(function(r){
+    return'<div class="rec-card '+r.cls+'"><div class="rec-label">'+r.l+'</div><div class="rec-value">'+r.v+'</div><div class="rec-sub">'+r.s+'</div></div>';
+  }).join('');
+  // Monthly records
+  var moRecs=MO.map(function(m,mi){
+    var vals=yrs.map(function(y){return getMonthly(y)[mi];});
+    var peak=Math.max.apply(null,vals),peakY=yrs[vals.indexOf(peak)];
+    var avg=Math.round(vals.reduce(function(a,b){return a+b;},0)/vals.length*10)/10;
+    return'<div class="rec-card"><div class="rec-label">'+m+'</div><div class="rec-value">'+peak+'</div><div class="rec-sub">Peak: '+peakY+' · Avg: '+avg+'</div></div>';
+  });
+  document.getElementById('rec-monthly').innerHTML=moRecs.join('');
+  // Zero fire years by dept
+  var zeroRows=deptData.filter(function(d){return d.zeros>0;}).sort(function(a,b){return b.zeros-a.zeros;}).slice(0,20).map(function(d){
+    var zeroYrList=yrs.filter(function(y,i){return d.yr[i]===0;}).join(', ');
+    return'<tr><td style="text-align:left">'+d.name+'</td><td>'+d.zeros+'</td><td style="text-align:left;color:var(--text2)">'+zeroYrList+'</td></tr>';
+  });
+  document.getElementById('tbl-zeros').innerHTML='<thead><tr><th style="text-align:left">Department</th><th>Zero-Fire Years</th><th style="text-align:left">Which Years</th></tr></thead><tbody>'+zeroRows.join('')+'</tbody>';
+}
+
+// ── COMPARE ──
+function buildCompare(){
+  var yrs=getHYrs();
+  var sa=document.getElementById('cmp-a'),sb=document.getElementById('cmp-b');
+  while(sa.options.length)sa.remove(0);
+  while(sb.options.length)sb.remove(0);
+  yrs.forEach(function(y){sa.add(new Option(y,y));sb.add(new Option(y,y));});
+  sa.value=yrs[yrs.length-2]||yrs[0];
+  sb.value=yrs[yrs.length-1];
+  getBats().forEach(function(b){
+    var el=document.getElementById('cmp-bat-filter');
+    if(el)el.add(new Option(b,b));
+  });
+  cmpA=parseInt(sa.value);cmpB=parseInt(sb.value);
+  runCompare();
+}
+function runCompare(){
+  var sa=document.getElementById('cmp-a'),sb=document.getElementById('cmp-b');
+  cmpA=parseInt(sa.value);cmpB=parseInt(sb.value);
+  var ta=getTotal(cmpA),tb=getTotal(cmpB),diff=tb-ta;
+  var moa=getMonthly(cmpA),mob=getMonthly(cmpB);
+  var bats=getBats();
+  var stats=[
+    {l:cmpA+' Total',v:ta,s:'fires',c:'bl'},
+    {l:cmpB+' Total',v:tb,s:'fires',c:''},
+    {l:'Difference',v:(diff>=0?'+':'')+diff,s:cmpB+' vs '+cmpA,c:diff>=0?'gr':''},
+    {l:'% Change',v:(diff>=0?'+':'')+((diff/ta)*100).toFixed(1)+'%',s:'year over year',c:'ye'},
+  ];
+  document.getElementById('cmp-stats').innerHTML=stats.map(function(c){return'<div class="sc '+c.c+'"><div class="sl">'+c.l+'</div><div class="sv">'+c.v+'</div><div class="ss">'+c.s+'</div></div>';}).join('');
+  mkChart('ch-cmp-mo',{type:'bar',data:{labels:MO,datasets:[
+    {label:String(cmpA),data:moa,backgroundColor:'#2e75b688',borderColor:'#2e75b6',borderWidth:1.5},
+    {label:String(cmpB),data:mob,backgroundColor:'#e8500a88',borderColor:'#e8500a',borderWidth:1.5},
+  ]},options:CD});
+  var batA=bats.map(function(b){return getTotal(cmpA,b);});
+  var batB=bats.map(function(b){return getTotal(cmpB,b);});
+  mkChart('ch-cmp-bat',{type:'bar',data:{labels:bats.map(function(b){return b.replace('Battalion ','');}),datasets:[
+    {label:String(cmpA),data:batA,backgroundColor:'#2e75b688',borderColor:'#2e75b6',borderWidth:1.5},
+    {label:String(cmpB),data:batB,backgroundColor:'#e8500a88',borderColor:'#e8500a',borderWidth:1.5},
+  ]},options:CD});
+  renderCmpTable();
+}
+function renderCmpTable(){
+  var bf=document.getElementById('cmp-bat-filter').value;
+  var depts=bf==='all'?getDepts():getDepts().filter(function(d){return d.battalion===bf;});
+  var rows=depts.map(function(d){
+    var a=getTotal(cmpA,null,d.name),b=getTotal(cmpB,null,d.name),diff=b-a;
+    return{name:d.name,bat:d.battalion,a:a,b:b,diff:diff};
+  }).filter(function(r){return r.a>0||r.b>0;}).sort(function(a,b){return Math.abs(b.diff)-Math.abs(a.diff);});
+  var tr=rows.map(function(r){
+    var col=r.diff>0?'var(--red)':r.diff<0?'var(--green)':'var(--text2)';
+    var arr=r.diff>0?'▲':r.diff<0?'▼':'—';
+    return'<tr><td style="text-align:left">'+r.name+'</td><td style="text-align:left">'+r.bat.replace('Battalion ','Bn ')+'</td><td>'+r.a+'</td><td>'+r.b+'</td><td style="color:'+col+';font-weight:700">'+arr+' '+(r.diff>=0?'+':'')+r.diff+'</td></tr>';
+  });
+  document.getElementById('tbl-cmp').innerHTML='<thead><tr><th style="text-align:left">Department</th><th style="text-align:left">Bat.</th><th>'+cmpA+'</th><th>'+cmpB+'</th><th>Δ Change</th></tr></thead><tbody>'+tr.join('')+'</tbody>';
+}
+
+// ── UPDATE ──
 function buildUpdateUI(){
   var ueYr=document.getElementById('ue-yr');
   while(ueYr.options.length)ueYr.remove(0);
@@ -584,21 +835,18 @@ function buildUpdateUI(){
   ueYr.onchange=updateForm;ueD.onchange=updateForm;
   updateForm();
 }
-
 function updateForm(){
   var yr=document.getElementById('ue-yr').value,dept=document.getElementById('ue-dept').value;
   var cur=(getYrData(yr)||{})[dept]||new Array(12).fill(0);
   document.getElementById('ue-cur').textContent='Current: ['+cur.join(', ')+']  total: '+cur.reduce(function(a,b){return a+b;},0);
   document.getElementById('ue-grid').innerHTML=MO.map(function(m,i){return'<div class="mi"><label>'+m+'</label><input type="number" id="um'+i+'" value="'+cur[i]+'" min="0" max="99"></div>';}).join('');
 }
-
 function genJSON(){
   var yr=document.getElementById('ue-yr').value,dept=document.getElementById('ue-dept').value;
   var vals=MO.map(function(_,i){return parseInt(document.getElementById('um'+i).value)||0;});
   document.getElementById('ue-out').textContent='"'+dept+'": ['+vals.join(', ')+']';
   document.getElementById('ue-out').style.display='block';
 }
-
 function copyJSON(){
   var out=document.getElementById('ue-out').textContent;
   if(!out){genJSON();return;}

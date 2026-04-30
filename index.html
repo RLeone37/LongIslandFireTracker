@@ -7,16 +7,15 @@
 <title>Nassau County Working Fires</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-:root{--bg:#0d0f14;--surface:#161a22;--surface2:#1e2330;--border:#2a3045;--accent:#e8500a;--accent2:#f0900a;--blue:#2e75b6;--text:#e8eaf0;--text2:#8a93a8;--green:#22c55e;--yellow:#f59e0b;--red:#ef4444;}
+:root{--bg:#0d0f14;--surface:#161a22;--surface2:#1e2330;--border:#2a3045;--accent:#e8500a;--blue:#2e75b6;--text:#e8eaf0;--text2:#8a93a8;--green:#22c55e;--yellow:#f59e0b;--red:#ef4444;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:'Segoe UI',Arial,sans-serif;min-height:100vh;}
+body{background:var(--bg);color:var(--text);font-family:"Segoe UI",Arial,sans-serif;min-height:100vh;}
 header{background:linear-gradient(135deg,#0a0c10,#1a0d05 50%,#0a0c10);border-bottom:2px solid var(--accent);padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(232,80,10,.3);}
-.hdr-l{display:flex;align-items:center;gap:16px;padding:14px 0;}
+.hdr{display:flex;align-items:center;gap:16px;padding:14px 0;}
 .fi{font-size:2.2rem;filter:drop-shadow(0 0 8px rgba(232,80,10,.8));}
 .ht h1{font-size:1.3rem;font-weight:700;letter-spacing:.05em;}
 .ht p{font-size:.75rem;color:var(--text2);letter-spacing:.1em;text-transform:uppercase;}
-.badge{background:var(--accent);color:#fff;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:.05em;margin-left:8px;vertical-align:middle;}
-#lu{font-size:.72rem;color:var(--text2);text-align:right;}
+.badge{background:var(--accent);color:#fff;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:3px;margin-left:8px;vertical-align:middle;}
 nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:4px;overflow-x:auto;}
 nav button{background:none;border:none;color:var(--text2);cursor:pointer;padding:12px 18px;font-size:.82rem;font-weight:600;letter-spacing:.04em;border-bottom:3px solid transparent;transition:all .15s;white-space:nowrap;}
 nav button:hover{color:var(--text);}
@@ -25,7 +24,7 @@ main{padding:20px 24px;max-width:1400px;margin:0 auto;}
 .tab{display:none;}.tab.active{display:block;}
 .sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:20px;}
 .sc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;position:relative;overflow:hidden;}
-.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);}
+.sc::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);}
 .sc.bl::before{background:var(--blue);}.sc.gr::before{background:var(--green);}.sc.ye::before{background:var(--yellow);}
 .sl{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);margin-bottom:6px;}
 .sv{font-size:2rem;font-weight:700;line-height:1;}
@@ -33,14 +32,14 @@ main{padding:20px 24px;max-width:1400px;margin:0 auto;}
 .sd{font-size:.75rem;font-weight:600;margin-top:4px;}
 .sd.up{color:var(--green);}.sd.dn{color:var(--red);}
 .cg{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
-.cg.s{grid-template-columns:1fr;}.cg.t{grid-template-columns:2fr 1fr;}
+.cg.t{grid-template-columns:2fr 1fr;}
 @media(max-width:900px){.cg,.cg.t{grid-template-columns:1fr;}}
-.cc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;}
+.cc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:0;}
 .ct{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text2);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
 .ct .d{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;}
 .pb{background:linear-gradient(90deg,rgba(232,80,10,.15),rgba(240,144,10,.1));border:1px solid rgba(232,80,10,.4);border-radius:8px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
-.pb .ic{font-size:1.4rem;}.pb strong{color:var(--accent);}.pb p{font-size:.82rem;color:var(--text2);}
-.tw{overflow-x:auto;border-radius:8px;border:1px solid var(--border);}
+.pb strong{color:var(--accent);}.pb p{font-size:.82rem;color:var(--text2);}
+.tw{overflow-x:auto;border-radius:8px;border:1px solid var(--border);margin-bottom:16px;}
 table{width:100%;border-collapse:collapse;font-size:.82rem;}
 thead tr{background:var(--surface2);}
 thead th{padding:10px 12px;text-align:right;font-weight:700;text-transform:uppercase;font-size:.68rem;letter-spacing:.08em;color:var(--text2);border-bottom:1px solid var(--border);white-space:nowrap;}
@@ -51,27 +50,21 @@ tbody tr.br{background:rgba(46,117,182,.12);}
 tbody tr.br td{font-weight:700;color:var(--blue);}
 td{padding:8px 12px;text-align:right;color:var(--text);}
 td:first-child,td:nth-child(2){text-align:left;color:var(--text2);font-size:.78rem;}
-td.fc{font-weight:600;}
-td.zr{color:#3a4055;}
-.h0{}.h1{background:rgba(232,80,10,.15);}.h2{background:rgba(232,80,10,.30);}.h3{background:rgba(232,80,10,.50);color:#fff!important;}.h4{background:rgba(232,80,10,.75);color:#fff!important;font-weight:700!important;}
+td.fc{font-weight:600;}td.zr{color:#3a4055;}
+.h1{background:rgba(232,80,10,.15);}.h2{background:rgba(232,80,10,.30);}.h3{background:rgba(232,80,10,.50);color:#fff!important;}.h4{background:rgba(232,80,10,.75);color:#fff!important;font-weight:700!important;}
 .ctrl{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center;}
 .ctrl label{font-size:.75rem;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;}
-select,input{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 12px;border-radius:5px;font-size:.82rem;cursor:pointer;}
+select,input{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 12px;border-radius:5px;font-size:.82rem;}
 select:focus,input:focus{outline:none;border-color:var(--accent);}
-.btn{background:var(--accent);color:#fff;border:none;padding:7px 16px;border-radius:5px;font-size:.82rem;font-weight:600;cursor:pointer;transition:background .15s;}
+.btn{background:var(--accent);color:#fff;border:none;padding:7px 16px;border-radius:5px;font-size:.82rem;font-weight:600;cursor:pointer;}
 .btn:hover{background:#c4420a;}.btn.o{background:transparent;border:1px solid var(--accent);color:var(--accent);}
-.btn.o:hover{background:rgba(232,80,10,.1);}
 .yp{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
 .yp span{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:5px 12px;border-radius:20px;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .15s;}
-.yp span:hover{border-color:var(--accent);color:var(--text);}
 .yp span.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 .yp span.ip{border-style:dashed;border-color:var(--yellow);color:var(--yellow);}
 .yp span.ip.active{background:var(--yellow);color:#000;}
 .sh{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--text2);border-bottom:1px solid var(--border);padding-bottom:8px;margin:20px 0 14px;display:flex;align-items:center;gap:8px;}
-.sh::before{content:'▐';color:var(--accent);}
-#loading{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:999;}
-.sp{font-size:3rem;animation:spin 1s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg);}}
+.sh::before{content:"▐";color:var(--accent);}
 .ld{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:4px;animation:pulse 1.5s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
 .uc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:20px;}
@@ -84,16 +77,15 @@ a{color:var(--accent);}
 </style>
 </head>
 <body>
-<div id="loading"><div class="sp">🔥</div><div style="color:var(--text2);font-size:.9rem;letter-spacing:.1em">LOADING FIRE DATA...</div></div>
 <header>
-  <div class="hdr-l">
+  <div class="hdr">
     <div class="fi">🔥</div>
     <div class="ht">
       <h1>Nassau County Working Fires <span class="badge">LIVE</span></h1>
-      <p>Nassau County Volunteer Firefighters Association · Fire Incident Tracker</p>
+      <p>Nassau County Volunteer Firefighters Association</p>
     </div>
   </div>
-  <div id="lu"></div>
+  <div id="lu" style="font-size:.72rem;color:var(--text2);text-align:right;"></div>
 </header>
 <nav>
   <button class="active" onclick="showTab('overview',this)">📊 Overview</button>
@@ -105,7 +97,6 @@ a{color:var(--accent);}
   <button onclick="showTab('update',this)">✏️ Update Data</button>
 </nav>
 <main>
-<!-- OVERVIEW -->
 <div id="tab-overview" class="tab active">
   <div id="sc-overview" class="sg"></div>
   <div class="cg t">
@@ -117,38 +108,33 @@ a{color:var(--accent);}
     <div class="cc"><div class="ct"><span class="d" style="background:var(--green)"></span>Stacked by Battalion</div><canvas id="ch-stack" height="200"></canvas></div>
   </div>
 </div>
-<!-- TRENDS -->
 <div id="tab-trends" class="tab">
   <div class="sh">Year-Over-Year Analysis</div>
   <div class="cc" style="margin-bottom:16px"><div class="ct"><span class="d"></span>Annual Totals with 3-Year Rolling Average</div><canvas id="ch-trend" height="200"></canvas></div>
   <div class="cg">
     <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>YoY Change</div><canvas id="ch-yoy" height="200"></canvas></div>
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Battalion Trends (First 3 vs Last 3 Year Avg)</div><canvas id="ch-btrd" height="200"></canvas></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Battalion Trends</div><canvas id="ch-btrd" height="200"></canvas></div>
   </div>
   <div class="sh">Summary Table</div>
   <div class="tw"><table id="tbl-trend"></table></div>
 </div>
-<!-- BATTALIONS -->
 <div id="tab-battalions" class="tab">
   <div class="sh">Filter by Year</div>
   <div class="yp" id="bat-pills"></div>
   <div class="cg">
     <div class="cc"><div class="ct"><span class="d"></span>Battalion Totals — <span id="bat-yr-lbl">All Years</span></div><canvas id="ch-batbar" height="220"></canvas></div>
-    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Monthly by Battalion — <span id="bat-mo-lbl">All Years</span></div><canvas id="ch-batmo" height="220"></canvas></div>
+    <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Monthly by Battalion</div><canvas id="ch-batmo" height="220"></canvas></div>
   </div>
   <div class="sh">Battalion Summary</div>
   <div class="tw"><table id="tbl-bat"></table></div>
 </div>
-<!-- HEATMAP -->
 <div id="tab-heatmap" class="tab">
   <div class="sh">Monthly Heatmap — County Total</div>
-  <p style="font-size:.78rem;color:var(--text2);margin-bottom:12px">Darker = more fires. Click year row to highlight.</p>
   <div class="tw"><table id="tbl-heat"></table></div>
-  <div class="sh" style="margin-top:24px">Battalion Heatmap</div>
+  <div class="sh">Battalion Heatmap</div>
   <div class="ctrl"><label>Battalion:</label><select id="heat-bat" onchange="renderBatHeat()"></select></div>
   <div class="tw"><table id="tbl-batheat"></table></div>
 </div>
-<!-- DEPARTMENTS -->
 <div id="tab-departments" class="tab">
   <div class="ctrl">
     <label>Battalion:</label><select id="dept-bat" onchange="renderDepts()"><option value="all">All Battalions</option></select>
@@ -161,9 +147,8 @@ a{color:var(--accent);}
   </div>
   <div class="tw"><table id="tbl-dept"></table></div>
 </div>
-<!-- IN-PROGRESS -->
 <div id="tab-inprogress" class="tab">
-  <div class="pb"><div class="ic">📡</div><div><strong>Live Year Tracking with Projection</strong><p>Solid = actual fires · Hatched = projected (based on 2016–2024 monthly averages)</p></div></div>
+  <div class="pb"><div style="font-size:1.4rem">📡</div><div><strong>Live Year Tracking with Projection</strong><p>Solid = actual · Projected = based on 2016–2024 monthly averages</p></div></div>
   <div class="yp" id="ip-pills"></div>
   <div id="sc-ip" class="sg"></div>
   <div class="cg">
@@ -175,22 +160,21 @@ a{color:var(--accent);}
   <div class="ctrl"><label>Battalion:</label><select id="ip-bat" onchange="renderIPTable()"><option value="all">All Battalions</option></select></div>
   <div class="tw"><table id="tbl-ip"></table></div>
 </div>
-<!-- UPDATE -->
 <div id="tab-update" class="tab">
   <div class="uc">
     <h2 style="font-size:1rem;margin-bottom:8px">How to Update Fire Data</h2>
-    <p style="font-size:.82rem;color:var(--text2);line-height:1.7">Fire data is stored in <code style="background:var(--surface2);padding:2px 6px;border-radius:3px">data/fires.json</code> in this GitHub repository. To add new fire counts:</p>
+    <p style="font-size:.82rem;color:var(--text2);line-height:1.7">All fire data is stored directly in this HTML file. To update, open <code style="background:var(--surface2);padding:2px 6px;border-radius:3px">index.html</code> on GitHub, click ✏️ edit, use Ctrl+F to find the department, update the numbers, and commit.</p>
     <ol style="font-size:.82rem;color:var(--text2);line-height:2.2;margin:12px 0 0 20px">
-      <li>Visit <a href="https://www.zone2photo.com/Working-Fire-Lists/" target="_blank">zone2photo.com/Working-Fire-Lists/</a> and note new fires</li>
-      <li>Open your GitHub repository → <code style="background:var(--surface2);padding:2px 5px;border-radius:3px">data/fires.json</code></li>
-      <li>Click the ✏️ pencil (Edit) icon</li>
-      <li>Find the year + department, update the monthly array (12 numbers)</li>
-      <li>Click <strong>Commit changes</strong> — site updates in ~60 seconds</li>
+      <li>Visit <a href="https://www.zone2photo.com/Working-Fire-Lists/" target="_blank">zone2photo.com</a> and note new fires by department and month</li>
+      <li>Open GitHub repo → <code style="background:var(--surface2);padding:2px 5px;border-radius:3px">index.html</code> → ✏️ Edit</li>
+      <li>Press Ctrl+F, search for the department name (e.g. <code style="background:var(--surface2);padding:2px 5px;border-radius:3px">720 Hempstead</code>)</li>
+      <li>Update the 12-number monthly array for the correct year</li>
+      <li>Commit changes — site updates in ~60 seconds</li>
     </ol>
   </div>
   <div class="uc">
-    <h2 style="font-size:1rem;margin-bottom:4px">Quick Entry Preview Tool</h2>
-    <p style="font-size:.78rem;color:var(--text2);margin-bottom:14px">Build the JSON snippet below, then paste it into GitHub.</p>
+    <h2 style="font-size:1rem;margin-bottom:4px">Quick Entry Preview</h2>
+    <p style="font-size:.78rem;color:var(--text2);margin-bottom:14px">Build the correct value below, then copy it into the HTML on GitHub.</p>
     <div class="ctrl">
       <label>Year:</label><select id="ue-yr"></select>
       <label>Department:</label><select id="ue-dept"></select>
@@ -198,166 +182,158 @@ a{color:var(--accent);}
     <div id="ue-cur" style="font-size:.78rem;color:var(--text2);margin:8px 0;padding:8px;background:var(--surface2);border-radius:4px"></div>
     <div class="ugr" id="ue-grid"></div>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn" onclick="genJSON()">Generate JSON</button>
+      <button class="btn" onclick="genJSON()">Generate</button>
       <button class="btn o" onclick="copyJSON()">Copy to Clipboard</button>
     </div>
     <div id="ue-out" style="margin-top:12px;background:var(--surface2);border-radius:5px;padding:12px;font-family:monospace;font-size:.8rem;display:none;white-space:pre;overflow-x:auto;border:1px solid var(--border)"></div>
   </div>
-  <div class="uc">
-    <h2 style="font-size:1rem;margin-bottom:8px">JSON Format Reference</h2>
-    <p style="font-size:.78rem;color:var(--text2);margin-bottom:10px">12 numbers per department, one per month (Jan=0, Dec=11).</p>
-    <pre style="background:var(--surface2);padding:14px;border-radius:6px;font-size:.78rem;overflow-x:auto;border:1px solid var(--border)">"2025": {
-  "120 Floral Park": [1, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0],
-  //                  Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
-  "160 Mineola":     [0, 0, 1, 0, 0, 0, 2, 0, 0, 1, 0, 0]
-}</pre>
-  </div>
 </div>
 </main>
-<footer>Nassau County Working Fires Tracker · Data: <a href="https://www.zone2photo.com/Working-Fire-Lists/" target="_blank">zone2photo.com</a></footer>
+<footer>Nassau County Working Fires · Data: <a href="https://www.zone2photo.com/Working-Fire-Lists/" target="_blank">zone2photo.com</a></footer>
 <script>
 const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const BC=['#e8500a','#f0900a','#2e75b6','#22c55e','#a855f7','#ec4899','#14b8a6','#f59e0b','#64748b'];
 const CD={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8a93a8',font:{size:11}}}},scales:{x:{ticks:{color:'#8a93a8',font:{size:11}},grid:{color:'#2a3045'}},y:{ticks:{color:'#8a93a8',font:{size:11}},grid:{color:'#2a3045'}}}};
-let D=null,AC={},selBatYr='all',selIPYr=2025;
+let AC={},selBatYr='all',selIPYr=2025;
 
-async function loadData(){
-try{
-D={“metadata”:{“county”:“Nassau County”,“state”:“NY”,“description”:“Nassau County Volunteer Fire Departments Working Fires”,“source”:“https://www.zone2photo.com/Working-Fire-Lists/”,“last_updated”:“2024-12-31”,“years_complete”:[2016,2017,2018,2019,2020,2021,2022,2023,2024],“years_in_progress”:[2025,2026]},“departments”:[{“name”:“100 Bellerose”,“battalion”:””},{“name”:“110 Bellerose Terrace”,“battalion”:””},{“name”:“120 Floral Park”,“battalion”:””},{“name”:“130 Floral Park Centre”,“battalion”:””},{“name”:“140 Garden City”,“battalion”:””},{“name”:“150 Garden City Park”,“battalion”:””},{“name”:“160 Mineola”,“battalion”:””},{“name”:“170 New Hyde Park”,“battalion”:””},{“name”:“180 South Floral Park”,“battalion”:””},{“name”:“190 Stewart Manor”,“battalion”:””},{“name”:“200 Baldwin”,“battalion”:””},{“name”:“210 Freeport”,“battalion”:””},{“name”:“220 Island Park”,“battalion”:””},{“name”:“230 Long Beach”,“battalion”:””},{“name”:“240 Oceanside”,“battalion”:””},{“name”:“250 Point Lookout-Lido”,“battalion”:””},{“name”:“300 Hewlett”,“battalion”:””},{“name”:“310 Inwood”,“battalion”:””},{“name”:“320 Lawrence-Cedarhurst”,“battalion”:””},{“name”:“330 Meadowmere Park”,“battalion”:””},{“name”:“340 Valley Stream”,“battalion”:””},{“name”:“350 Woodmere”,“battalion”:””},{“name”:“400 East Rockaway”,“battalion”:””},{“name”:“410 Lakeview”,“battalion”:””},{“name”:“420 Lynbrook”,“battalion”:””},{“name”:“430 Malverne”,“battalion”:””},{“name”:“440 Rockville Centre”,“battalion”:””},{“name”:“500 Bayville”,“battalion”:””},{“name”:“510 East Norwich”,“battalion”:””},{“name”:“520 Glen Cove”,“battalion”:””},{“name”:“530 Glenwood”,“battalion”:””},{“name”:“540 Locust Valley”,“battalion”:””},{“name”:“550 Oyster Bay/Atlantic Steamer”,“battalion”:””},{“name”:“560 Roslyn Rescue/590 Roslyn Highlands”,“battalion”:””},{“name”:“570 Sea Cliff”,“battalion”:””},{“name”:“580 Syosset”,“battalion”:””},{“name”:“600 Bellmore”,“battalion”:””},{“name”:“610 East Meadow”,“battalion”:””},{“name”:“620 Levittown”,“battalion”:””},{“name”:“630 Massapequa”,“battalion”:””},{“name”:“640 Merrick”,“battalion”:””},{“name”:“650 North Bellmore”,“battalion”:””},{“name”:“660 North Massapequa”,“battalion”:””},{“name”:“670 North Merrick”,“battalion”:””},{“name”:“680 Seaford”,“battalion”:””},{“name”:“690 Wantagh”,“battalion”:””},{“name”:“700 Elmont”,“battalion”:””},{“name”:“710 Franklin Square & Munson”,“battalion”:””},{“name”:“720 Hempstead”,“battalion”:””},{“name”:“730 Roosevelt”,“battalion”:””},{“name”:“740 South Hempstead”,“battalion”:””},{“name”:“750 Uniondale”,“battalion”:””},{“name”:“760 West Hempstead”,“battalion”:””},{“name”:“800 Albertson”,“battalion”:””},{“name”:“810 East Williston”,“battalion”:””},{“name”:“820 Great Neck Alert”,“battalion”:””},{“name”:“830 Great Neck Vigilant”,“battalion”:””},{“name”:“840 Plandome”,“battalion”:””},{“name”:“850 Port Washington”,“battalion”:””},{“name”:“860 Williston Park”,“battalion”:””},{“name”:“870 Manhasset-Lakeville”,“battalion”:””},{“name”:“900 Bethpage”,“battalion”:””},{“name”:“910 Carle Place”,“battalion”:””},{“name”:“920 Farmingdale”,“battalion”:””},{“name”:“930 Hicksville”,“battalion”:””},{“name”:“940 Jericho”,“battalion”:””},{“name”:“950 Plainview”,“battalion”:””},{“name”:“960 Westbury”,“battalion”:””},{“name”:“970 South Farmingdale”,“battalion”:””}],“years”:{“2016”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[1,0,0,0,0,0,0,0,0,0,2,1],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,0,1,0,1,0,0,1,1],“150 Garden City Park”:[0,2,0,1,0,0,0,0,0,0,0,0],“160 Mineola”:[1,0,2,0,0,1,1,0,0,0,0,0],“170 New Hyde Park”:[1,0,0,2,1,0,1,0,0,0,1,1],“180 South Floral Park”:[0,0,1,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[2,0,0,0,0,1,0,1,0,0,0,0],“210 Freeport”:[1,0,0,1,0,1,4,1,2,1,0,3],“220 Island Park”:[0,0,0,1,0,0,0,0,0,0,0,0],“230 Long Beach”:[2,0,1,0,0,1,1,2,0,2,0,1],“240 Oceanside”:[1,0,1,2,1,0,0,0,0,0,0,0],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,1,0,0],“300 Hewlett”:[0,1,0,0,1,0,0,0,0,0,0,0],“310 Inwood”:[0,0,0,0,1,0,0,0,0,0,0,0],“320 Lawrence-Cedarhurst”:[1,0,0,1,0,0,0,1,0,0,1,3],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[0,0,1,0,2,1,1,0,0,0,2,2],“350 Woodmere”:[1,1,0,1,0,0,1,0,0,0,0,0],“400 East Rockaway”:[0,0,0,1,0,0,1,0,0,0,0,0],“410 Lakeview”:[0,0,1,0,0,0,0,0,1,0,0,0],“420 Lynbrook”:[0,1,0,0,0,0,0,0,1,3,0,1],“430 Malverne”:[0,2,0,0,0,0,0,0,0,0,0,0],“440 Rockville Centre”:[0,0,0,0,0,0,0,0,0,1,0,0],“500 Bayville”:[0,0,0,0,0,0,0,1,0,0,0,1],“510 East Norwich”:[0,0,0,0,1,0,0,0,0,0,0,0],“520 Glen Cove”:[0,1,1,0,0,0,1,0,0,0,0,0],“530 Glenwood”:[1,0,0,0,0,0,0,0,0,0,0,0],“540 Locust Valley”:[0,0,0,2,0,1,1,0,1,0,1,0],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,0,0,0,0,0,1,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[0,0,0,0,1,0,1,1,0,0,0,0],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,0],“580 Syosset”:[0,0,0,1,1,0,1,0,0,1,1,1],“600 Bellmore”:[0,0,0,0,1,0,1,0,0,0,0,1],“610 East Meadow”:[0,0,0,1,0,0,0,0,0,0,1,0],“620 Levittown”:[0,0,0,0,0,0,0,0,0,0,1,0],“630 Massapequa”:[1,1,1,1,0,1,1,0,1,0,0,1],“640 Merrick”:[0,0,0,0,0,2,0,0,0,0,1,0],“650 North Bellmore”:[0,0,0,1,0,0,1,0,0,1,1,0],“660 North Massapequa”:[1,1,0,0,0,0,1,1,0,0,0,0],“670 North Merrick”:[0,0,0,0,0,1,0,1,0,0,0,0],“680 Seaford”:[0,0,0,0,0,0,0,0,0,0,0,0],“690 Wantagh”:[1,0,1,1,1,1,0,0,1,1,0,0],“700 Elmont”:[2,1,1,3,0,2,2,1,0,0,1,2],“710 Franklin Square & Munson”:[0,2,2,0,0,1,0,0,0,1,0,0],“720 Hempstead”:[0,1,1,2,2,2,2,3,1,0,2,4],“730 Roosevelt”:[0,0,2,0,0,1,0,0,0,0,0,0],“740 South Hempstead”:[0,0,0,0,0,0,0,0,0,0,1,0],“750 Uniondale”:[0,0,0,1,2,1,0,0,0,0,1,0],“760 West Hempstead”:[2,0,0,1,0,0,0,0,0,0,0,1],“800 Albertson”:[0,1,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,1,0,0,0,0,0,0,0,0,1],“830 Great Neck Vigilant”:[0,0,0,0,1,0,0,0,0,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[0,0,0,0,0,1,0,1,0,1,1,1],“860 Williston Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,1,1,1,1,0,0,1,0,0,1,1],“900 Bethpage”:[0,0,0,0,0,0,0,0,0,0,0,0],“910 Carle Place”:[1,0,0,0,0,0,1,0,0,0,0,0],“920 Farmingdale”:[0,0,0,0,0,0,0,0,0,0,0,0],“930 Hicksville”:[0,0,2,0,0,0,0,2,1,1,1,0],“940 Jericho”:[1,0,0,0,1,0,0,1,0,0,0,0],“950 Plainview”:[0,0,0,0,1,0,0,0,0,0,0,1],“960 Westbury”:[0,1,3,1,1,2,0,1,2,1,0,1],“970 South Farmingdale”:[0,0,0,0,0,0,0,0,0,0,0,0]},“2017”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[1,0,0,0,0,0,0,0,0,0,0,0],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[1,1,0,0,0,0,0,1,0,1,0,0],“150 Garden City Park”:[0,0,0,0,0,0,0,1,0,0,0,0],“160 Mineola”:[0,0,3,1,1,0,0,0,0,2,0,0],“170 New Hyde Park”:[1,0,0,0,0,0,1,0,0,0,0,0],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[1,0,2,0,0,1,1,0,1,0,0,0],“210 Freeport”:[2,2,3,2,3,0,1,1,0,3,0,4],“220 Island Park”:[0,1,0,0,1,0,0,0,0,0,1,0],“230 Long Beach”:[0,0,3,1,0,1,0,0,1,1,1,0],“240 Oceanside”:[1,0,0,0,0,0,0,0,0,0,1,0],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,0,0,0,0,0,0,1,0,0,0],“310 Inwood”:[1,0,0,0,0,0,0,0,0,0,0,0],“320 Lawrence-Cedarhurst”:[0,0,0,0,0,0,0,1,0,0,0,0],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[1,4,1,0,1,0,0,2,1,0,1,0],“350 Woodmere”:[0,0,0,0,0,0,0,0,0,0,0,0],“400 East Rockaway”:[0,0,2,0,0,0,0,1,0,1,1,0],“410 Lakeview”:[0,0,1,0,0,0,1,0,0,0,0,0],“420 Lynbrook”:[0,1,1,1,0,0,0,0,0,0,0,1],“430 Malverne”:[0,0,2,0,0,0,0,0,0,0,0,1],“440 Rockville Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“500 Bayville”:[0,0,0,0,1,0,0,0,0,0,0,1],“510 East Norwich”:[0,0,0,0,0,0,0,1,0,0,0,0],“520 Glen Cove”:[5,0,0,0,0,0,0,0,2,1,0,0],“530 Glenwood”:[0,0,0,1,0,0,0,0,0,0,0,0],“540 Locust Valley”:[0,1,0,0,0,1,0,0,0,0,0,0],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,0,0,1,0,0,0,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[1,0,1,0,0,0,0,0,0,3,1,0],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,0],“580 Syosset”:[1,0,0,1,0,2,1,0,2,1,0,0],“600 Bellmore”:[0,0,0,0,1,0,0,0,0,0,0,0],“610 East Meadow”:[0,0,2,0,1,0,0,0,0,0,0,1],“620 Levittown”:[1,1,1,1,1,0,0,0,0,0,0,0],“630 Massapequa”:[1,0,0,0,0,1,0,0,1,0,1,3],“640 Merrick”:[0,0,1,0,1,1,0,0,1,0,0,0],“650 North Bellmore”:[0,0,0,0,0,1,1,0,0,1,0,0],“660 North Massapequa”:[0,0,0,0,1,0,0,0,1,1,0,0],“670 North Merrick”:[0,0,0,0,1,0,0,0,0,0,0,0],“680 Seaford”:[0,0,0,0,0,0,0,0,0,0,0,0],“690 Wantagh”:[1,2,2,2,1,1,0,0,0,0,0,0],“700 Elmont”:[0,4,2,2,0,1,0,1,0,1,2,1],“710 Franklin Square & Munson”:[2,0,0,0,0,0,0,0,0,0,0,0],“720 Hempstead”:[2,1,1,1,0,0,2,2,1,1,3,3],“730 Roosevelt”:[0,0,1,1,2,0,1,0,0,0,0,1],“740 South Hempstead”:[0,0,0,1,0,0,0,0,0,0,0,0],“750 Uniondale”:[1,0,0,0,0,2,1,0,0,0,0,0],“760 West Hempstead”:[1,0,0,0,0,0,0,1,0,0,0,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,0,0,0,0,0,0,0,0,1,1],“830 Great Neck Vigilant”:[0,0,1,0,0,2,0,0,0,0,0,0],“840 Plandome”:[1,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[1,1,0,0,3,0,1,0,0,1,1,2],“860 Williston Park”:[0,0,0,0,0,1,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,1,0,0,0,0,0,0,0,0,0],“900 Bethpage”:[0,1,0,1,0,0,1,1,1,0,0,0],“910 Carle Place”:[0,0,0,1,0,0,0,0,0,0,0,0],“920 Farmingdale”:[0,0,0,0,0,0,0,0,0,0,0,0],“930 Hicksville”:[1,0,0,2,0,1,0,0,1,0,1,0],“940 Jericho”:[0,0,0,0,0,0,0,0,0,0,0,0],“950 Plainview”:[1,0,0,0,0,1,0,0,0,0,0,0],“960 Westbury”:[2,1,1,2,0,1,1,0,1,1,1,1],“970 South Farmingdale”:[0,0,1,1,0,0,0,1,0,0,1,0]},“2018”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,1],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,0,0,0,0,0,0,1,0],“150 Garden City Park”:[0,0,0,0,0,0,0,0,0,1,0,1],“160 Mineola”:[3,0,1,0,0,1,0,0,0,0,1,0],“170 New Hyde Park”:[0,0,0,0,0,0,0,1,0,0,0,1],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,1,0,0,0,0,1,0,0],“200 Baldwin”:[0,0,0,0,1,0,0,0,1,0,1,0],“210 Freeport”:[2,1,0,1,0,2,2,1,0,0,0,1],“220 Island Park”:[1,0,0,0,0,0,0,1,0,0,0,1],“230 Long Beach”:[2,1,1,1,1,0,0,0,0,0,1,0],“240 Oceanside”:[0,1,0,0,0,0,0,0,0,0,0,0],“250 Point Lookout-Lido”:[0,0,0,0,1,0,0,0,0,0,1,0],“300 Hewlett”:[0,1,0,0,0,0,0,0,0,0,0,0],“310 Inwood”:[1,0,0,0,0,0,0,0,0,0,0,0],“320 Lawrence-Cedarhurst”:[0,1,1,1,0,1,0,1,0,1,1,0],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[2,1,0,3,2,2,0,0,0,1,2,1],“350 Woodmere”:[0,1,0,0,0,0,0,1,0,0,0,0],“400 East Rockaway”:[0,0,0,0,1,0,0,0,0,0,0,0],“410 Lakeview”:[0,0,0,0,1,0,1,1,1,0,0,0],“420 Lynbrook”:[0,1,1,0,1,0,0,0,0,1,0,1],“430 Malverne”:[0,1,0,0,0,0,0,0,0,0,0,0],“440 Rockville Centre”:[0,0,0,1,0,0,0,0,0,0,0,0],“500 Bayville”:[1,0,0,0,0,0,0,0,0,0,1,0],“510 East Norwich”:[0,0,0,0,0,0,0,0,1,0,0,0],“520 Glen Cove”:[2,1,0,0,0,1,0,1,0,0,1,1],“530 Glenwood”:[0,0,0,0,0,0,0,0,0,0,0,0],“540 Locust Valley”:[0,0,0,2,0,0,0,1,0,0,0,1],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,0,2,0,0,1,0,0,2],“560 Roslyn Rescue/590 Roslyn Highlands”:[0,0,0,0,0,0,0,1,0,0,0,0],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,0],“580 Syosset”:[0,1,0,0,2,1,0,0,0,0,0,0],“600 Bellmore”:[0,0,0,0,0,1,1,0,0,1,0,1],“610 East Meadow”:[0,1,0,0,0,0,1,0,0,0,2,1],“620 Levittown”:[0,0,0,0,0,0,0,1,0,0,0,1],“630 Massapequa”:[2,0,0,2,0,0,1,0,0,1,4,2],“640 Merrick”:[1,0,0,0,0,0,0,0,0,2,0,0],“650 North Bellmore”:[1,0,1,0,0,0,0,0,0,0,0,0],“660 North Massapequa”:[0,0,1,1,0,0,1,0,0,0,0,0],“670 North Merrick”:[0,0,0,0,0,0,0,0,0,0,0,0],“680 Seaford”:[0,0,1,0,0,0,0,0,0,0,0,0],“690 Wantagh”:[1,1,1,2,1,0,0,1,0,2,0,2],“700 Elmont”:[0,3,0,0,3,0,1,0,0,1,2,0],“710 Franklin Square & Munson”:[0,0,1,2,0,1,3,1,0,0,0,2],“720 Hempstead”:[3,4,0,2,2,1,1,3,1,2,5,5],“730 Roosevelt”:[0,0,0,0,2,0,0,0,0,1,0,2],“740 South Hempstead”:[0,0,0,0,0,0,0,1,0,0,0,0],“750 Uniondale”:[0,0,2,0,0,0,3,1,0,1,0,1],“760 West Hempstead”:[0,0,0,1,0,0,0,0,0,0,0,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,1],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,1,0,1,1,1,0,0,1,0,0],“830 Great Neck Vigilant”:[0,0,0,0,0,0,1,0,0,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[1,0,0,0,3,0,0,0,0,0,1,0],“860 Williston Park”:[0,0,0,1,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,1,0,0,0,0,0,0,0,0,0],“900 Bethpage”:[1,0,0,1,0,1,1,0,0,1,0,1],“910 Carle Place”:[0,0,0,0,0,0,0,0,0,0,0,0],“920 Farmingdale”:[2,1,0,0,0,0,0,1,0,0,0,0],“930 Hicksville”:[0,1,1,2,1,0,2,1,2,1,0,0],“940 Jericho”:[0,0,0,0,0,0,0,1,0,0,0,0],“950 Plainview”:[1,0,0,0,0,0,1,0,0,0,2,0],“960 Westbury”:[1,1,5,0,1,2,0,0,1,1,1,1],“970 South Farmingdale”:[0,0,0,0,0,0,1,0,0,0,0,1]},“2019”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,1],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,1,0,0,0,0,1,0,0],“150 Garden City Park”:[0,1,0,0,0,0,1,0,0,1,0,0],“160 Mineola”:[0,0,0,0,0,0,0,0,1,0,0,1],“170 New Hyde Park”:[0,1,1,0,0,0,0,0,0,0,0,0],“180 South Floral Park”:[1,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[1,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[2,0,1,0,0,0,2,1,0,0,0,1],“210 Freeport”:[1,1,3,0,1,2,1,1,0,2,0,2],“220 Island Park”:[0,0,0,0,0,0,2,0,0,0,0,0],“230 Long Beach”:[1,0,1,1,1,1,0,0,3,0,0,1],“240 Oceanside”:[0,1,1,2,1,0,0,0,0,0,0,1],“250 Point Lookout-Lido”:[1,1,0,0,1,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,0,1,1,1,0,0,2,0,0,0],“310 Inwood”:[1,0,1,1,0,0,0,0,0,0,0,2],“320 Lawrence-Cedarhurst”:[1,0,2,0,2,0,2,0,1,1,1,1],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[0,1,3,0,0,0,1,0,2,4,0,1],“350 Woodmere”:[1,1,0,0,0,0,0,0,0,0,0,0],“400 East Rockaway”:[0,0,0,0,0,0,0,2,0,0,0,0],“410 Lakeview”:[1,0,1,0,0,0,0,0,0,1,0,1],“420 Lynbrook”:[0,1,0,0,0,0,3,0,1,1,0,0],“430 Malverne”:[0,0,1,0,0,0,0,0,0,0,0,0],“440 Rockville Centre”:[0,1,0,0,1,0,2,0,0,0,0,1],“500 Bayville”:[0,0,0,0,0,0,0,0,1,0,2,0],“510 East Norwich”:[0,0,1,1,0,1,2,0,0,0,1,0],“520 Glen Cove”:[1,0,2,1,2,0,1,0,0,1,1,0],“530 Glenwood”:[0,0,0,0,0,1,1,0,0,0,0,0],“540 Locust Valley”:[0,0,0,0,0,0,0,0,0,0,0,1],“550 Oyster Bay/Atlantic Steamer”:[1,0,0,1,1,0,0,1,0,0,0,1],“560 Roslyn Rescue/590 Roslyn Highlands”:[1,0,0,1,1,0,2,1,0,0,0,2],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,0],“580 Syosset”:[0,0,1,1,0,0,1,0,1,0,1,1],“600 Bellmore”:[0,0,1,0,0,0,0,0,0,0,0,1],“610 East Meadow”:[0,1,0,0,0,0,0,0,0,0,0,0],“620 Levittown”:[1,1,0,0,0,0,2,0,0,0,1,0],“630 Massapequa”:[1,0,0,4,0,0,0,0,1,1,1,3],“640 Merrick”:[1,1,0,1,0,0,1,0,0,1,0,0],“650 North Bellmore”:[1,0,1,2,0,0,2,0,0,0,1,0],“660 North Massapequa”:[0,0,0,2,0,1,1,0,0,0,0,1],“670 North Merrick”:[0,0,0,0,0,0,0,0,1,0,0,0],“680 Seaford”:[0,0,0,0,0,0,0,0,0,0,0,0],“690 Wantagh”:[2,0,1,0,0,1,0,4,0,0,0,0],“700 Elmont”:[3,2,0,0,0,0,1,0,1,0,1,0],“710 Franklin Square & Munson”:[0,1,0,1,1,0,1,1,1,1,0,1],“720 Hempstead”:[1,1,1,1,0,0,0,1,0,0,1,1],“730 Roosevelt”:[2,1,0,1,0,0,0,1,0,1,0,0],“740 South Hempstead”:[0,0,1,0,0,0,0,0,0,0,0,0],“750 Uniondale”:[0,0,0,0,0,2,0,1,1,0,3,0],“760 West Hempstead”:[0,2,0,0,0,0,0,0,0,0,3,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[1,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,0,0,0,0,0,0,0,0,0,1],“830 Great Neck Vigilant”:[1,0,0,1,0,0,0,0,1,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[1,0,0,0,0,0,2,0,1,0,2,3],“860 Williston Park”:[1,0,0,0,0,0,0,0,0,0,0,1],“870 Manhasset-Lakeville”:[0,1,1,0,0,0,0,1,1,0,2,0],“900 Bethpage”:[0,1,0,1,1,1,0,1,1,0,1,1],“910 Carle Place”:[1,0,0,0,1,0,2,1,0,1,0,0],“920 Farmingdale”:[0,0,0,0,0,0,1,0,0,0,0,0],“930 Hicksville”:[0,0,1,3,1,1,2,0,0,0,0,0],“940 Jericho”:[1,0,0,0,0,0,0,1,0,0,1,0],“950 Plainview”:[0,0,0,0,1,0,1,0,0,1,1,0],“960 Westbury”:[2,2,2,0,0,0,1,0,2,1,3,1],“970 South Farmingdale”:[0,0,0,1,0,0,1,0,0,0,0,0]},“2020”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,1,0,0,0,0,0,1,0,2,0],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,0,0,0,0,1,0,0,1],“150 Garden City Park”:[1,0,0,0,0,0,0,0,0,0,0,0],“160 Mineola”:[1,0,2,0,0,0,0,1,0,0,1,0],“170 New Hyde Park”:[0,0,0,0,1,0,0,0,0,0,0,1],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,1,0,0,0,0,0,0,1],“200 Baldwin”:[1,1,0,0,0,2,0,0,1,0,1,1],“210 Freeport”:[1,0,3,2,0,1,2,1,0,0,1,1],“220 Island Park”:[1,0,0,1,1,0,0,0,1,0,0,0],“230 Long Beach”:[0,2,1,0,1,0,0,0,0,0,1,1],“240 Oceanside”:[0,0,0,0,0,0,0,0,0,0,0,0],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,0,0,1,0,0,0,0,0,0,1],“310 Inwood”:[0,0,1,1,1,0,0,1,1,0,0,0],“320 Lawrence-Cedarhurst”:[0,0,0,0,0,0,0,0,0,0,0,2],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,1,0],“340 Valley Stream”:[0,1,1,3,0,1,0,1,0,3,1,0],“350 Woodmere”:[0,0,0,0,0,0,0,0,0,0,0,0],“400 East Rockaway”:[0,0,1,0,0,0,0,0,0,1,0,1],“410 Lakeview”:[0,2,0,0,0,0,1,0,0,0,0,1],“420 Lynbrook”:[0,0,0,0,0,0,1,0,0,0,0,0],“430 Malverne”:[0,0,0,0,0,0,1,1,0,0,0,0],“440 Rockville Centre”:[0,0,0,0,0,0,0,0,1,0,0,0],“500 Bayville”:[0,0,0,0,0,0,0,0,0,0,0,0],“510 East Norwich”:[0,0,0,0,0,0,0,0,0,0,0,0],“520 Glen Cove”:[0,1,2,1,2,0,0,1,1,1,1,0],“530 Glenwood”:[0,0,0,0,0,0,0,1,0,0,0,0],“540 Locust Valley”:[0,0,0,0,0,0,0,1,0,0,0,1],“550 Oyster Bay/Atlantic Steamer”:[0,2,0,0,0,0,0,0,1,0,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[2,1,3,2,2,0,0,0,0,0,0,1],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,1],“580 Syosset”:[2,0,0,0,0,0,0,0,0,0,0,1],“600 Bellmore”:[3,0,0,0,0,1,0,1,0,0,0,0],“610 East Meadow”:[0,0,0,0,0,1,1,1,0,0,0,1],“620 Levittown”:[0,0,0,0,0,0,0,0,0,0,0,1],“630 Massapequa”:[2,1,0,1,0,0,0,1,2,1,1,1],“640 Merrick”:[0,0,0,0,0,0,1,0,1,0,0,0],“650 North Bellmore”:[0,0,1,1,0,0,0,0,1,0,0,0],“660 North Massapequa”:[0,0,0,0,1,0,1,0,0,0,0,0],“670 North Merrick”:[0,0,1,0,0,0,0,0,0,0,0,1],“680 Seaford”:[0,0,0,1,0,1,0,0,0,0,0,0],“690 Wantagh”:[0,2,0,1,1,0,0,0,0,2,1,0],“700 Elmont”:[0,0,1,0,2,1,0,0,0,1,1,0],“710 Franklin Square & Munson”:[1,0,1,1,2,1,0,0,0,0,0,1],“720 Hempstead”:[1,0,1,0,1,1,0,1,3,1,0,2],“730 Roosevelt”:[1,0,0,1,0,0,1,0,0,1,0,1],“740 South Hempstead”:[0,0,0,1,0,0,0,0,0,1,0,0],“750 Uniondale”:[0,0,2,0,0,1,1,1,0,2,0,2],“760 West Hempstead”:[0,0,0,0,0,1,0,0,0,0,0,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,1,0,0,0,0,0],“820 Great Neck Alert”:[0,0,0,0,0,0,0,2,0,0,0,0],“830 Great Neck Vigilant”:[2,0,0,0,0,1,0,0,0,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,1,0,0,0,0],“850 Port Washington”:[0,0,1,0,0,1,0,1,0,1,0,0],“860 Williston Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,0,1,0,0,2,2,1,0,0,0],“900 Bethpage”:[1,0,0,0,0,2,0,1,2,0,0,0],“910 Carle Place”:[0,0,0,0,0,0,0,0,0,0,1,1],“920 Farmingdale”:[0,1,1,0,1,1,0,0,0,0,0,0],“930 Hicksville”:[3,1,0,0,1,0,0,0,1,1,0,1],“940 Jericho”:[0,0,0,0,0,0,0,1,0,0,0,0],“950 Plainview”:[3,1,0,0,0,0,0,0,0,0,0,0],“960 Westbury”:[0,1,1,3,1,0,1,1,0,1,0,3],“970 South Farmingdale”:[0,0,0,0,0,0,0,1,0,0,0,1]},“2021”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,1,1,0,1,0,0,0,0,0,1],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,1,0,1,1,0,1,0,0,1,0],“150 Garden City Park”:[2,1,2,0,0,0,0,0,0,0,0,1],“160 Mineola”:[1,1,0,0,1,0,0,0,0,0,0,1],“170 New Hyde Park”:[1,0,0,0,0,0,0,0,0,0,0,0],“180 South Floral Park”:[0,0,0,1,0,0,1,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[0,0,2,1,0,0,0,0,0,0,0,0],“210 Freeport”:[2,1,4,2,0,1,1,3,1,0,1,1],“220 Island Park”:[0,0,0,0,0,1,0,0,0,0,0,0],“230 Long Beach”:[2,0,0,0,2,0,0,0,1,1,0,0],“240 Oceanside”:[0,0,0,1,0,0,0,0,0,0,0,1],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,0,0,0,0,0,0,0,0,0,0],“310 Inwood”:[0,0,1,0,0,0,0,0,0,1,0,1],“320 Lawrence-Cedarhurst”:[1,1,0,1,0,2,1,1,0,0,0,1],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[1,2,1,0,1,0,1,0,0,0,1,1],“350 Woodmere”:[0,0,0,0,0,0,0,0,0,0,1,1],“400 East Rockaway”:[0,0,0,0,0,0,0,0,0,0,0,0],“410 Lakeview”:[0,0,0,0,0,0,0,0,1,0,3,0],“420 Lynbrook”:[0,1,0,0,0,0,0,0,0,0,0,0],“430 Malverne”:[0,0,0,0,0,0,0,0,0,1,0,0],“440 Rockville Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“500 Bayville”:[0,0,0,0,0,0,0,1,0,0,0,0],“510 East Norwich”:[0,0,0,0,0,0,0,0,0,0,0,0],“520 Glen Cove”:[0,2,2,1,1,1,0,1,0,0,0,2],“530 Glenwood”:[1,0,0,0,0,0,0,0,0,0,0,1],“540 Locust Valley”:[1,0,0,0,0,0,0,0,1,0,0,0],“550 Oyster Bay/Atlantic Steamer”:[1,0,0,0,0,0,0,1,0,0,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[0,1,0,0,0,0,0,0,0,0,0,0],“570 Sea Cliff”:[1,0,0,0,0,0,0,0,0,0,0,0],“580 Syosset”:[0,0,0,1,0,0,1,0,0,1,1,1],“600 Bellmore”:[0,0,0,0,0,0,0,0,0,0,0,0],“610 East Meadow”:[1,0,2,0,1,1,0,0,1,1,1,0],“620 Levittown”:[0,0,1,1,1,0,0,0,0,1,0,1],“630 Massapequa”:[1,2,0,0,2,3,1,0,0,1,1,2],“640 Merrick”:[0,0,0,0,0,0,0,1,0,0,0,0],“650 North Bellmore”:[1,0,0,0,1,0,1,1,0,0,0,1],“660 North Massapequa”:[0,0,0,0,0,0,0,0,0,0,0,0],“670 North Merrick”:[1,0,0,0,0,1,0,0,0,0,0,0],“680 Seaford”:[0,1,0,0,0,0,0,0,1,0,0,0],“690 Wantagh”:[1,1,0,0,0,1,2,0,1,0,1,1],“700 Elmont”:[0,1,0,1,1,0,1,1,0,2,1,2],“710 Franklin Square & Munson”:[2,0,0,0,0,0,0,1,0,1,1,0],“720 Hempstead”:[1,2,4,4,1,1,1,4,0,0,1,2],“730 Roosevelt”:[0,0,0,1,1,0,0,0,0,0,0,1],“740 South Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“750 Uniondale”:[0,0,0,0,0,0,0,0,1,0,0,0],“760 West Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“800 Albertson”:[0,0,0,1,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[1,0,0,0,0,1,0,1,0,0,0,1],“830 Great Neck Vigilant”:[0,0,0,0,0,0,0,0,0,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[0,0,0,0,0,0,0,1,1,1,1,1],“860 Williston Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,0,0,0,0,0,0,0,0,0,1],“900 Bethpage”:[0,1,0,0,0,0,0,0,0,0,0,0],“910 Carle Place”:[0,0,1,0,0,0,0,1,0,0,0,1],“920 Farmingdale”:[0,0,0,0,0,0,0,0,0,0,1,0],“930 Hicksville”:[0,1,1,1,0,0,3,1,2,0,0,0],“940 Jericho”:[1,0,0,0,0,0,0,0,0,0,0,0],“950 Plainview”:[0,1,0,0,0,0,1,0,0,1,1,0],“960 Westbury”:[2,0,4,1,5,1,0,0,0,0,1,1],“970 South Farmingdale”:[0,0,0,0,1,0,1,0,0,0,1,0]},“2022”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,0,1,0,0,0,0,0,0,0,0],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,0,0,2,0,0,2,1,0],“150 Garden City Park”:[0,1,0,2,0,0,0,0,1,0,0,0],“160 Mineola”:[3,0,0,0,0,0,1,0,0,1,0,1],“170 New Hyde Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[1,0,1,1,0,0,1,1,1,0,0,0],“210 Freeport”:[2,1,3,0,2,2,2,2,0,0,0,1],“220 Island Park”:[1,0,0,0,0,0,0,0,0,0,1,0],“230 Long Beach”:[0,0,0,0,2,0,0,0,0,1,0,1],“240 Oceanside”:[1,0,0,0,2,0,0,0,0,1,0,2],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,1,0,0,0,0,0,0,0,0,0],“310 Inwood”:[0,0,0,0,0,0,1,0,0,0,0,0],“320 Lawrence-Cedarhurst”:[1,1,0,0,2,0,2,0,0,0,0,0],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[0,0,1,0,0,2,0,1,1,0,0,0],“350 Woodmere”:[0,0,0,0,0,1,1,0,0,0,0,1],“400 East Rockaway”:[1,0,0,0,0,0,0,0,0,0,0,0],“410 Lakeview”:[0,0,0,0,0,0,0,0,0,0,0,0],“420 Lynbrook”:[0,0,0,1,0,1,1,0,1,0,0,1],“430 Malverne”:[0,0,0,0,0,0,0,0,0,0,0,0],“440 Rockville Centre”:[0,1,0,2,0,0,0,0,0,0,0,0],“500 Bayville”:[1,0,0,0,0,0,0,0,0,0,1,1],“510 East Norwich”:[0,0,0,1,0,0,0,0,0,0,0,0],“520 Glen Cove”:[1,0,0,1,1,1,0,0,2,1,0,1],“530 Glenwood”:[1,1,1,0,0,0,0,0,0,0,0,0],“540 Locust Valley”:[0,0,0,0,0,0,0,0,0,0,0,1],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,0,0,0,0,2,0,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[2,0,0,0,2,1,0,0,0,1,1,1],“570 Sea Cliff”:[0,0,0,0,1,0,0,0,1,0,0,0],“580 Syosset”:[1,0,1,1,0,1,0,0,1,0,1,0],“600 Bellmore”:[0,0,0,1,0,0,0,0,0,0,0,0],“610 East Meadow”:[1,0,0,1,1,1,0,2,0,0,1,0],“620 Levittown”:[0,0,0,0,1,0,1,0,0,0,0,0],“630 Massapequa”:[2,0,0,1,1,0,2,0,0,2,2,4],“640 Merrick”:[0,0,0,0,0,0,1,0,0,0,0,0],“650 North Bellmore”:[0,0,0,0,0,0,0,1,1,0,0,1],“660 North Massapequa”:[0,0,0,0,0,0,0,0,0,0,0,0],“670 North Merrick”:[0,0,0,1,0,0,0,0,0,0,0,1],“680 Seaford”:[0,0,0,1,0,0,0,0,0,0,0,0],“690 Wantagh”:[1,0,0,0,0,0,1,0,0,0,0,1],“700 Elmont”:[0,2,2,3,3,1,1,2,1,2,1,1],“710 Franklin Square & Munson”:[0,0,0,1,0,0,1,2,1,1,0,0],“720 Hempstead”:[1,0,0,3,0,1,0,0,1,2,0,1],“730 Roosevelt”:[1,2,0,2,0,1,1,0,0,1,2,1],“740 South Hempstead”:[1,0,1,0,0,0,0,1,0,0,1,1],“750 Uniondale”:[0,0,0,0,0,1,0,0,0,0,1,0],“760 West Hempstead”:[0,0,1,0,0,0,0,1,0,0,1,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,0,0,0,0,0,1,0,0,1,0],“830 Great Neck Vigilant”:[0,0,0,0,0,0,1,0,0,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[0,0,0,0,0,0,0,1,0,0,0,1],“860 Williston Park”:[1,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,3,0,0,0,1,0,2,0,0,1],“900 Bethpage”:[0,0,1,1,0,0,1,0,0,1,0,1],“910 Carle Place”:[0,0,0,1,0,0,0,0,0,0,1,0],“920 Farmingdale”:[0,1,0,0,0,1,0,0,0,0,0,0],“930 Hicksville”:[0,1,1,2,1,0,1,0,2,0,2,1],“940 Jericho”:[2,1,0,0,1,0,0,0,0,0,1,0],“950 Plainview”:[1,0,0,0,2,1,1,0,0,1,0,0],“960 Westbury”:[1,1,2,1,1,1,3,2,2,1,1,0],“970 South Farmingdale”:[0,1,1,0,1,1,0,2,0,0,0,1]},“2023”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,1],“120 Floral Park”:[0,0,0,1,0,0,0,0,0,0,0,0],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,2,0,0,0,0,1,0,0,0],“150 Garden City Park”:[0,0,1,0,1,0,0,0,0,0,0,1],“160 Mineola”:[1,0,1,0,0,0,0,0,0,0,0,0],“170 New Hyde Park”:[1,1,0,0,0,0,0,0,0,0,0,1],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[1,1,1,0,0,1,1,1,0,0,1,3],“210 Freeport”:[1,1,0,2,2,2,0,0,1,0,3,0],“220 Island Park”:[1,1,0,0,0,0,0,0,0,0,0,0],“230 Long Beach”:[1,2,1,0,0,1,0,0,0,2,1,1],“240 Oceanside”:[0,0,0,0,1,0,0,1,0,1,0,1],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,1],“300 Hewlett”:[0,0,0,0,1,0,0,0,1,0,0,0],“310 Inwood”:[0,0,1,0,0,0,0,0,0,0,0,1],“320 Lawrence-Cedarhurst”:[2,1,0,0,0,1,1,2,1,1,3,0],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[1,0,1,1,1,1,2,0,1,1,2,0],“350 Woodmere”:[1,1,0,2,0,0,0,0,0,0,1,0],“400 East Rockaway”:[0,0,0,0,0,0,0,0,0,0,0,0],“410 Lakeview”:[0,0,0,1,0,0,0,0,1,0,0,0],“420 Lynbrook”:[0,0,0,0,0,0,0,0,0,0,0,1],“430 Malverne”:[0,0,0,0,0,0,0,0,0,0,0,0],“440 Rockville Centre”:[1,0,0,0,0,0,0,1,0,0,0,0],“500 Bayville”:[0,0,0,1,0,0,0,1,0,0,0,0],“510 East Norwich”:[0,1,0,1,1,0,0,0,0,0,1,0],“520 Glen Cove”:[0,0,0,0,0,1,0,2,0,0,0,0],“530 Glenwood”:[0,0,0,0,1,0,0,0,0,0,0,0],“540 Locust Valley”:[0,0,0,0,0,0,0,1,0,0,0,0],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,0,0,0,0,0,0,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[0,1,0,0,1,0,0,0,2,0,0,0],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,1],“580 Syosset”:[3,0,0,1,0,1,0,0,1,0,0,2],“600 Bellmore”:[0,0,1,1,0,0,1,0,0,0,0,0],“610 East Meadow”:[0,0,0,1,0,0,0,0,0,1,0,1],“620 Levittown”:[0,0,0,0,0,0,2,0,0,0,0,0],“630 Massapequa”:[1,1,1,0,1,0,2,1,2,0,0,0],“640 Merrick”:[0,0,0,0,0,0,1,0,0,0,0,0],“650 North Bellmore”:[0,0,1,0,0,0,1,0,0,0,0,0],“660 North Massapequa”:[0,0,1,0,0,0,0,0,0,0,0,0],“670 North Merrick”:[0,1,0,0,0,1,0,0,0,0,0,0],“680 Seaford”:[0,0,0,0,0,0,0,0,0,0,0,1],“690 Wantagh”:[1,1,0,1,0,1,1,0,0,0,0,2],“700 Elmont”:[2,0,0,0,0,3,2,0,0,2,2,0],“710 Franklin Square & Munson”:[0,0,0,0,1,0,0,1,0,0,1,0],“720 Hempstead”:[2,0,1,2,1,1,0,0,3,2,2,2],“730 Roosevelt”:[0,0,0,0,0,0,0,0,0,1,1,1],“740 South Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,1],“750 Uniondale”:[0,0,0,2,0,0,1,0,0,0,0,0],“760 West Hempstead”:[1,0,0,0,0,0,0,0,0,0,0,1],“800 Albertson”:[1,0,0,0,0,0,0,0,0,0,1,0],“810 East Williston”:[0,0,0,0,1,1,0,0,1,0,0,0],“820 Great Neck Alert”:[1,1,0,0,0,0,0,2,0,0,0,0],“830 Great Neck Vigilant”:[0,0,1,0,0,0,0,0,0,2,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[0,0,0,0,0,0,0,1,0,2,1,0],“860 Williston Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,0,0,0,0,0,0,0,1,1,1],“900 Bethpage”:[1,0,0,0,1,1,0,1,0,0,0,0],“910 Carle Place”:[0,0,0,0,0,0,0,0,0,0,0,0],“920 Farmingdale”:[0,0,0,0,0,0,0,1,0,0,0,0],“930 Hicksville”:[1,0,3,2,1,3,0,1,1,0,0,5],“940 Jericho”:[0,1,0,0,0,0,0,0,0,0,0,0],“950 Plainview”:[0,1,0,0,2,0,0,1,1,1,0,0],“960 Westbury”:[0,0,2,1,0,1,0,1,0,1,0,1],“970 South Farmingdale”:[0,0,0,0,0,0,0,1,1,0,1,0]},“2024”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,1,0,0,0,0,0,0,0,0,0],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,0,0,1,2,0,0,0,1],“150 Garden City Park”:[0,0,0,0,1,0,0,0,0,0,0,0],“160 Mineola”:[0,0,0,0,1,1,1,0,0,0,0,0],“170 New Hyde Park”:[0,0,0,0,0,0,1,0,0,1,0,1],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,1,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[1,0,1,0,1,1,1,0,2,2,0,0],“210 Freeport”:[0,0,1,2,1,0,0,2,0,2,2,4],“220 Island Park”:[0,0,0,0,0,0,1,0,0,0,0,0],“230 Long Beach”:[0,1,1,1,1,0,0,1,0,1,1,0],“240 Oceanside”:[0,0,0,0,0,1,1,0,1,1,0,0],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,0,0,0,0,0,1,1,0,0,0],“310 Inwood”:[0,0,2,0,0,0,0,0,0,0,1,0],“320 Lawrence-Cedarhurst”:[1,0,0,1,0,0,1,2,1,0,0,0],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[2,3,0,0,1,1,1,0,0,0,1,0],“350 Woodmere”:[0,0,0,0,1,0,1,0,0,0,1,1],“400 East Rockaway”:[0,0,0,0,0,0,1,0,1,0,0,0],“410 Lakeview”:[0,0,1,0,0,0,2,0,0,1,0,1],“420 Lynbrook”:[0,1,0,1,0,1,0,0,0,0,2,1],“430 Malverne”:[0,0,0,0,0,0,0,0,0,0,1,0],“440 Rockville Centre”:[1,1,0,0,0,0,0,0,0,0,0,0],“500 Bayville”:[0,0,0,0,0,0,0,0,0,0,0,0],“510 East Norwich”:[0,0,0,0,0,0,0,0,0,0,0,0],“520 Glen Cove”:[3,1,2,1,0,1,1,1,0,1,2,0],“530 Glenwood”:[1,0,0,1,1,0,1,0,0,0,0,0],“540 Locust Valley”:[1,0,1,0,0,0,0,0,0,1,0,0],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,1,0,0,1,0,0,1,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[0,0,0,1,0,0,2,0,0,0,2,0],“570 Sea Cliff”:[0,0,0,0,0,1,0,0,0,0,0,0],“580 Syosset”:[0,0,0,0,0,0,0,0,0,0,0,3],“600 Bellmore”:[0,0,0,0,0,0,0,0,0,1,0,0],“610 East Meadow”:[1,0,0,0,1,0,0,1,0,2,0,0],“620 Levittown”:[0,0,0,0,0,0,0,0,0,1,0,0],“630 Massapequa”:[1,1,2,0,0,0,1,1,1,0,0,0],“640 Merrick”:[0,0,0,0,0,0,0,0,0,0,0,0],“650 North Bellmore”:[1,0,0,1,0,2,0,1,0,0,0,1],“660 North Massapequa”:[0,0,0,0,0,0,0,0,0,0,0,0],“670 North Merrick”:[0,0,0,0,0,0,0,0,0,0,0,0],“680 Seaford”:[0,0,0,0,0,1,0,0,0,1,0,0],“690 Wantagh”:[0,3,0,1,1,0,1,0,2,0,1,0],“700 Elmont”:[0,2,4,2,0,0,3,1,2,0,1,4],“710 Franklin Square & Munson”:[0,0,1,0,1,0,0,1,0,1,0,0],“720 Hempstead”:[0,0,1,2,0,5,1,0,2,2,0,5],“730 Roosevelt”:[0,0,0,0,0,0,0,0,0,0,0,2],“740 South Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“750 Uniondale”:[0,2,0,1,0,0,1,0,1,0,0,2],“760 West Hempstead”:[0,0,0,1,1,0,0,0,0,0,0,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,0,0,0,0,1,0,0,1,0,0],“830 Great Neck Vigilant”:[1,1,0,0,0,0,0,1,0,1,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[1,0,1,0,1,0,0,0,0,0,0,2],“860 Williston Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,0,0,0,1,1,0,0,0,0,0],“900 Bethpage”:[0,0,0,0,0,0,0,0,0,0,0,0],“910 Carle Place”:[1,0,0,0,0,0,0,0,0,0,0,0],“920 Farmingdale”:[0,0,0,1,0,0,0,0,0,0,0,0],“930 Hicksville”:[1,1,1,0,0,3,2,1,0,0,4,0],“940 Jericho”:[0,0,0,0,0,1,0,2,0,0,2,2],“950 Plainview”:[0,1,0,1,1,0,0,0,0,0,0,1],“960 Westbury”:[0,0,0,1,0,2,1,0,1,0,2,1],“970 South Farmingdale”:[0,0,0,1,0,0,1,0,1,0,1,0]},“2025”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,0,0,0,0,0,0,0,0],“150 Garden City Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“160 Mineola”:[0,0,0,0,0,0,0,0,0,0,0,0],“170 New Hyde Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[0,0,0,0,0,0,0,0,0,0,0,0],“210 Freeport”:[0,0,0,0,0,0,0,0,0,0,0,0],“220 Island Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“230 Long Beach”:[0,0,0,0,0,0,0,0,0,0,0,0],“240 Oceanside”:[0,0,0,0,0,0,0,0,0,0,0,0],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,0,0,0,0,0,0,0,0,0,0],“310 Inwood”:[0,0,0,0,0,0,0,0,0,0,0,0],“320 Lawrence-Cedarhurst”:[0,0,0,0,0,0,0,0,0,0,0,0],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[0,0,0,0,0,0,0,0,0,0,0,0],“350 Woodmere”:[0,0,0,0,0,0,0,0,0,0,0,0],“400 East Rockaway”:[0,0,0,0,0,0,0,0,0,0,0,0],“410 Lakeview”:[0,0,0,0,0,0,0,0,0,0,0,0],“420 Lynbrook”:[0,0,0,0,0,0,0,0,0,0,0,0],“430 Malverne”:[0,0,0,0,0,0,0,0,0,0,0,0],“440 Rockville Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“500 Bayville”:[0,0,0,0,0,0,0,0,0,0,0,0],“510 East Norwich”:[0,0,0,0,0,0,0,0,0,0,0,0],“520 Glen Cove”:[0,0,0,0,0,0,0,0,0,0,0,0],“530 Glenwood”:[0,0,0,0,0,0,0,0,0,0,0,0],“540 Locust Valley”:[0,0,0,0,0,0,0,0,0,0,0,0],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,0,0,0,0,0,0,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[0,0,0,0,0,0,0,0,0,0,0,0],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,0],“580 Syosset”:[0,0,0,0,0,0,0,0,0,0,0,0],“600 Bellmore”:[0,0,0,0,0,0,0,0,0,0,0,0],“610 East Meadow”:[0,0,0,0,0,0,0,0,0,0,0,0],“620 Levittown”:[0,0,0,0,0,0,0,0,0,0,0,0],“630 Massapequa”:[0,0,0,0,0,0,0,0,0,0,0,0],“640 Merrick”:[0,0,0,0,0,0,0,0,0,0,0,0],“650 North Bellmore”:[0,0,0,0,0,0,0,0,0,0,0,0],“660 North Massapequa”:[0,0,0,0,0,0,0,0,0,0,0,0],“670 North Merrick”:[0,0,0,0,0,0,0,0,0,0,0,0],“680 Seaford”:[0,0,0,0,0,0,0,0,0,0,0,0],“690 Wantagh”:[0,0,0,0,0,0,0,0,0,0,0,0],“700 Elmont”:[0,0,0,0,0,0,0,0,0,0,0,0],“710 Franklin Square & Munson”:[0,0,0,0,0,0,0,0,0,0,0,0],“720 Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“730 Roosevelt”:[0,0,0,0,0,0,0,0,0,0,0,0],“740 South Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“750 Uniondale”:[0,0,0,0,0,0,0,0,0,0,0,0],“760 West Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,0,0,0,0,0,0,0,0,0,0],“830 Great Neck Vigilant”:[0,0,0,0,0,0,0,0,0,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[0,0,0,0,0,0,0,0,0,0,0,0],“860 Williston Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,0,0,0,0,0,0,0,0,0,0],“900 Bethpage”:[0,0,0,0,0,0,0,0,0,0,0,0],“910 Carle Place”:[0,0,0,0,0,0,0,0,0,0,0,0],“920 Farmingdale”:[0,0,0,0,0,0,0,0,0,0,0,0],“930 Hicksville”:[0,0,0,0,0,0,0,0,0,0,0,0],“940 Jericho”:[0,0,0,0,0,0,0,0,0,0,0,0],“950 Plainview”:[0,0,0,0,0,0,0,0,0,0,0,0],“960 Westbury”:[0,0,0,0,0,0,0,0,0,0,0,0],“970 South Farmingdale”:[0,0,0,0,0,0,0,0,0,0,0,0]},“2026”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,0,0,0,0,0,0,0,0],“150 Garden City Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“160 Mineola”:[0,0,0,0,0,0,0,0,0,0,0,0],“170 New Hyde Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[0,0,0,0,0,0,0,0,0,0,0,0],“210 Freeport”:[0,0,0,0,0,0,0,0,0,0,0,0],“220 Island Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“230 Long Beach”:[0,0,0,0,0,0,0,0,0,0,0,0],“240 Oceanside”:[0,0,0,0,0,0,0,0,0,0,0,0],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,0,0,0,0,0,0,0,0,0,0],“310 Inwood”:[0,0,0,0,0,0,0,0,0,0,0,0],“320 Lawrence-Cedarhurst”:[0,0,0,0,0,0,0,0,0,0,0,0],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[0,0,0,0,0,0,0,0,0,0,0,0],“350 Woodmere”:[0,0,0,0,0,0,0,0,0,0,0,0],“400 East Rockaway”:[0,0,0,0,0,0,0,0,0,0,0,0],“410 Lakeview”:[0,0,0,0,0,0,0,0,0,0,0,0],“420 Lynbrook”:[0,0,0,0,0,0,0,0,0,0,0,0],“430 Malverne”:[0,0,0,0,0,0,0,0,0,0,0,0],“440 Rockville Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“500 Bayville”:[0,0,0,0,0,0,0,0,0,0,0,0],“510 East Norwich”:[0,0,0,0,0,0,0,0,0,0,0,0],“520 Glen Cove”:[0,0,0,0,0,0,0,0,0,0,0,0],“530 Glenwood”:[0,0,0,0,0,0,0,0,0,0,0,0],“540 Locust Valley”:[0,0,0,0,0,0,0,0,0,0,0,0],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,0,0,0,0,0,0,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[0,0,0,0,0,0,0,0,0,0,0,0],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,0],“580 Syosset”:[0,0,0,0,0,0,0,0,0,0,0,0],“600 Bellmore”:[0,0,0,0,0,0,0,0,0,0,0,0],“610 East Meadow”:[0,0,0,0,0,0,0,0,0,0,0,0],“620 Levittown”:[0,0,0,0,0,0,0,0,0,0,0,0],“630 Massapequa”:[0,0,0,0,0,0,0,0,0,0,0,0],“640 Merrick”:[0,0,0,0,0,0,0,0,0,0,0,0],“650 North Bellmore”:[0,0,0,0,0,0,0,0,0,0,0,0],“660 North Massapequa”:[0,0,0,0,0,0,0,0,0,0,0,0],“670 North Merrick”:[0,0,0,0,0,0,0,0,0,0,0,0],“680 Seaford”:[0,0,0,0,0,0,0,0,0,0,0,0],“690 Wantagh”:[0,0,0,0,0,0,0,0,0,0,0,0],“700 Elmont”:[0,0,0,0,0,0,0,0,0,0,0,0],“710 Franklin Square & Munson”:[0,0,0,0,0,0,0,0,0,0,0,0],“720 Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“730 Roosevelt”:[0,0,0,0,0,0,0,0,0,0,0,0],“740 South Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“750 Uniondale”:[0,0,0,0,0,0,0,0,0,0,0,0],“760 West Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,0,0,0,0,0,0,0,0,0,0],“830 Great Neck Vigilant”:[0,0,0,0,0,0,0,0,0,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[0,0,0,0,0,0,0,0,0,0,0,0],“860 Williston Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,0,0,0,0,0,0,0,0,0,0],“900 Bethpage”:[0,0,0,0,0,0,0,0,0,0,0,0],“910 Carle Place”:[0,0,0,0,0,0,0,0,0,0,0,0],“920 Farmingdale”:[0,0,0,0,0,0,0,0,0,0,0,0],“930 Hicksville”:[0,0,0,0,0,0,0,0,0,0,0,0],“940 Jericho”:[0,0,0,0,0,0,0,0,0,0,0,0],“950 Plainview”:[0,0,0,0,0,0,0,0,0,0,0,0],“960 Westbury”:[0,0,0,0,0,0,0,0,0,0,0,0],“970 South Farmingdale”:[0,0,0,0,0,0,0,0,0,0,0,0]}}};
-document.getElementById(‘loading’).style.display=‘none’;
-document.getElementById(‘lu’).innerHTML=`Last updated: ${D.metadata.last_updated}`;
-initAll();
-}catch(e){
-document.getElementById(‘loading’).innerHTML=’<div style="color:#ef4444;font-size:1rem">⚠️ Error loading fire data</div>’;
-}
-}
+const D={“metadata”:{“county”:“Nassau County”,“state”:“NY”,“description”:“Nassau County Volunteer Fire Departments Working Fires”,“source”:“https://www.zone2photo.com/Working-Fire-Lists/”,“last_updated”:“2024-12-31”,“years_complete”:[2016,2017,2018,2019,2020,2021,2022,2023,2024],“years_in_progress”:[2025,2026]},“departments”:[{“name”:“100 Bellerose”,“battalion”:””},{“name”:“110 Bellerose Terrace”,“battalion”:””},{“name”:“120 Floral Park”,“battalion”:””},{“name”:“130 Floral Park Centre”,“battalion”:””},{“name”:“140 Garden City”,“battalion”:””},{“name”:“150 Garden City Park”,“battalion”:””},{“name”:“160 Mineola”,“battalion”:””},{“name”:“170 New Hyde Park”,“battalion”:””},{“name”:“180 South Floral Park”,“battalion”:””},{“name”:“190 Stewart Manor”,“battalion”:””},{“name”:“200 Baldwin”,“battalion”:””},{“name”:“210 Freeport”,“battalion”:””},{“name”:“220 Island Park”,“battalion”:””},{“name”:“230 Long Beach”,“battalion”:””},{“name”:“240 Oceanside”,“battalion”:””},{“name”:“250 Point Lookout-Lido”,“battalion”:””},{“name”:“300 Hewlett”,“battalion”:””},{“name”:“310 Inwood”,“battalion”:””},{“name”:“320 Lawrence-Cedarhurst”,“battalion”:””},{“name”:“330 Meadowmere Park”,“battalion”:””},{“name”:“340 Valley Stream”,“battalion”:””},{“name”:“350 Woodmere”,“battalion”:””},{“name”:“400 East Rockaway”,“battalion”:””},{“name”:“410 Lakeview”,“battalion”:””},{“name”:“420 Lynbrook”,“battalion”:””},{“name”:“430 Malverne”,“battalion”:””},{“name”:“440 Rockville Centre”,“battalion”:””},{“name”:“500 Bayville”,“battalion”:””},{“name”:“510 East Norwich”,“battalion”:””},{“name”:“520 Glen Cove”,“battalion”:””},{“name”:“530 Glenwood”,“battalion”:””},{“name”:“540 Locust Valley”,“battalion”:””},{“name”:“550 Oyster Bay/Atlantic Steamer”,“battalion”:””},{“name”:“560 Roslyn Rescue/590 Roslyn Highlands”,“battalion”:””},{“name”:“570 Sea Cliff”,“battalion”:””},{“name”:“580 Syosset”,“battalion”:””},{“name”:“600 Bellmore”,“battalion”:””},{“name”:“610 East Meadow”,“battalion”:””},{“name”:“620 Levittown”,“battalion”:””},{“name”:“630 Massapequa”,“battalion”:””},{“name”:“640 Merrick”,“battalion”:””},{“name”:“650 North Bellmore”,“battalion”:””},{“name”:“660 North Massapequa”,“battalion”:””},{“name”:“670 North Merrick”,“battalion”:””},{“name”:“680 Seaford”,“battalion”:””},{“name”:“690 Wantagh”,“battalion”:””},{“name”:“700 Elmont”,“battalion”:””},{“name”:“710 Franklin Square & Munson”,“battalion”:””},{“name”:“720 Hempstead”,“battalion”:””},{“name”:“730 Roosevelt”,“battalion”:””},{“name”:“740 South Hempstead”,“battalion”:””},{“name”:“750 Uniondale”,“battalion”:””},{“name”:“760 West Hempstead”,“battalion”:””},{“name”:“800 Albertson”,“battalion”:””},{“name”:“810 East Williston”,“battalion”:””},{“name”:“820 Great Neck Alert”,“battalion”:””},{“name”:“830 Great Neck Vigilant”,“battalion”:””},{“name”:“840 Plandome”,“battalion”:””},{“name”:“850 Port Washington”,“battalion”:””},{“name”:“860 Williston Park”,“battalion”:””},{“name”:“870 Manhasset-Lakeville”,“battalion”:””},{“name”:“900 Bethpage”,“battalion”:””},{“name”:“910 Carle Place”,“battalion”:””},{“name”:“920 Farmingdale”,“battalion”:””},{“name”:“930 Hicksville”,“battalion”:””},{“name”:“940 Jericho”,“battalion”:””},{“name”:“950 Plainview”,“battalion”:””},{“name”:“960 Westbury”,“battalion”:””},{“name”:“970 South Farmingdale”,“battalion”:””}],“years”:{“2016”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[1,0,0,0,0,0,0,0,0,0,2,1],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,0,1,0,1,0,0,1,1],“150 Garden City Park”:[0,2,0,1,0,0,0,0,0,0,0,0],“160 Mineola”:[1,0,2,0,0,1,1,0,0,0,0,0],“170 New Hyde Park”:[1,0,0,2,1,0,1,0,0,0,1,1],“180 South Floral Park”:[0,0,1,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[2,0,0,0,0,1,0,1,0,0,0,0],“210 Freeport”:[1,0,0,1,0,1,4,1,2,1,0,3],“220 Island Park”:[0,0,0,1,0,0,0,0,0,0,0,0],“230 Long Beach”:[2,0,1,0,0,1,1,2,0,2,0,1],“240 Oceanside”:[1,0,1,2,1,0,0,0,0,0,0,0],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,1,0,0],“300 Hewlett”:[0,1,0,0,1,0,0,0,0,0,0,0],“310 Inwood”:[0,0,0,0,1,0,0,0,0,0,0,0],“320 Lawrence-Cedarhurst”:[1,0,0,1,0,0,0,1,0,0,1,3],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[0,0,1,0,2,1,1,0,0,0,2,2],“350 Woodmere”:[1,1,0,1,0,0,1,0,0,0,0,0],“400 East Rockaway”:[0,0,0,1,0,0,1,0,0,0,0,0],“410 Lakeview”:[0,0,1,0,0,0,0,0,1,0,0,0],“420 Lynbrook”:[0,1,0,0,0,0,0,0,1,3,0,1],“430 Malverne”:[0,2,0,0,0,0,0,0,0,0,0,0],“440 Rockville Centre”:[0,0,0,0,0,0,0,0,0,1,0,0],“500 Bayville”:[0,0,0,0,0,0,0,1,0,0,0,1],“510 East Norwich”:[0,0,0,0,1,0,0,0,0,0,0,0],“520 Glen Cove”:[0,1,1,0,0,0,1,0,0,0,0,0],“530 Glenwood”:[1,0,0,0,0,0,0,0,0,0,0,0],“540 Locust Valley”:[0,0,0,2,0,1,1,0,1,0,1,0],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,0,0,0,0,0,1,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[0,0,0,0,1,0,1,1,0,0,0,0],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,0],“580 Syosset”:[0,0,0,1,1,0,1,0,0,1,1,1],“600 Bellmore”:[0,0,0,0,1,0,1,0,0,0,0,1],“610 East Meadow”:[0,0,0,1,0,0,0,0,0,0,1,0],“620 Levittown”:[0,0,0,0,0,0,0,0,0,0,1,0],“630 Massapequa”:[1,1,1,1,0,1,1,0,1,0,0,1],“640 Merrick”:[0,0,0,0,0,2,0,0,0,0,1,0],“650 North Bellmore”:[0,0,0,1,0,0,1,0,0,1,1,0],“660 North Massapequa”:[1,1,0,0,0,0,1,1,0,0,0,0],“670 North Merrick”:[0,0,0,0,0,1,0,1,0,0,0,0],“680 Seaford”:[0,0,0,0,0,0,0,0,0,0,0,0],“690 Wantagh”:[1,0,1,1,1,1,0,0,1,1,0,0],“700 Elmont”:[2,1,1,3,0,2,2,1,0,0,1,2],“710 Franklin Square & Munson”:[0,2,2,0,0,1,0,0,0,1,0,0],“720 Hempstead”:[0,1,1,2,2,2,2,3,1,0,2,4],“730 Roosevelt”:[0,0,2,0,0,1,0,0,0,0,0,0],“740 South Hempstead”:[0,0,0,0,0,0,0,0,0,0,1,0],“750 Uniondale”:[0,0,0,1,2,1,0,0,0,0,1,0],“760 West Hempstead”:[2,0,0,1,0,0,0,0,0,0,0,1],“800 Albertson”:[0,1,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,1,0,0,0,0,0,0,0,0,1],“830 Great Neck Vigilant”:[0,0,0,0,1,0,0,0,0,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[0,0,0,0,0,1,0,1,0,1,1,1],“860 Williston Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,1,1,1,1,0,0,1,0,0,1,1],“900 Bethpage”:[0,0,0,0,0,0,0,0,0,0,0,0],“910 Carle Place”:[1,0,0,0,0,0,1,0,0,0,0,0],“920 Farmingdale”:[0,0,0,0,0,0,0,0,0,0,0,0],“930 Hicksville”:[0,0,2,0,0,0,0,2,1,1,1,0],“940 Jericho”:[1,0,0,0,1,0,0,1,0,0,0,0],“950 Plainview”:[0,0,0,0,1,0,0,0,0,0,0,1],“960 Westbury”:[0,1,3,1,1,2,0,1,2,1,0,1],“970 South Farmingdale”:[0,0,0,0,0,0,0,0,0,0,0,0]},“2017”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[1,0,0,0,0,0,0,0,0,0,0,0],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[1,1,0,0,0,0,0,1,0,1,0,0],“150 Garden City Park”:[0,0,0,0,0,0,0,1,0,0,0,0],“160 Mineola”:[0,0,3,1,1,0,0,0,0,2,0,0],“170 New Hyde Park”:[1,0,0,0,0,0,1,0,0,0,0,0],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[1,0,2,0,0,1,1,0,1,0,0,0],“210 Freeport”:[2,2,3,2,3,0,1,1,0,3,0,4],“220 Island Park”:[0,1,0,0,1,0,0,0,0,0,1,0],“230 Long Beach”:[0,0,3,1,0,1,0,0,1,1,1,0],“240 Oceanside”:[1,0,0,0,0,0,0,0,0,0,1,0],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,0,0,0,0,0,0,1,0,0,0],“310 Inwood”:[1,0,0,0,0,0,0,0,0,0,0,0],“320 Lawrence-Cedarhurst”:[0,0,0,0,0,0,0,1,0,0,0,0],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[1,4,1,0,1,0,0,2,1,0,1,0],“350 Woodmere”:[0,0,0,0,0,0,0,0,0,0,0,0],“400 East Rockaway”:[0,0,2,0,0,0,0,1,0,1,1,0],“410 Lakeview”:[0,0,1,0,0,0,1,0,0,0,0,0],“420 Lynbrook”:[0,1,1,1,0,0,0,0,0,0,0,1],“430 Malverne”:[0,0,2,0,0,0,0,0,0,0,0,1],“440 Rockville Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“500 Bayville”:[0,0,0,0,1,0,0,0,0,0,0,1],“510 East Norwich”:[0,0,0,0,0,0,0,1,0,0,0,0],“520 Glen Cove”:[5,0,0,0,0,0,0,0,2,1,0,0],“530 Glenwood”:[0,0,0,1,0,0,0,0,0,0,0,0],“540 Locust Valley”:[0,1,0,0,0,1,0,0,0,0,0,0],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,0,0,1,0,0,0,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[1,0,1,0,0,0,0,0,0,3,1,0],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,0],“580 Syosset”:[1,0,0,1,0,2,1,0,2,1,0,0],“600 Bellmore”:[0,0,0,0,1,0,0,0,0,0,0,0],“610 East Meadow”:[0,0,2,0,1,0,0,0,0,0,0,1],“620 Levittown”:[1,1,1,1,1,0,0,0,0,0,0,0],“630 Massapequa”:[1,0,0,0,0,1,0,0,1,0,1,3],“640 Merrick”:[0,0,1,0,1,1,0,0,1,0,0,0],“650 North Bellmore”:[0,0,0,0,0,1,1,0,0,1,0,0],“660 North Massapequa”:[0,0,0,0,1,0,0,0,1,1,0,0],“670 North Merrick”:[0,0,0,0,1,0,0,0,0,0,0,0],“680 Seaford”:[0,0,0,0,0,0,0,0,0,0,0,0],“690 Wantagh”:[1,2,2,2,1,1,0,0,0,0,0,0],“700 Elmont”:[0,4,2,2,0,1,0,1,0,1,2,1],“710 Franklin Square & Munson”:[2,0,0,0,0,0,0,0,0,0,0,0],“720 Hempstead”:[2,1,1,1,0,0,2,2,1,1,3,3],“730 Roosevelt”:[0,0,1,1,2,0,1,0,0,0,0,1],“740 South Hempstead”:[0,0,0,1,0,0,0,0,0,0,0,0],“750 Uniondale”:[1,0,0,0,0,2,1,0,0,0,0,0],“760 West Hempstead”:[1,0,0,0,0,0,0,1,0,0,0,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,0,0,0,0,0,0,0,0,1,1],“830 Great Neck Vigilant”:[0,0,1,0,0,2,0,0,0,0,0,0],“840 Plandome”:[1,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[1,1,0,0,3,0,1,0,0,1,1,2],“860 Williston Park”:[0,0,0,0,0,1,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,1,0,0,0,0,0,0,0,0,0],“900 Bethpage”:[0,1,0,1,0,0,1,1,1,0,0,0],“910 Carle Place”:[0,0,0,1,0,0,0,0,0,0,0,0],“920 Farmingdale”:[0,0,0,0,0,0,0,0,0,0,0,0],“930 Hicksville”:[1,0,0,2,0,1,0,0,1,0,1,0],“940 Jericho”:[0,0,0,0,0,0,0,0,0,0,0,0],“950 Plainview”:[1,0,0,0,0,1,0,0,0,0,0,0],“960 Westbury”:[2,1,1,2,0,1,1,0,1,1,1,1],“970 South Farmingdale”:[0,0,1,1,0,0,0,1,0,0,1,0]},“2018”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,1],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,0,0,0,0,0,0,1,0],“150 Garden City Park”:[0,0,0,0,0,0,0,0,0,1,0,1],“160 Mineola”:[3,0,1,0,0,1,0,0,0,0,1,0],“170 New Hyde Park”:[0,0,0,0,0,0,0,1,0,0,0,1],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,1,0,0,0,0,1,0,0],“200 Baldwin”:[0,0,0,0,1,0,0,0,1,0,1,0],“210 Freeport”:[2,1,0,1,0,2,2,1,0,0,0,1],“220 Island Park”:[1,0,0,0,0,0,0,1,0,0,0,1],“230 Long Beach”:[2,1,1,1,1,0,0,0,0,0,1,0],“240 Oceanside”:[0,1,0,0,0,0,0,0,0,0,0,0],“250 Point Lookout-Lido”:[0,0,0,0,1,0,0,0,0,0,1,0],“300 Hewlett”:[0,1,0,0,0,0,0,0,0,0,0,0],“310 Inwood”:[1,0,0,0,0,0,0,0,0,0,0,0],“320 Lawrence-Cedarhurst”:[0,1,1,1,0,1,0,1,0,1,1,0],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[2,1,0,3,2,2,0,0,0,1,2,1],“350 Woodmere”:[0,1,0,0,0,0,0,1,0,0,0,0],“400 East Rockaway”:[0,0,0,0,1,0,0,0,0,0,0,0],“410 Lakeview”:[0,0,0,0,1,0,1,1,1,0,0,0],“420 Lynbrook”:[0,1,1,0,1,0,0,0,0,1,0,1],“430 Malverne”:[0,1,0,0,0,0,0,0,0,0,0,0],“440 Rockville Centre”:[0,0,0,1,0,0,0,0,0,0,0,0],“500 Bayville”:[1,0,0,0,0,0,0,0,0,0,1,0],“510 East Norwich”:[0,0,0,0,0,0,0,0,1,0,0,0],“520 Glen Cove”:[2,1,0,0,0,1,0,1,0,0,1,1],“530 Glenwood”:[0,0,0,0,0,0,0,0,0,0,0,0],“540 Locust Valley”:[0,0,0,2,0,0,0,1,0,0,0,1],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,0,2,0,0,1,0,0,2],“560 Roslyn Rescue/590 Roslyn Highlands”:[0,0,0,0,0,0,0,1,0,0,0,0],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,0],“580 Syosset”:[0,1,0,0,2,1,0,0,0,0,0,0],“600 Bellmore”:[0,0,0,0,0,1,1,0,0,1,0,1],“610 East Meadow”:[0,1,0,0,0,0,1,0,0,0,2,1],“620 Levittown”:[0,0,0,0,0,0,0,1,0,0,0,1],“630 Massapequa”:[2,0,0,2,0,0,1,0,0,1,4,2],“640 Merrick”:[1,0,0,0,0,0,0,0,0,2,0,0],“650 North Bellmore”:[1,0,1,0,0,0,0,0,0,0,0,0],“660 North Massapequa”:[0,0,1,1,0,0,1,0,0,0,0,0],“670 North Merrick”:[0,0,0,0,0,0,0,0,0,0,0,0],“680 Seaford”:[0,0,1,0,0,0,0,0,0,0,0,0],“690 Wantagh”:[1,1,1,2,1,0,0,1,0,2,0,2],“700 Elmont”:[0,3,0,0,3,0,1,0,0,1,2,0],“710 Franklin Square & Munson”:[0,0,1,2,0,1,3,1,0,0,0,2],“720 Hempstead”:[3,4,0,2,2,1,1,3,1,2,5,5],“730 Roosevelt”:[0,0,0,0,2,0,0,0,0,1,0,2],“740 South Hempstead”:[0,0,0,0,0,0,0,1,0,0,0,0],“750 Uniondale”:[0,0,2,0,0,0,3,1,0,1,0,1],“760 West Hempstead”:[0,0,0,1,0,0,0,0,0,0,0,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,1],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,1,0,1,1,1,0,0,1,0,0],“830 Great Neck Vigilant”:[0,0,0,0,0,0,1,0,0,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[1,0,0,0,3,0,0,0,0,0,1,0],“860 Williston Park”:[0,0,0,1,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,1,0,0,0,0,0,0,0,0,0],“900 Bethpage”:[1,0,0,1,0,1,1,0,0,1,0,1],“910 Carle Place”:[0,0,0,0,0,0,0,0,0,0,0,0],“920 Farmingdale”:[2,1,0,0,0,0,0,1,0,0,0,0],“930 Hicksville”:[0,1,1,2,1,0,2,1,2,1,0,0],“940 Jericho”:[0,0,0,0,0,0,0,1,0,0,0,0],“950 Plainview”:[1,0,0,0,0,0,1,0,0,0,2,0],“960 Westbury”:[1,1,5,0,1,2,0,0,1,1,1,1],“970 South Farmingdale”:[0,0,0,0,0,0,1,0,0,0,0,1]},“2019”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,1],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,1,0,0,0,0,1,0,0],“150 Garden City Park”:[0,1,0,0,0,0,1,0,0,1,0,0],“160 Mineola”:[0,0,0,0,0,0,0,0,1,0,0,1],“170 New Hyde Park”:[0,1,1,0,0,0,0,0,0,0,0,0],“180 South Floral Park”:[1,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[1,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[2,0,1,0,0,0,2,1,0,0,0,1],“210 Freeport”:[1,1,3,0,1,2,1,1,0,2,0,2],“220 Island Park”:[0,0,0,0,0,0,2,0,0,0,0,0],“230 Long Beach”:[1,0,1,1,1,1,0,0,3,0,0,1],“240 Oceanside”:[0,1,1,2,1,0,0,0,0,0,0,1],“250 Point Lookout-Lido”:[1,1,0,0,1,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,0,1,1,1,0,0,2,0,0,0],“310 Inwood”:[1,0,1,1,0,0,0,0,0,0,0,2],“320 Lawrence-Cedarhurst”:[1,0,2,0,2,0,2,0,1,1,1,1],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[0,1,3,0,0,0,1,0,2,4,0,1],“350 Woodmere”:[1,1,0,0,0,0,0,0,0,0,0,0],“400 East Rockaway”:[0,0,0,0,0,0,0,2,0,0,0,0],“410 Lakeview”:[1,0,1,0,0,0,0,0,0,1,0,1],“420 Lynbrook”:[0,1,0,0,0,0,3,0,1,1,0,0],“430 Malverne”:[0,0,1,0,0,0,0,0,0,0,0,0],“440 Rockville Centre”:[0,1,0,0,1,0,2,0,0,0,0,1],“500 Bayville”:[0,0,0,0,0,0,0,0,1,0,2,0],“510 East Norwich”:[0,0,1,1,0,1,2,0,0,0,1,0],“520 Glen Cove”:[1,0,2,1,2,0,1,0,0,1,1,0],“530 Glenwood”:[0,0,0,0,0,1,1,0,0,0,0,0],“540 Locust Valley”:[0,0,0,0,0,0,0,0,0,0,0,1],“550 Oyster Bay/Atlantic Steamer”:[1,0,0,1,1,0,0,1,0,0,0,1],“560 Roslyn Rescue/590 Roslyn Highlands”:[1,0,0,1,1,0,2,1,0,0,0,2],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,0],“580 Syosset”:[0,0,1,1,0,0,1,0,1,0,1,1],“600 Bellmore”:[0,0,1,0,0,0,0,0,0,0,0,1],“610 East Meadow”:[0,1,0,0,0,0,0,0,0,0,0,0],“620 Levittown”:[1,1,0,0,0,0,2,0,0,0,1,0],“630 Massapequa”:[1,0,0,4,0,0,0,0,1,1,1,3],“640 Merrick”:[1,1,0,1,0,0,1,0,0,1,0,0],“650 North Bellmore”:[1,0,1,2,0,0,2,0,0,0,1,0],“660 North Massapequa”:[0,0,0,2,0,1,1,0,0,0,0,1],“670 North Merrick”:[0,0,0,0,0,0,0,0,1,0,0,0],“680 Seaford”:[0,0,0,0,0,0,0,0,0,0,0,0],“690 Wantagh”:[2,0,1,0,0,1,0,4,0,0,0,0],“700 Elmont”:[3,2,0,0,0,0,1,0,1,0,1,0],“710 Franklin Square & Munson”:[0,1,0,1,1,0,1,1,1,1,0,1],“720 Hempstead”:[1,1,1,1,0,0,0,1,0,0,1,1],“730 Roosevelt”:[2,1,0,1,0,0,0,1,0,1,0,0],“740 South Hempstead”:[0,0,1,0,0,0,0,0,0,0,0,0],“750 Uniondale”:[0,0,0,0,0,2,0,1,1,0,3,0],“760 West Hempstead”:[0,2,0,0,0,0,0,0,0,0,3,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[1,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,0,0,0,0,0,0,0,0,0,1],“830 Great Neck Vigilant”:[1,0,0,1,0,0,0,0,1,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[1,0,0,0,0,0,2,0,1,0,2,3],“860 Williston Park”:[1,0,0,0,0,0,0,0,0,0,0,1],“870 Manhasset-Lakeville”:[0,1,1,0,0,0,0,1,1,0,2,0],“900 Bethpage”:[0,1,0,1,1,1,0,1,1,0,1,1],“910 Carle Place”:[1,0,0,0,1,0,2,1,0,1,0,0],“920 Farmingdale”:[0,0,0,0,0,0,1,0,0,0,0,0],“930 Hicksville”:[0,0,1,3,1,1,2,0,0,0,0,0],“940 Jericho”:[1,0,0,0,0,0,0,1,0,0,1,0],“950 Plainview”:[0,0,0,0,1,0,1,0,0,1,1,0],“960 Westbury”:[2,2,2,0,0,0,1,0,2,1,3,1],“970 South Farmingdale”:[0,0,0,1,0,0,1,0,0,0,0,0]},“2020”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,1,0,0,0,0,0,1,0,2,0],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,0,0,0,0,1,0,0,1],“150 Garden City Park”:[1,0,0,0,0,0,0,0,0,0,0,0],“160 Mineola”:[1,0,2,0,0,0,0,1,0,0,1,0],“170 New Hyde Park”:[0,0,0,0,1,0,0,0,0,0,0,1],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,1,0,0,0,0,0,0,1],“200 Baldwin”:[1,1,0,0,0,2,0,0,1,0,1,1],“210 Freeport”:[1,0,3,2,0,1,2,1,0,0,1,1],“220 Island Park”:[1,0,0,1,1,0,0,0,1,0,0,0],“230 Long Beach”:[0,2,1,0,1,0,0,0,0,0,1,1],“240 Oceanside”:[0,0,0,0,0,0,0,0,0,0,0,0],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,0,0,1,0,0,0,0,0,0,1],“310 Inwood”:[0,0,1,1,1,0,0,1,1,0,0,0],“320 Lawrence-Cedarhurst”:[0,0,0,0,0,0,0,0,0,0,0,2],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,1,0],“340 Valley Stream”:[0,1,1,3,0,1,0,1,0,3,1,0],“350 Woodmere”:[0,0,0,0,0,0,0,0,0,0,0,0],“400 East Rockaway”:[0,0,1,0,0,0,0,0,0,1,0,1],“410 Lakeview”:[0,2,0,0,0,0,1,0,0,0,0,1],“420 Lynbrook”:[0,0,0,0,0,0,1,0,0,0,0,0],“430 Malverne”:[0,0,0,0,0,0,1,1,0,0,0,0],“440 Rockville Centre”:[0,0,0,0,0,0,0,0,1,0,0,0],“500 Bayville”:[0,0,0,0,0,0,0,0,0,0,0,0],“510 East Norwich”:[0,0,0,0,0,0,0,0,0,0,0,0],“520 Glen Cove”:[0,1,2,1,2,0,0,1,1,1,1,0],“530 Glenwood”:[0,0,0,0,0,0,0,1,0,0,0,0],“540 Locust Valley”:[0,0,0,0,0,0,0,1,0,0,0,1],“550 Oyster Bay/Atlantic Steamer”:[0,2,0,0,0,0,0,0,1,0,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[2,1,3,2,2,0,0,0,0,0,0,1],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,1],“580 Syosset”:[2,0,0,0,0,0,0,0,0,0,0,1],“600 Bellmore”:[3,0,0,0,0,1,0,1,0,0,0,0],“610 East Meadow”:[0,0,0,0,0,1,1,1,0,0,0,1],“620 Levittown”:[0,0,0,0,0,0,0,0,0,0,0,1],“630 Massapequa”:[2,1,0,1,0,0,0,1,2,1,1,1],“640 Merrick”:[0,0,0,0,0,0,1,0,1,0,0,0],“650 North Bellmore”:[0,0,1,1,0,0,0,0,1,0,0,0],“660 North Massapequa”:[0,0,0,0,1,0,1,0,0,0,0,0],“670 North Merrick”:[0,0,1,0,0,0,0,0,0,0,0,1],“680 Seaford”:[0,0,0,1,0,1,0,0,0,0,0,0],“690 Wantagh”:[0,2,0,1,1,0,0,0,0,2,1,0],“700 Elmont”:[0,0,1,0,2,1,0,0,0,1,1,0],“710 Franklin Square & Munson”:[1,0,1,1,2,1,0,0,0,0,0,1],“720 Hempstead”:[1,0,1,0,1,1,0,1,3,1,0,2],“730 Roosevelt”:[1,0,0,1,0,0,1,0,0,1,0,1],“740 South Hempstead”:[0,0,0,1,0,0,0,0,0,1,0,0],“750 Uniondale”:[0,0,2,0,0,1,1,1,0,2,0,2],“760 West Hempstead”:[0,0,0,0,0,1,0,0,0,0,0,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,1,0,0,0,0,0],“820 Great Neck Alert”:[0,0,0,0,0,0,0,2,0,0,0,0],“830 Great Neck Vigilant”:[2,0,0,0,0,1,0,0,0,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,1,0,0,0,0],“850 Port Washington”:[0,0,1,0,0,1,0,1,0,1,0,0],“860 Williston Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,0,1,0,0,2,2,1,0,0,0],“900 Bethpage”:[1,0,0,0,0,2,0,1,2,0,0,0],“910 Carle Place”:[0,0,0,0,0,0,0,0,0,0,1,1],“920 Farmingdale”:[0,1,1,0,1,1,0,0,0,0,0,0],“930 Hicksville”:[3,1,0,0,1,0,0,0,1,1,0,1],“940 Jericho”:[0,0,0,0,0,0,0,1,0,0,0,0],“950 Plainview”:[3,1,0,0,0,0,0,0,0,0,0,0],“960 Westbury”:[0,1,1,3,1,0,1,1,0,1,0,3],“970 South Farmingdale”:[0,0,0,0,0,0,0,1,0,0,0,1]},“2021”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,1,1,0,1,0,0,0,0,0,1],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,1,0,1,1,0,1,0,0,1,0],“150 Garden City Park”:[2,1,2,0,0,0,0,0,0,0,0,1],“160 Mineola”:[1,1,0,0,1,0,0,0,0,0,0,1],“170 New Hyde Park”:[1,0,0,0,0,0,0,0,0,0,0,0],“180 South Floral Park”:[0,0,0,1,0,0,1,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[0,0,2,1,0,0,0,0,0,0,0,0],“210 Freeport”:[2,1,4,2,0,1,1,3,1,0,1,1],“220 Island Park”:[0,0,0,0,0,1,0,0,0,0,0,0],“230 Long Beach”:[2,0,0,0,2,0,0,0,1,1,0,0],“240 Oceanside”:[0,0,0,1,0,0,0,0,0,0,0,1],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,0,0,0,0,0,0,0,0,0,0],“310 Inwood”:[0,0,1,0,0,0,0,0,0,1,0,1],“320 Lawrence-Cedarhurst”:[1,1,0,1,0,2,1,1,0,0,0,1],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[1,2,1,0,1,0,1,0,0,0,1,1],“350 Woodmere”:[0,0,0,0,0,0,0,0,0,0,1,1],“400 East Rockaway”:[0,0,0,0,0,0,0,0,0,0,0,0],“410 Lakeview”:[0,0,0,0,0,0,0,0,1,0,3,0],“420 Lynbrook”:[0,1,0,0,0,0,0,0,0,0,0,0],“430 Malverne”:[0,0,0,0,0,0,0,0,0,1,0,0],“440 Rockville Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“500 Bayville”:[0,0,0,0,0,0,0,1,0,0,0,0],“510 East Norwich”:[0,0,0,0,0,0,0,0,0,0,0,0],“520 Glen Cove”:[0,2,2,1,1,1,0,1,0,0,0,2],“530 Glenwood”:[1,0,0,0,0,0,0,0,0,0,0,1],“540 Locust Valley”:[1,0,0,0,0,0,0,0,1,0,0,0],“550 Oyster Bay/Atlantic Steamer”:[1,0,0,0,0,0,0,1,0,0,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[0,1,0,0,0,0,0,0,0,0,0,0],“570 Sea Cliff”:[1,0,0,0,0,0,0,0,0,0,0,0],“580 Syosset”:[0,0,0,1,0,0,1,0,0,1,1,1],“600 Bellmore”:[0,0,0,0,0,0,0,0,0,0,0,0],“610 East Meadow”:[1,0,2,0,1,1,0,0,1,1,1,0],“620 Levittown”:[0,0,1,1,1,0,0,0,0,1,0,1],“630 Massapequa”:[1,2,0,0,2,3,1,0,0,1,1,2],“640 Merrick”:[0,0,0,0,0,0,0,1,0,0,0,0],“650 North Bellmore”:[1,0,0,0,1,0,1,1,0,0,0,1],“660 North Massapequa”:[0,0,0,0,0,0,0,0,0,0,0,0],“670 North Merrick”:[1,0,0,0,0,1,0,0,0,0,0,0],“680 Seaford”:[0,1,0,0,0,0,0,0,1,0,0,0],“690 Wantagh”:[1,1,0,0,0,1,2,0,1,0,1,1],“700 Elmont”:[0,1,0,1,1,0,1,1,0,2,1,2],“710 Franklin Square & Munson”:[2,0,0,0,0,0,0,1,0,1,1,0],“720 Hempstead”:[1,2,4,4,1,1,1,4,0,0,1,2],“730 Roosevelt”:[0,0,0,1,1,0,0,0,0,0,0,1],“740 South Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“750 Uniondale”:[0,0,0,0,0,0,0,0,1,0,0,0],“760 West Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“800 Albertson”:[0,0,0,1,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[1,0,0,0,0,1,0,1,0,0,0,1],“830 Great Neck Vigilant”:[0,0,0,0,0,0,0,0,0,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[0,0,0,0,0,0,0,1,1,1,1,1],“860 Williston Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,0,0,0,0,0,0,0,0,0,1],“900 Bethpage”:[0,1,0,0,0,0,0,0,0,0,0,0],“910 Carle Place”:[0,0,1,0,0,0,0,1,0,0,0,1],“920 Farmingdale”:[0,0,0,0,0,0,0,0,0,0,1,0],“930 Hicksville”:[0,1,1,1,0,0,3,1,2,0,0,0],“940 Jericho”:[1,0,0,0,0,0,0,0,0,0,0,0],“950 Plainview”:[0,1,0,0,0,0,1,0,0,1,1,0],“960 Westbury”:[2,0,4,1,5,1,0,0,0,0,1,1],“970 South Farmingdale”:[0,0,0,0,1,0,1,0,0,0,1,0]},“2022”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,0,1,0,0,0,0,0,0,0,0],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,0,0,2,0,0,2,1,0],“150 Garden City Park”:[0,1,0,2,0,0,0,0,1,0,0,0],“160 Mineola”:[3,0,0,0,0,0,1,0,0,1,0,1],“170 New Hyde Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[1,0,1,1,0,0,1,1,1,0,0,0],“210 Freeport”:[2,1,3,0,2,2,2,2,0,0,0,1],“220 Island Park”:[1,0,0,0,0,0,0,0,0,0,1,0],“230 Long Beach”:[0,0,0,0,2,0,0,0,0,1,0,1],“240 Oceanside”:[1,0,0,0,2,0,0,0,0,1,0,2],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,1,0,0,0,0,0,0,0,0,0],“310 Inwood”:[0,0,0,0,0,0,1,0,0,0,0,0],“320 Lawrence-Cedarhurst”:[1,1,0,0,2,0,2,0,0,0,0,0],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[0,0,1,0,0,2,0,1,1,0,0,0],“350 Woodmere”:[0,0,0,0,0,1,1,0,0,0,0,1],“400 East Rockaway”:[1,0,0,0,0,0,0,0,0,0,0,0],“410 Lakeview”:[0,0,0,0,0,0,0,0,0,0,0,0],“420 Lynbrook”:[0,0,0,1,0,1,1,0,1,0,0,1],“430 Malverne”:[0,0,0,0,0,0,0,0,0,0,0,0],“440 Rockville Centre”:[0,1,0,2,0,0,0,0,0,0,0,0],“500 Bayville”:[1,0,0,0,0,0,0,0,0,0,1,1],“510 East Norwich”:[0,0,0,1,0,0,0,0,0,0,0,0],“520 Glen Cove”:[1,0,0,1,1,1,0,0,2,1,0,1],“530 Glenwood”:[1,1,1,0,0,0,0,0,0,0,0,0],“540 Locust Valley”:[0,0,0,0,0,0,0,0,0,0,0,1],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,0,0,0,0,2,0,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[2,0,0,0,2,1,0,0,0,1,1,1],“570 Sea Cliff”:[0,0,0,0,1,0,0,0,1,0,0,0],“580 Syosset”:[1,0,1,1,0,1,0,0,1,0,1,0],“600 Bellmore”:[0,0,0,1,0,0,0,0,0,0,0,0],“610 East Meadow”:[1,0,0,1,1,1,0,2,0,0,1,0],“620 Levittown”:[0,0,0,0,1,0,1,0,0,0,0,0],“630 Massapequa”:[2,0,0,1,1,0,2,0,0,2,2,4],“640 Merrick”:[0,0,0,0,0,0,1,0,0,0,0,0],“650 North Bellmore”:[0,0,0,0,0,0,0,1,1,0,0,1],“660 North Massapequa”:[0,0,0,0,0,0,0,0,0,0,0,0],“670 North Merrick”:[0,0,0,1,0,0,0,0,0,0,0,1],“680 Seaford”:[0,0,0,1,0,0,0,0,0,0,0,0],“690 Wantagh”:[1,0,0,0,0,0,1,0,0,0,0,1],“700 Elmont”:[0,2,2,3,3,1,1,2,1,2,1,1],“710 Franklin Square & Munson”:[0,0,0,1,0,0,1,2,1,1,0,0],“720 Hempstead”:[1,0,0,3,0,1,0,0,1,2,0,1],“730 Roosevelt”:[1,2,0,2,0,1,1,0,0,1,2,1],“740 South Hempstead”:[1,0,1,0,0,0,0,1,0,0,1,1],“750 Uniondale”:[0,0,0,0,0,1,0,0,0,0,1,0],“760 West Hempstead”:[0,0,1,0,0,0,0,1,0,0,1,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,0,0,0,0,0,1,0,0,1,0],“830 Great Neck Vigilant”:[0,0,0,0,0,0,1,0,0,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[0,0,0,0,0,0,0,1,0,0,0,1],“860 Williston Park”:[1,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,3,0,0,0,1,0,2,0,0,1],“900 Bethpage”:[0,0,1,1,0,0,1,0,0,1,0,1],“910 Carle Place”:[0,0,0,1,0,0,0,0,0,0,1,0],“920 Farmingdale”:[0,1,0,0,0,1,0,0,0,0,0,0],“930 Hicksville”:[0,1,1,2,1,0,1,0,2,0,2,1],“940 Jericho”:[2,1,0,0,1,0,0,0,0,0,1,0],“950 Plainview”:[1,0,0,0,2,1,1,0,0,1,0,0],“960 Westbury”:[1,1,2,1,1,1,3,2,2,1,1,0],“970 South Farmingdale”:[0,1,1,0,1,1,0,2,0,0,0,1]},“2023”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,1],“120 Floral Park”:[0,0,0,1,0,0,0,0,0,0,0,0],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,2,0,0,0,0,1,0,0,0],“150 Garden City Park”:[0,0,1,0,1,0,0,0,0,0,0,1],“160 Mineola”:[1,0,1,0,0,0,0,0,0,0,0,0],“170 New Hyde Park”:[1,1,0,0,0,0,0,0,0,0,0,1],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[1,1,1,0,0,1,1,1,0,0,1,3],“210 Freeport”:[1,1,0,2,2,2,0,0,1,0,3,0],“220 Island Park”:[1,1,0,0,0,0,0,0,0,0,0,0],“230 Long Beach”:[1,2,1,0,0,1,0,0,0,2,1,1],“240 Oceanside”:[0,0,0,0,1,0,0,1,0,1,0,1],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,1],“300 Hewlett”:[0,0,0,0,1,0,0,0,1,0,0,0],“310 Inwood”:[0,0,1,0,0,0,0,0,0,0,0,1],“320 Lawrence-Cedarhurst”:[2,1,0,0,0,1,1,2,1,1,3,0],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[1,0,1,1,1,1,2,0,1,1,2,0],“350 Woodmere”:[1,1,0,2,0,0,0,0,0,0,1,0],“400 East Rockaway”:[0,0,0,0,0,0,0,0,0,0,0,0],“410 Lakeview”:[0,0,0,1,0,0,0,0,1,0,0,0],“420 Lynbrook”:[0,0,0,0,0,0,0,0,0,0,0,1],“430 Malverne”:[0,0,0,0,0,0,0,0,0,0,0,0],“440 Rockville Centre”:[1,0,0,0,0,0,0,1,0,0,0,0],“500 Bayville”:[0,0,0,1,0,0,0,1,0,0,0,0],“510 East Norwich”:[0,1,0,1,1,0,0,0,0,0,1,0],“520 Glen Cove”:[0,0,0,0,0,1,0,2,0,0,0,0],“530 Glenwood”:[0,0,0,0,1,0,0,0,0,0,0,0],“540 Locust Valley”:[0,0,0,0,0,0,0,1,0,0,0,0],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,0,0,0,0,0,0,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[0,1,0,0,1,0,0,0,2,0,0,0],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,1],“580 Syosset”:[3,0,0,1,0,1,0,0,1,0,0,2],“600 Bellmore”:[0,0,1,1,0,0,1,0,0,0,0,0],“610 East Meadow”:[0,0,0,1,0,0,0,0,0,1,0,1],“620 Levittown”:[0,0,0,0,0,0,2,0,0,0,0,0],“630 Massapequa”:[1,1,1,0,1,0,2,1,2,0,0,0],“640 Merrick”:[0,0,0,0,0,0,1,0,0,0,0,0],“650 North Bellmore”:[0,0,1,0,0,0,1,0,0,0,0,0],“660 North Massapequa”:[0,0,1,0,0,0,0,0,0,0,0,0],“670 North Merrick”:[0,1,0,0,0,1,0,0,0,0,0,0],“680 Seaford”:[0,0,0,0,0,0,0,0,0,0,0,1],“690 Wantagh”:[1,1,0,1,0,1,1,0,0,0,0,2],“700 Elmont”:[2,0,0,0,0,3,2,0,0,2,2,0],“710 Franklin Square & Munson”:[0,0,0,0,1,0,0,1,0,0,1,0],“720 Hempstead”:[2,0,1,2,1,1,0,0,3,2,2,2],“730 Roosevelt”:[0,0,0,0,0,0,0,0,0,1,1,1],“740 South Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,1],“750 Uniondale”:[0,0,0,2,0,0,1,0,0,0,0,0],“760 West Hempstead”:[1,0,0,0,0,0,0,0,0,0,0,1],“800 Albertson”:[1,0,0,0,0,0,0,0,0,0,1,0],“810 East Williston”:[0,0,0,0,1,1,0,0,1,0,0,0],“820 Great Neck Alert”:[1,1,0,0,0,0,0,2,0,0,0,0],“830 Great Neck Vigilant”:[0,0,1,0,0,0,0,0,0,2,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[0,0,0,0,0,0,0,1,0,2,1,0],“860 Williston Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,0,0,0,0,0,0,0,1,1,1],“900 Bethpage”:[1,0,0,0,1,1,0,1,0,0,0,0],“910 Carle Place”:[0,0,0,0,0,0,0,0,0,0,0,0],“920 Farmingdale”:[0,0,0,0,0,0,0,1,0,0,0,0],“930 Hicksville”:[1,0,3,2,1,3,0,1,1,0,0,5],“940 Jericho”:[0,1,0,0,0,0,0,0,0,0,0,0],“950 Plainview”:[0,1,0,0,2,0,0,1,1,1,0,0],“960 Westbury”:[0,0,2,1,0,1,0,1,0,1,0,1],“970 South Farmingdale”:[0,0,0,0,0,0,0,1,1,0,1,0]},“2024”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,1,0,0,0,0,0,0,0,0,0],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,0,0,1,2,0,0,0,1],“150 Garden City Park”:[0,0,0,0,1,0,0,0,0,0,0,0],“160 Mineola”:[0,0,0,0,1,1,1,0,0,0,0,0],“170 New Hyde Park”:[0,0,0,0,0,0,1,0,0,1,0,1],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,1,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[1,0,1,0,1,1,1,0,2,2,0,0],“210 Freeport”:[0,0,1,2,1,0,0,2,0,2,2,4],“220 Island Park”:[0,0,0,0,0,0,1,0,0,0,0,0],“230 Long Beach”:[0,1,1,1,1,0,0,1,0,1,1,0],“240 Oceanside”:[0,0,0,0,0,1,1,0,1,1,0,0],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,0,0,0,0,0,1,1,0,0,0],“310 Inwood”:[0,0,2,0,0,0,0,0,0,0,1,0],“320 Lawrence-Cedarhurst”:[1,0,0,1,0,0,1,2,1,0,0,0],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[2,3,0,0,1,1,1,0,0,0,1,0],“350 Woodmere”:[0,0,0,0,1,0,1,0,0,0,1,1],“400 East Rockaway”:[0,0,0,0,0,0,1,0,1,0,0,0],“410 Lakeview”:[0,0,1,0,0,0,2,0,0,1,0,1],“420 Lynbrook”:[0,1,0,1,0,1,0,0,0,0,2,1],“430 Malverne”:[0,0,0,0,0,0,0,0,0,0,1,0],“440 Rockville Centre”:[1,1,0,0,0,0,0,0,0,0,0,0],“500 Bayville”:[0,0,0,0,0,0,0,0,0,0,0,0],“510 East Norwich”:[0,0,0,0,0,0,0,0,0,0,0,0],“520 Glen Cove”:[3,1,2,1,0,1,1,1,0,1,2,0],“530 Glenwood”:[1,0,0,1,1,0,1,0,0,0,0,0],“540 Locust Valley”:[1,0,1,0,0,0,0,0,0,1,0,0],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,1,0,0,1,0,0,1,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[0,0,0,1,0,0,2,0,0,0,2,0],“570 Sea Cliff”:[0,0,0,0,0,1,0,0,0,0,0,0],“580 Syosset”:[0,0,0,0,0,0,0,0,0,0,0,3],“600 Bellmore”:[0,0,0,0,0,0,0,0,0,1,0,0],“610 East Meadow”:[1,0,0,0,1,0,0,1,0,2,0,0],“620 Levittown”:[0,0,0,0,0,0,0,0,0,1,0,0],“630 Massapequa”:[1,1,2,0,0,0,1,1,1,0,0,0],“640 Merrick”:[0,0,0,0,0,0,0,0,0,0,0,0],“650 North Bellmore”:[1,0,0,1,0,2,0,1,0,0,0,1],“660 North Massapequa”:[0,0,0,0,0,0,0,0,0,0,0,0],“670 North Merrick”:[0,0,0,0,0,0,0,0,0,0,0,0],“680 Seaford”:[0,0,0,0,0,1,0,0,0,1,0,0],“690 Wantagh”:[0,3,0,1,1,0,1,0,2,0,1,0],“700 Elmont”:[0,2,4,2,0,0,3,1,2,0,1,4],“710 Franklin Square & Munson”:[0,0,1,0,1,0,0,1,0,1,0,0],“720 Hempstead”:[0,0,1,2,0,5,1,0,2,2,0,5],“730 Roosevelt”:[0,0,0,0,0,0,0,0,0,0,0,2],“740 South Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“750 Uniondale”:[0,2,0,1,0,0,1,0,1,0,0,2],“760 West Hempstead”:[0,0,0,1,1,0,0,0,0,0,0,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,0,0,0,0,1,0,0,1,0,0],“830 Great Neck Vigilant”:[1,1,0,0,0,0,0,1,0,1,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[1,0,1,0,1,0,0,0,0,0,0,2],“860 Williston Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,0,0,0,1,1,0,0,0,0,0],“900 Bethpage”:[0,0,0,0,0,0,0,0,0,0,0,0],“910 Carle Place”:[1,0,0,0,0,0,0,0,0,0,0,0],“920 Farmingdale”:[0,0,0,1,0,0,0,0,0,0,0,0],“930 Hicksville”:[1,1,1,0,0,3,2,1,0,0,4,0],“940 Jericho”:[0,0,0,0,0,1,0,2,0,0,2,2],“950 Plainview”:[0,1,0,1,1,0,0,0,0,0,0,1],“960 Westbury”:[0,0,0,1,0,2,1,0,1,0,2,1],“970 South Farmingdale”:[0,0,0,1,0,0,1,0,1,0,1,0]},“2025”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,0,0,0,0,0,0,0,0],“150 Garden City Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“160 Mineola”:[0,0,0,0,0,0,0,0,0,0,0,0],“170 New Hyde Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[0,0,0,0,0,0,0,0,0,0,0,0],“210 Freeport”:[0,0,0,0,0,0,0,0,0,0,0,0],“220 Island Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“230 Long Beach”:[0,0,0,0,0,0,0,0,0,0,0,0],“240 Oceanside”:[0,0,0,0,0,0,0,0,0,0,0,0],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,0,0,0,0,0,0,0,0,0,0],“310 Inwood”:[0,0,0,0,0,0,0,0,0,0,0,0],“320 Lawrence-Cedarhurst”:[0,0,0,0,0,0,0,0,0,0,0,0],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[0,0,0,0,0,0,0,0,0,0,0,0],“350 Woodmere”:[0,0,0,0,0,0,0,0,0,0,0,0],“400 East Rockaway”:[0,0,0,0,0,0,0,0,0,0,0,0],“410 Lakeview”:[0,0,0,0,0,0,0,0,0,0,0,0],“420 Lynbrook”:[0,0,0,0,0,0,0,0,0,0,0,0],“430 Malverne”:[0,0,0,0,0,0,0,0,0,0,0,0],“440 Rockville Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“500 Bayville”:[0,0,0,0,0,0,0,0,0,0,0,0],“510 East Norwich”:[0,0,0,0,0,0,0,0,0,0,0,0],“520 Glen Cove”:[0,0,0,0,0,0,0,0,0,0,0,0],“530 Glenwood”:[0,0,0,0,0,0,0,0,0,0,0,0],“540 Locust Valley”:[0,0,0,0,0,0,0,0,0,0,0,0],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,0,0,0,0,0,0,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[0,0,0,0,0,0,0,0,0,0,0,0],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,0],“580 Syosset”:[0,0,0,0,0,0,0,0,0,0,0,0],“600 Bellmore”:[0,0,0,0,0,0,0,0,0,0,0,0],“610 East Meadow”:[0,0,0,0,0,0,0,0,0,0,0,0],“620 Levittown”:[0,0,0,0,0,0,0,0,0,0,0,0],“630 Massapequa”:[0,0,0,0,0,0,0,0,0,0,0,0],“640 Merrick”:[0,0,0,0,0,0,0,0,0,0,0,0],“650 North Bellmore”:[0,0,0,0,0,0,0,0,0,0,0,0],“660 North Massapequa”:[0,0,0,0,0,0,0,0,0,0,0,0],“670 North Merrick”:[0,0,0,0,0,0,0,0,0,0,0,0],“680 Seaford”:[0,0,0,0,0,0,0,0,0,0,0,0],“690 Wantagh”:[0,0,0,0,0,0,0,0,0,0,0,0],“700 Elmont”:[0,0,0,0,0,0,0,0,0,0,0,0],“710 Franklin Square & Munson”:[0,0,0,0,0,0,0,0,0,0,0,0],“720 Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“730 Roosevelt”:[0,0,0,0,0,0,0,0,0,0,0,0],“740 South Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“750 Uniondale”:[0,0,0,0,0,0,0,0,0,0,0,0],“760 West Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,0,0,0,0,0,0,0,0,0,0],“830 Great Neck Vigilant”:[0,0,0,0,0,0,0,0,0,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[0,0,0,0,0,0,0,0,0,0,0,0],“860 Williston Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,0,0,0,0,0,0,0,0,0,0],“900 Bethpage”:[0,0,0,0,0,0,0,0,0,0,0,0],“910 Carle Place”:[0,0,0,0,0,0,0,0,0,0,0,0],“920 Farmingdale”:[0,0,0,0,0,0,0,0,0,0,0,0],“930 Hicksville”:[0,0,0,0,0,0,0,0,0,0,0,0],“940 Jericho”:[0,0,0,0,0,0,0,0,0,0,0,0],“950 Plainview”:[0,0,0,0,0,0,0,0,0,0,0,0],“960 Westbury”:[0,0,0,0,0,0,0,0,0,0,0,0],“970 South Farmingdale”:[0,0,0,0,0,0,0,0,0,0,0,0]},“2026”:{“100 Bellerose”:[0,0,0,0,0,0,0,0,0,0,0,0],“110 Bellerose Terrace”:[0,0,0,0,0,0,0,0,0,0,0,0],“120 Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“130 Floral Park Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“140 Garden City”:[0,0,0,0,0,0,0,0,0,0,0,0],“150 Garden City Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“160 Mineola”:[0,0,0,0,0,0,0,0,0,0,0,0],“170 New Hyde Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“180 South Floral Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“190 Stewart Manor”:[0,0,0,0,0,0,0,0,0,0,0,0],“200 Baldwin”:[0,0,0,0,0,0,0,0,0,0,0,0],“210 Freeport”:[0,0,0,0,0,0,0,0,0,0,0,0],“220 Island Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“230 Long Beach”:[0,0,0,0,0,0,0,0,0,0,0,0],“240 Oceanside”:[0,0,0,0,0,0,0,0,0,0,0,0],“250 Point Lookout-Lido”:[0,0,0,0,0,0,0,0,0,0,0,0],“300 Hewlett”:[0,0,0,0,0,0,0,0,0,0,0,0],“310 Inwood”:[0,0,0,0,0,0,0,0,0,0,0,0],“320 Lawrence-Cedarhurst”:[0,0,0,0,0,0,0,0,0,0,0,0],“330 Meadowmere Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“340 Valley Stream”:[0,0,0,0,0,0,0,0,0,0,0,0],“350 Woodmere”:[0,0,0,0,0,0,0,0,0,0,0,0],“400 East Rockaway”:[0,0,0,0,0,0,0,0,0,0,0,0],“410 Lakeview”:[0,0,0,0,0,0,0,0,0,0,0,0],“420 Lynbrook”:[0,0,0,0,0,0,0,0,0,0,0,0],“430 Malverne”:[0,0,0,0,0,0,0,0,0,0,0,0],“440 Rockville Centre”:[0,0,0,0,0,0,0,0,0,0,0,0],“500 Bayville”:[0,0,0,0,0,0,0,0,0,0,0,0],“510 East Norwich”:[0,0,0,0,0,0,0,0,0,0,0,0],“520 Glen Cove”:[0,0,0,0,0,0,0,0,0,0,0,0],“530 Glenwood”:[0,0,0,0,0,0,0,0,0,0,0,0],“540 Locust Valley”:[0,0,0,0,0,0,0,0,0,0,0,0],“550 Oyster Bay/Atlantic Steamer”:[0,0,0,0,0,0,0,0,0,0,0,0],“560 Roslyn Rescue/590 Roslyn Highlands”:[0,0,0,0,0,0,0,0,0,0,0,0],“570 Sea Cliff”:[0,0,0,0,0,0,0,0,0,0,0,0],“580 Syosset”:[0,0,0,0,0,0,0,0,0,0,0,0],“600 Bellmore”:[0,0,0,0,0,0,0,0,0,0,0,0],“610 East Meadow”:[0,0,0,0,0,0,0,0,0,0,0,0],“620 Levittown”:[0,0,0,0,0,0,0,0,0,0,0,0],“630 Massapequa”:[0,0,0,0,0,0,0,0,0,0,0,0],“640 Merrick”:[0,0,0,0,0,0,0,0,0,0,0,0],“650 North Bellmore”:[0,0,0,0,0,0,0,0,0,0,0,0],“660 North Massapequa”:[0,0,0,0,0,0,0,0,0,0,0,0],“670 North Merrick”:[0,0,0,0,0,0,0,0,0,0,0,0],“680 Seaford”:[0,0,0,0,0,0,0,0,0,0,0,0],“690 Wantagh”:[0,0,0,0,0,0,0,0,0,0,0,0],“700 Elmont”:[0,0,0,0,0,0,0,0,0,0,0,0],“710 Franklin Square & Munson”:[0,0,0,0,0,0,0,0,0,0,0,0],“720 Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“730 Roosevelt”:[0,0,0,0,0,0,0,0,0,0,0,0],“740 South Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“750 Uniondale”:[0,0,0,0,0,0,0,0,0,0,0,0],“760 West Hempstead”:[0,0,0,0,0,0,0,0,0,0,0,0],“800 Albertson”:[0,0,0,0,0,0,0,0,0,0,0,0],“810 East Williston”:[0,0,0,0,0,0,0,0,0,0,0,0],“820 Great Neck Alert”:[0,0,0,0,0,0,0,0,0,0,0,0],“830 Great Neck Vigilant”:[0,0,0,0,0,0,0,0,0,0,0,0],“840 Plandome”:[0,0,0,0,0,0,0,0,0,0,0,0],“850 Port Washington”:[0,0,0,0,0,0,0,0,0,0,0,0],“860 Williston Park”:[0,0,0,0,0,0,0,0,0,0,0,0],“870 Manhasset-Lakeville”:[0,0,0,0,0,0,0,0,0,0,0,0],“900 Bethpage”:[0,0,0,0,0,0,0,0,0,0,0,0],“910 Carle Place”:[0,0,0,0,0,0,0,0,0,0,0,0],“920 Farmingdale”:[0,0,0,0,0,0,0,0,0,0,0,0],“930 Hicksville”:[0,0,0,0,0,0,0,0,0,0,0,0],“940 Jericho”:[0,0,0,0,0,0,0,0,0,0,0,0],“950 Plainview”:[0,0,0,0,0,0,0,0,0,0,0,0],“960 Westbury”:[0,0,0,0,0,0,0,0,0,0,0,0],“970 South Farmingdale”:[0,0,0,0,0,0,0,0,0,0,0,0]}}};
+
+document.getElementById(‘lu’).innerHTML=’Last updated: ’+D.metadata.last_updated;
 
 function getHYrs(){return D.metadata.years_complete;}
-function getAllYrs(){return […D.metadata.years_complete,…D.metadata.years_in_progress];}
 function getBats(){return[…new Set(D.departments.map(d=>d.battalion))].filter(Boolean).sort();}
-function getDepts(bat){return bat?D.departments.filter(d=>d.battalion===bat).map(d=>d.name):D.departments.map(d=>d.name);}
 
 function getTotal(yr,bat,dept){
-const yd=D.years[String(yr)];if(!yd)return 0;
+const yd=D.years[String(yr)];
+if(!yd)return 0;
 return Object.entries(yd).reduce((a,[k,v])=>{
 const di=D.departments.find(d=>d.name===k);
-if(bat&&di?.battalion!==bat)return a;
+if(bat&&di&&di.battalion!==bat)return a;
 if(dept&&k!==dept)return a;
 return a+v.reduce((x,n)=>x+n,0);
 },0);
 }
 
 function getMonthly(yr,bat){
-const yd=D.years[String(yr)];if(!yd)return new Array(12).fill(0);
+const yd=D.years[String(yr)];
+if(!yd)return new Array(12).fill(0);
 const res=new Array(12).fill(0);
-Object.entries(yd).forEach(([k,v])=>{
+Object.entries(yd).forEach(function(entry){
+const k=entry[0],v=entry[1];
 const di=D.departments.find(d=>d.name===k);
-if(bat&&di?.battalion!==bat)return;
-v.forEach((x,i)=>res[i]+=x);
+if(bat&&di&&di.battalion!==bat)return;
+v.forEach(function(x,i){res[i]+=x;});
 });
 return res;
 }
 
 function histMonthAvg(){
 const yrs=getHYrs();
-return MO.map((_,m)=>Math.round(yrs.reduce((a,y)=>a+getMonthly(y)[m],0)/yrs.length*10)/10);
+return MO.map(function(_,m){
+return Math.round(yrs.reduce(function(a,y){return a+getMonthly(y)[m];},0)/yrs.length*10)/10;
+});
 }
 
 function lastDataMonth(yr){
-const m=getMonthly(yr);for(let i=11;i>=0;i–)if(m[i]>0)return i;return -1;
-}
-
-function getProjMonthly(yr){
-const actual=getMonthly(yr);
-const ha=histMonthAvg();
-const last=lastDataMonth(yr);
-const proj=[…actual];
-for(let i=last+1;i<12;i++)proj[i]=Math.round(ha[i]*10)/10;
-return{actual,projected:proj,last};
+const m=getMonthly(yr);
+for(let i=11;i>=0;i–)if(m[i]>0)return i;
+return -1;
 }
 
 function mkChart(id,cfg){
 if(AC[id])AC[id].destroy();
-const c=document.getElementById(id);if(!c)return;
-AC[id]=new Chart(c,cfg);return AC[id];
+const c=document.getElementById(id);
+if(!c)return;
+AC[id]=new Chart(c,cfg);
 }
 
 function showTab(name,btn){
-document.querySelectorAll(’.tab’).forEach(p=>p.classList.remove(‘active’));
-document.querySelectorAll(‘nav button’).forEach(b=>b.classList.remove(‘active’));
+document.querySelectorAll(’.tab’).forEach(function(p){p.classList.remove(‘active’);});
+document.querySelectorAll(‘nav button’).forEach(function(b){b.classList.remove(‘active’);});
 document.getElementById(‘tab-’+name).classList.add(‘active’);
 if(btn)btn.classList.add(‘active’);
 }
 
-function initAll(){
-buildOverview();buildTrends();buildBatUI();buildHeatmap();buildDeptUI();buildIPUI();buildUpdateUI();
-}
-
-// ── OVERVIEW ──
 function buildOverview(){
-const yrs=getHYrs(),tots=yrs.map(y=>getTotal(y));
-const all=tots.reduce((a,b)=>a+b,0),last=tots[tots.length-1],prev=tots[tots.length-2],d=last-prev;
+const yrs=getHYrs();
+const tots=yrs.map(function(y){return getTotal(y);});
+const all=tots.reduce(function(a,b){return a+b;},0);
+const last=tots[tots.length-1],prev=tots[tots.length-2],delta=last-prev;
 const bats=getBats();
-const peakYr=yrs[tots.indexOf(Math.max(…tots))];
-const topDept=D.departments.reduce((a,dep)=>{const t=yrs.reduce((x,y)=>x+getTotal(y,null,dep.name),0);return t>a.t?{n:dep.name.split(’ ‘).slice(1).join(’ ‘),t}:a;},{n:’’,t:0});
-const topBat=bats.reduce((a,b)=>{const t=yrs.reduce((x,y)=>x+getTotal(y,b),0);return t>a.t?{n:b,t}:a;},{n:’’,t:0});
+const peakYr=yrs[tots.indexOf(Math.max.apply(null,tots))];
+let topDeptName=’’,topDeptMax=0;
+D.departments.forEach(function(dep){
+const t=yrs.reduce(function(a,y){return a+getTotal(y,null,dep.name);},0);
+if(t>topDeptMax){topDeptMax=t;topDeptName=dep.name.split(’ ‘).slice(1).join(’ ‘);}
+});
+let topBatName=’’,topBatMax=0;
+bats.forEach(function(b){
+const t=yrs.reduce(function(a,y){return a+getTotal(y,b);},0);
+if(t>topBatMax){topBatMax=t;topBatName=b;}
+});
 const cards=[
-{l:‘Total Fires (All Years)’,v:all.toLocaleString(),s:`${yrs[0]}–${yrs[yrs.length-1]}`,c:’’},
-{l:`${yrs[yrs.length-1]} Total`,v:last,s:`${yrs[yrs.length-2]}: ${prev}`,delta:d,c:‘bl’},
+{l:‘Total Fires (All Years)’,v:all.toLocaleString(),s:yrs[0]+’–’+yrs[yrs.length-1],c:’’},
+{l:yrs[yrs.length-1]+’ Total’,v:last,s:yrs[yrs.length-2]+’: ‘+prev,delta:delta,c:‘bl’},
 {l:‘Annual Average’,v:Math.round(all/yrs.length),s:‘fires per year’,c:‘ye’},
-{l:‘Most Active Dept’,v:topDept.n,s:‘by 9-yr total’,c:’’},
-{l:‘Most Active Battalion’,v:topBat.n,s:‘by 9-yr total’,c:‘gr’},
-{l:‘Peak Year’,v:peakYr,s:`${Math.max(...tots)} fires`,c:’’},
+{l:‘Most Active Dept’,v:topDeptName,s:‘by 9-yr total’,c:’’},
+{l:‘Most Active Battalion’,v:topBatName,s:‘by 9-yr total’,c:‘gr’},
+{l:‘Peak Year’,v:peakYr,s:Math.max.apply(null,tots)+’ fires’,c:’’},
 ];
-document.getElementById(‘sc-overview’).innerHTML=cards.map(c=>` <div class="sc ${c.c}"><div class="sl">${c.l}</div><div class="sv">${c.v}</div><div class="ss">${c.s}</div> ${c.delta!==undefined?`<div class="sd ${c.delta>=0?'up':'dn'}">${c.delta>=0?‘▲’:‘▼’} ${Math.abs(c.delta)} vs prior year</div>`:''}</div>`).join(’’);
-const roll=tots.map((_,i)=>{const s=tots.slice(Math.max(0,i-2),i+1);return Math.round(s.reduce((a,b)=>a+b,0)/s.length);});
+document.getElementById(‘sc-overview’).innerHTML=cards.map(function(c){
+return’<div class="sc '+c.c+'"><div class="sl">’+c.l+’</div><div class="sv">’+c.v+’</div><div class="ss">’+c.s+’</div>’+(c.delta!==undefined?’<div class="sd '+(c.delta>=0?'up':'dn')+'">’+(c.delta>=0?‘▲’:‘▼’)+’ ‘+Math.abs(c.delta)+’ vs prior year</div>’:’’)+’</div>’;
+}).join(’’);
+const roll=tots.map(function(_,i){const s=tots.slice(Math.max(0,i-2),i+1);return Math.round(s.reduce(function(a,b){return a+b;},0)/s.length);});
 mkChart(‘ch-annual’,{type:‘bar’,data:{labels:yrs,datasets:[
-{label:‘Annual Total’,data:tots,backgroundColor:tots.map(t=>t===Math.max(…tots)?’#e8500a’:’#2e75b633’),borderColor:’#2e75b6’,borderWidth:1.5,order:2},
+{label:‘Annual Total’,data:tots,backgroundColor:tots.map(function(t){return t===Math.max.apply(null,tots)?’#e8500a’:’#2e75b633’;}),borderColor:’#2e75b6’,borderWidth:1.5,order:2},
 {label:‘3-Yr Avg’,data:roll,type:‘line’,borderColor:’#f59e0b’,borderWidth:2,pointRadius:3,fill:false,tension:.4,order:1}
-]},options:{…CD}});
-const batTots=bats.map(b=>yrs.reduce((a,y)=>a+getTotal(y,b),0));
-mkChart(‘ch-pie’,{type:‘doughnut’,data:{labels:bats.map(b=>b.replace(‘Battalion’,’’)),datasets:[{data:batTots,backgroundColor:BC,borderColor:’#0d0f14’,borderWidth:2}]},
+]},options:CD});
+const batTots=bats.map(function(b){return yrs.reduce(function(a,y){return a+getTotal(y,b);},0);});
+mkChart(‘ch-pie’,{type:‘doughnut’,data:{labels:bats.map(function(b){return b.replace(‘Battalion ‘,‘Bn ‘);}),datasets:[{data:batTots,backgroundColor:BC,borderColor:’#0d0f14’,borderWidth:2}]},
 options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:‘right’,labels:{color:’#8a93a8’,font:{size:10},padding:8}}}}});
 const ha=histMonthAvg();
-mkChart(‘ch-mavg’,{type:‘bar’,data:{labels:MO,datasets:[{label:‘Avg Fires’,data:ha,backgroundColor:ha.map(v=>v===Math.max(…ha)?’#e8500a’:’#2e75b655’),borderColor:’#2e75b6’,borderWidth:1}]},options:{…CD}});
-mkChart(‘ch-stack’,{type:‘bar’,data:{labels:yrs,datasets:bats.map((b,i)=>({label:b.replace(’Battalion ’,’Bn ’),data:yrs.map(y=>getTotal(y,b)),backgroundColor:BC[i]+‘cc’,borderColor:BC[i],borderWidth:.5}))},
-options:{…CD,scales:{…CD.scales,x:{…CD.scales.x,stacked:true},y:{…CD.scales.y,stacked:true}}}});
+mkChart(‘ch-mavg’,{type:‘bar’,data:{labels:MO,datasets:[{label:‘Avg Fires’,data:ha,backgroundColor:ha.map(function(v){return v===Math.max.apply(null,ha)?’#e8500a’:’#2e75b655’;}),borderColor:’#2e75b6’,borderWidth:1}]},options:CD});
+mkChart(‘ch-stack’,{type:‘bar’,data:{labels:yrs,datasets:bats.map(function(b,i){return{label:b.replace(’Battalion ’,’Bn ’),data:yrs.map(function(y){return getTotal(y,b);}),backgroundColor:BC[i]+‘cc’,borderColor:BC[i],borderWidth:.5};})},
+options:Object.assign({},CD,{scales:Object.assign({},CD.scales,{x:Object.assign({},CD.scales.x,{stacked:true}),y:Object.assign({},CD.scales.y,{stacked:true})})})});
 }
 
-// ── TRENDS ──
 function buildTrends(){
-const yrs=getHYrs(),tots=yrs.map(y=>getTotal(y));
-const roll=tots.map((_,i)=>{const s=tots.slice(Math.max(0,i-2),i+1);return Math.round(s.reduce((a,b)=>a+b,0)/s.length);});
+const yrs=getHYrs(),tots=yrs.map(function(y){return getTotal(y);});
+const roll=tots.map(function(_,i){const s=tots.slice(Math.max(0,i-2),i+1);return Math.round(s.reduce(function(a,b){return a+b;},0)/s.length);});
 mkChart(‘ch-trend’,{type:‘line’,data:{labels:yrs,datasets:[
 {label:‘Annual Total’,data:tots,borderColor:’#e8500a’,backgroundColor:‘rgba(232,80,10,.1)’,borderWidth:2,fill:true,tension:.3,pointRadius:5,pointBackgroundColor:’#e8500a’},
 {label:‘3-Yr Avg’,data:roll,borderColor:’#f59e0b’,borderWidth:2,borderDash:[5,4],fill:false,tension:.4,pointRadius:0}
-]},options:{…CD}});
-const yoy=yrs.slice(1).map((y,i)=>getTotal(y)-getTotal(yrs[i]));
-mkChart(‘ch-yoy’,{type:‘bar’,data:{labels:yrs.slice(1),datasets:[{label:‘YoY Change’,data:yoy,backgroundColor:yoy.map(v=>v>=0?’#22c55e88’:’#ef444488’),borderColor:yoy.map(v=>v>=0?’#22c55e’:’#ef4444’),borderWidth:1.5}]},
-options:{…CD,plugins:{…CD.plugins,legend:{display:false}}}});
+]},options:CD});
+const yoy=yrs.slice(1).map(function(y,i){return getTotal(y)-getTotal(yrs[i]);});
+mkChart(‘ch-yoy’,{type:‘bar’,data:{labels:yrs.slice(1),datasets:[{label:‘YoY’,data:yoy,backgroundColor:yoy.map(function(v){return v>=0?’#22c55e88’:’#ef444488’;}),borderColor:yoy.map(function(v){return v>=0?’#22c55e’:’#ef4444’;}),borderWidth:1.5}]},
+options:Object.assign({},CD,{plugins:Object.assign({},CD.plugins,{legend:{display:false}})})});
 const bats=getBats();
-const ea=bats.map(b=>Math.round(yrs.slice(0,3).map(y=>getTotal(y,b)).reduce((a,x)=>a+x,0)/3));
-const la=bats.map(b=>Math.round(yrs.slice(-3).map(y=>getTotal(y,b)).reduce((a,x)=>a+x,0)/3));
-mkChart(‘ch-btrd’,{type:‘bar’,data:{labels:bats.map(b=>b.replace(‘Battalion’,’’)),datasets:[
-{label:`${yrs[0]}–${yrs[2]} Avg`,data:ea,backgroundColor:’#2e75b666’,borderColor:’#2e75b6’,borderWidth:1.5},
-{label:`${yrs[yrs.length-3]}–${yrs[yrs.length-1]} Avg`,data:la,backgroundColor:’#e8500a66’,borderColor:’#e8500a’,borderWidth:1.5}
-]},options:{…CD}});
-const rows=yrs.map((y,i)=>{
+const ea=bats.map(function(b){return Math.round(yrs.slice(0,3).map(function(y){return getTotal(y,b);}).reduce(function(a,x){return a+x;},0)/3);});
+const la=bats.map(function(b){return Math.round(yrs.slice(-3).map(function(y){return getTotal(y,b);}).reduce(function(a,x){return a+x;},0)/3);});
+mkChart(‘ch-btrd’,{type:‘bar’,data:{labels:bats.map(function(b){return b.replace(‘Battalion ‘,’’);}),datasets:[
+{label:yrs[0]+’–’+yrs[2]+’ Avg’,data:ea,backgroundColor:’#2e75b666’,borderColor:’#2e75b6’,borderWidth:1.5},
+{label:yrs[yrs.length-3]+’–’+yrs[yrs.length-1]+’ Avg’,data:la,backgroundColor:’#e8500a66’,borderColor:’#e8500a’,borderWidth:1.5}
+]},options:CD});
+const rows=yrs.map(function(y,i){
 const t=getTotal(y),prev=i>0?getTotal(yrs[i-1]):null;
-const yoy=prev!==null?t-prev:null,pct=prev?((t-prev)/prev*100).toFixed(1):null;
-const mo=getMonthly(y),peak=MO[mo.indexOf(Math.max(…mo))],low=MO[mo.indexOf(Math.min(…mo))];
-const fs=Math.max(0,i-2),roll=Math.round(tots.slice(fs,i+1).reduce((a,b)=>a+b,0)/(i-fs+1));
-return`<tr><td style="text-align:left;font-weight:700">${y}</td><td>${t}</td> <td style="color:${yoy===null?'#8a93a8':yoy>=0?'#22c55e':'#ef4444'}">${yoy===null?'—':(yoy>=0?'+':'')+yoy}</td> <td style="color:${!pct?'#8a93a8':+pct>=0?'#22c55e':'#ef4444'}">${pct?(+pct>=0?'+':'')+pct+'%':'—'}</td> <td>${roll}</td><td style="color:${(t-roll)>=0?'#22c55e':'#ef4444'}">${(t-roll)>=0?'+':''}${t-roll}</td> <td>${peak}</td><td>${Math.max(...mo)}</td><td>${low}</td><td>${Math.min(...mo)}</td></tr>`;
+const yoyv=prev!==null?t-prev:null,pct=prev?((t-prev)/prev*100).toFixed(1):null;
+const mo=getMonthly(y),peak=MO[mo.indexOf(Math.max.apply(null,mo))],low=MO[mo.indexOf(Math.min.apply(null,mo))];
+const fs=Math.max(0,i-2),rollv=Math.round(tots.slice(fs,i+1).reduce(function(a,b){return a+b;},0)/(i-fs+1));
+return’<tr><td style="text-align:left;font-weight:700">’+y+’</td><td>’+t+’</td>’
++’<td style="color:'+(yoyv===null?'#8a93a8':yoyv>=0?'#22c55e':'#ef4444')+'">’+(yoyv===null?’—’:(yoyv>=0?’+’:’’)+yoyv)+’</td>’
++’<td style="color:'+(!pct?'#8a93a8':+pct>=0?'#22c55e':'#ef4444')+'">’+(pct?(+pct>=0?’+’:’’)+pct+’%’:’—’)+’</td>’
++’<td>’+rollv+’</td><td style="color:'+((t-rollv)>=0?'#22c55e':'#ef4444')+'">’+(t-rollv>=0?’+’:’’)+(t-rollv)+’</td>’
++’<td>’+peak+’</td><td>’+Math.max.apply(null,mo)+’</td><td>’+low+’</td><td>’+Math.min.apply(null,mo)+’</td></tr>’;
 });
-document.getElementById(‘tbl-trend’).innerHTML=`<thead><tr><th>Year</th><th>Total</th><th>YoY Δ</th><th>YoY %</th><th>3-Yr Avg</th><th>vs Avg</th><th>Peak Mo</th><th>Peak #</th><th>Low Mo</th><th>Low #</th></tr></thead><tbody>${rows.join('')}</tbody>`;
+document.getElementById(‘tbl-trend’).innerHTML=’<thead><tr><th>Year</th><th>Total</th><th>YoY Δ</th><th>YoY %</th><th>3-Yr Avg</th><th>vs Avg</th><th>Peak Mo</th><th>Peak #</th><th>Low Mo</th><th>Low #</th></tr></thead><tbody>’+rows.join(’’)+’</tbody>’;
 }
 
-// ── BATTALIONS ──
 function buildBatUI(){
 const yrs=getHYrs();
-document.getElementById(‘bat-pills’).innerHTML=`<span class="active" onclick="selBatYear('all',this)">All Years</span>`+
-yrs.map(y=>`<span onclick="selBatYear(${y},this)">${y}</span>`).join(’’);
-getBats().forEach(b=>{
+const pills=document.getElementById(‘bat-pills’);
+pills.innerHTML=’<span class="active" onclick="selBatYear('all',this)">All Years</span>’+
+yrs.map(function(y){return’<span onclick="selBatYear('+y+',this)">’+y+’</span>’;}).join(’’);
+const bats=getBats();
+bats.forEach(function(b){
 document.getElementById(‘dept-bat’).add(new Option(b,b));
 document.getElementById(‘ip-bat’).add(new Option(b,b));
 });
@@ -366,171 +342,192 @@ renderBatCharts();renderBatTable();
 
 function selBatYear(yr,el){
 selBatYr=yr;
-document.querySelectorAll(’#bat-pills span’).forEach(p=>p.classList.remove(‘active’));
+document.querySelectorAll(’#bat-pills span’).forEach(function(p){p.classList.remove(‘active’);});
 el.classList.add(‘active’);
 document.getElementById(‘bat-yr-lbl’).textContent=yr===‘all’?‘All Years’:yr;
-document.getElementById(‘bat-mo-lbl’).textContent=yr===‘all’?‘All Years’:yr;
 renderBatCharts();renderBatTable();
 }
 
 function renderBatCharts(){
 const bats=getBats(),yrs=selBatYr===‘all’?getHYrs():[selBatYr];
-const bTots=bats.map(b=>yrs.reduce((a,y)=>a+getTotal(y,b),0));
-mkChart(‘ch-batbar’,{type:‘bar’,data:{labels:bats.map(b=>b.replace(‘Battalion’,’’)),datasets:[{label:‘Total Fires’,data:bTots,backgroundColor:BC.map(c=>c+‘cc’),borderColor:BC,borderWidth:1.5}]},
-options:{…CD,plugins:{…CD.plugins,legend:{display:false}}}});
-mkChart(‘ch-batmo’,{type:‘line’,data:{labels:MO,datasets:bats.map((b,i)=>({label:b.replace(’Battalion ’,’Bn ’),data:MO.map((_,m)=>yrs.reduce((a,y)=>a+getMonthly(y,b)[m],0)),borderColor:BC[i],backgroundColor:BC[i]+‘33’,borderWidth:1.5,pointRadius:2,fill:false,tension:.3}))},
-options:{…CD}});
+const bTots=bats.map(function(b){return yrs.reduce(function(a,y){return a+getTotal(y,b);},0);});
+mkChart(‘ch-batbar’,{type:‘bar’,data:{labels:bats.map(function(b){return b.replace(‘Battalion ‘,’’);}),datasets:[{label:‘Total Fires’,data:bTots,backgroundColor:BC.map(function(c){return c+‘cc’;}),borderColor:BC,borderWidth:1.5}]},
+options:Object.assign({},CD,{plugins:Object.assign({},CD.plugins,{legend:{display:false}})})});
+mkChart(‘ch-batmo’,{type:‘line’,data:{labels:MO,datasets:bats.map(function(b,i){return{label:b.replace(’Battalion ’,’Bn ’),data:MO.map(function(_,m){return yrs.reduce(function(a,y){return a+getMonthly(y,b)[m];},0);}),borderColor:BC[i],backgroundColor:BC[i]+‘33’,borderWidth:1.5,pointRadius:2,fill:false,tension:.3};})},options:CD});
 }
 
 function renderBatTable(){
 const bats=getBats(),yrs=selBatYr===‘all’?getHYrs():[selBatYr];
-const ct=bats.reduce((a,b)=>a+yrs.reduce((x,y)=>x+getTotal(y,b),0),0);
-const rows=bats.map((b,i)=>{
-const yr=yrs.map(y=>getTotal(y,b)),tot=yr.reduce((a,x)=>a+x,0);
-return`<tr><td style="text-align:left;font-weight:700;color:${BC[i]}">${b}</td>${yr.map(v=>`<td class="fc">${v||’’}</td>`).join('')}<td style="font-weight:700">${tot}</td><td>${(tot/yrs.length).toFixed(1)}</td><td>${ct?(tot/ct*100).toFixed(1):0}%</td></tr>`;
+const ct=bats.reduce(function(a,b){return a+yrs.reduce(function(x,y){return x+getTotal(y,b);},0);},0);
+const rows=bats.map(function(b,i){
+const yr=yrs.map(function(y){return getTotal(y,b);}),tot=yr.reduce(function(a,x){return a+x;},0);
+return’<tr><td style="text-align:left;font-weight:700;color:'+BC[i]+'">’+b+’</td>’+yr.map(function(v){return’<td class="fc">’+(v||’’)+’</td>’;}).join(’’)+’<td style="font-weight:700">’+tot+’</td><td>’+(tot/yrs.length).toFixed(1)+’</td><td>’+(ct?(tot/ct*100).toFixed(1):0)+’%</td></tr>’;
 });
-const cr=`<tr style="background:rgba(232,80,10,.1);font-weight:700"><td style="text-align:left;color:var(--accent)">COUNTY TOTAL</td>${yrs.map(y=>`<td style="color:var(--accent)">${bats.reduce((a,b)=>a+getTotal(y,b),0)}</td>`).join('')}<td style="color:var(--accent)">${ct}</td><td style="color:var(--accent)">${(ct/yrs.length).toFixed(1)}</td><td>100%</td></tr>`;
-document.getElementById(‘tbl-bat’).innerHTML=`<thead><tr><th style="text-align:left">Battalion</th>${yrs.map(y=>`<th>${y}</th>`).join('')}<th>Total</th><th>Avg/Yr</th><th>% County</th></tr></thead><tbody>${rows.join('')}${cr}</tbody>`;
+const cr=’<tr style="background:rgba(232,80,10,.1);font-weight:700"><td style="text-align:left;color:var(--accent)">COUNTY TOTAL</td>’+yrs.map(function(y){return’<td style="color:var(--accent)">’+bats.reduce(function(a,b){return a+getTotal(y,b);},0)+’</td>’;}).join(’’)+’<td style="color:var(--accent)">’+ct+’</td><td style="color:var(--accent)">’+(ct/yrs.length).toFixed(1)+’</td><td>100%</td></tr>’;
+document.getElementById(‘tbl-bat’).innerHTML=’<thead><tr><th style="text-align:left">Battalion</th>’+yrs.map(function(y){return’<th>’+y+’</th>’;}).join(’’)+’<th>Total</th><th>Avg/Yr</th><th>% County</th></tr></thead><tbody>’+rows.join(’’)+cr+’</tbody>’;
 }
 
-// ── HEATMAP ──
 function buildHeatmap(){
-const yrs=getHYrs(),all=[];
-yrs.forEach(y=>MO.forEach((_,m)=>all.push(getMonthly(y)[m])));
-const mx=Math.max(…all);
-function hc(v){if(!v)return’h0’;const p=v/mx;return p<.25?‘h1’:p<.5?‘h2’:p<.75?‘h3’:‘h4’;}
-const rows=yrs.map(y=>{const mo=getMonthly(y),tot=mo.reduce((a,b)=>a+b,0);
-return`<tr><td style="text-align:left;font-weight:700;cursor:pointer" onclick="this.closest('tr').classList.toggle('br')">${y}</td>${mo.map(v=>`<td class="fc ${hc(v)}">${v||’’}</td>`).join('')}<td style="font-weight:700">${tot}</td></tr>`;});
-const ar=`<tr style="background:rgba(232,80,10,.15)"><td style="text-align:left;font-weight:700;color:var(--accent)">Avg</td>${MO.map((_,m)=>{const a=Math.round(yrs.reduce((x,y)=>x+getMonthly(y)[m],0)/yrs.length*10)/10;return`<td class="fc ${hc(a)}" style="color:var(--accent)">${a}</td>`}).join('')}<td style="font-weight:700;color:var(--accent)">${Math.round(yrs.reduce((a,y)=>a+getTotal(y),0)/yrs.length)}</td></tr>`;
-document.getElementById(‘tbl-heat’).innerHTML=`<thead><tr><th style="text-align:left">Year</th>${MO.map(m=>`<th>${m}</th>`).join('')}<th>Total</th></tr></thead><tbody>${rows.join('')}${ar}</tbody>`;
-getBats().forEach(b=>document.getElementById(‘heat-bat’).add(new Option(b,b)));
+const yrs=getHYrs(),allv=[];
+yrs.forEach(function(y){MO.forEach(function(*,m){allv.push(getMonthly(y)[m]);});});
+const mx=Math.max.apply(null,allv);
+function hc(v){if(!v)return’’;var p=v/mx;return p<.25?‘h1’:p<.5?‘h2’:p<.75?‘h3’:‘h4’;}
+const rows=yrs.map(function(y){
+const mo=getMonthly(y),tot=mo.reduce(function(a,b){return a+b;},0);
+return’<tr><td style="text-align:left;font-weight:700;cursor:pointer" onclick="this.closest('tr').classList.toggle('br')">’+y+’</td>’+mo.map(function(v){return’<td class="fc '+hc(v)+'">’+(v||’’)+’</td>’;}).join(’’)+’<td style="font-weight:700">’+tot+’</td></tr>’;
+});
+const ar=’<tr style="background:rgba(232,80,10,.15)"><td style="text-align:left;font-weight:700;color:var(--accent)">Avg</td>’+MO.map(function(*,m){
+const a=Math.round(yrs.reduce(function(x,y){return x+getMonthly(y)[m];},0)/yrs.length*10)/10;
+return’<td class="fc '+hc(a)+'" style="color:var(--accent)">’+a+’</td>’;
+}).join(’’)+’<td style="font-weight:700;color:var(--accent)">’+Math.round(yrs.reduce(function(a,y){return a+getTotal(y);},0)/yrs.length)+’</td></tr>’;
+document.getElementById(‘tbl-heat’).innerHTML=’<thead><tr><th style="text-align:left">Year</th>’+MO.map(function(m){return’<th>’+m+’</th>’;}).join(’’)+’<th>Total</th></tr></thead><tbody>’+rows.join(’’)+ar+’</tbody>’;
+getBats().forEach(function(b){document.getElementById(‘heat-bat’).add(new Option(b,b));});
 renderBatHeat();
 }
 
 function renderBatHeat(){
 const bat=document.getElementById(‘heat-bat’).value,yrs=getHYrs();
-const all=[];yrs.forEach(y=>MO.forEach((_,m)=>all.push(getMonthly(y,bat)[m])));
-const mx=Math.max(…all)||1;
-function hc(v){if(!v)return’h0’;const p=v/mx;return p<.25?‘h1’:p<.5?‘h2’:p<.75?‘h3’:‘h4’;}
-const rows=yrs.map(y=>{const mo=getMonthly(y,bat),tot=mo.reduce((a,b)=>a+b,0);
-return`<tr><td style="text-align:left;font-weight:700">${y}</td>${mo.map(v=>`<td class="fc ${hc(v)}">${v||’’}</td>`).join('')}<td style="font-weight:700">${tot}</td></tr>`;});
-document.getElementById(‘tbl-batheat’).innerHTML=`<thead><tr><th style="text-align:left">Year</th>${MO.map(m=>`<th>${m}</th>`).join('')}<th>Total</th></tr></thead><tbody>${rows.join('')}</tbody>`;
+const allv=[];yrs.forEach(function(y){MO.forEach(function(_,m){allv.push(getMonthly(y,bat)[m]);});});
+const mx=Math.max.apply(null,allv)||1;
+function hc(v){if(!v)return’’;var p=v/mx;return p<.25?‘h1’:p<.5?‘h2’:p<.75?‘h3’:‘h4’;}
+const rows=yrs.map(function(y){
+const mo=getMonthly(y,bat),tot=mo.reduce(function(a,b){return a+b;},0);
+return’<tr><td style="text-align:left;font-weight:700">’+y+’</td>’+mo.map(function(v){return’<td class="fc '+hc(v)+'">’+(v||’’)+’</td>’;}).join(’’)+’<td style="font-weight:700">’+tot+’</td></tr>’;
+});
+document.getElementById(‘tbl-batheat’).innerHTML=’<thead><tr><th style="text-align:left">Year</th>’+MO.map(function(m){return’<th>’+m+’</th>’;}).join(’’)+’<th>Total</th></tr></thead><tbody>’+rows.join(’’)+’</tbody>’;
 }
 
-// ── DEPARTMENTS ──
 function buildDeptUI(){renderDepts();}
 function renderDepts(){
 const yrs=getHYrs(),bf=document.getElementById(‘dept-bat’).value,so=document.getElementById(‘dept-sort’).value,se=document.getElementById(‘dept-search’).value.toLowerCase();
-let depts=D.departments.filter(d=>(!bf||bf===‘all’||d.battalion===bf)&&(!se||d.name.toLowerCase().includes(se)));
-const wd=depts.map(d=>{const yr=yrs.map(y=>getTotal(y,null,d.name));return{…d,yr,tot:yr.reduce((a,b)=>a+b,0),avg:yr.reduce((a,b)=>a+b,0)/yrs.length};});
-if(so===‘total’)wd.sort((a,b)=>b.tot-a.tot);else if(so===‘avg’)wd.sort((a,b)=>b.avg-a.avg);else if(so===‘name’)wd.sort((a,b)=>a.name.localeCompare(b.name));else wd.sort((a,b)=>b.yr[b.yr.length-1]-a.yr[a.yr.length-1]);
-const mx=Math.max(…wd.map(d=>d.tot));
-const rows=wd.map((d,i)=>{
-const bar=`<div style="display:inline-block;width:${Math.round(d.tot/mx*60)}px;height:4px;background:var(--accent);border-radius:2px;vertical-align:middle;margin-left:6px"></div>`;
-return`<tr><td style="text-align:left;color:var(--text2)">${i+1}</td><td style="text-align:left">${d.name}${bar}</td><td style="text-align:left;color:var(--text2)">${d.battalion}</td>${d.yr.map(v=>`<td class="${v?'fc':'zr'}">${v||’’}</td>`).join('')}<td style="font-weight:700">${d.tot}</td><td>${d.avg.toFixed(1)}</td></tr>`;
+var depts=D.departments.filter(function(d){return(!bf||bf===‘all’||d.battalion===bf)&&(!se||d.name.toLowerCase().indexOf(se)>=0);});
+var wd=depts.map(function(d){
+var yr=yrs.map(function(y){return getTotal(y,null,d.name);});
+return{name:d.name,battalion:d.battalion,yr:yr,tot:yr.reduce(function(a,b){return a+b;},0),avg:yr.reduce(function(a,b){return a+b;},0)/yrs.length};
 });
-document.getElementById(‘tbl-dept’).innerHTML=`<thead><tr><th style="text-align:left">#</th><th style="text-align:left">Department</th><th style="text-align:left">Battalion</th>${yrs.map(y=>`<th>${y}</th>`).join('')}<th>Total</th><th>Avg/Yr</th></tr></thead><tbody>${rows.join('')}</tbody>`;
+if(so===‘total’)wd.sort(function(a,b){return b.tot-a.tot;});
+else if(so===‘avg’)wd.sort(function(a,b){return b.avg-a.avg;});
+else if(so===‘name’)wd.sort(function(a,b){return a.name.localeCompare(b.name);});
+else wd.sort(function(a,b){return b.yr[b.yr.length-1]-a.yr[a.yr.length-1];});
+const mx=Math.max.apply(null,wd.map(function(d){return d.tot;}));
+const rows=wd.map(function(d,i){
+var bar=’<div style="display:inline-block;width:'+Math.round(d.tot/mx*60)+'px;height:4px;background:var(--accent);border-radius:2px;vertical-align:middle;margin-left:6px"></div>’;
+return’<tr><td style="text-align:left;color:var(--text2)">’+(i+1)+’</td><td style="text-align:left">’+d.name+bar+’</td><td style="text-align:left;color:var(--text2)">’+d.battalion+’</td>’+d.yr.map(function(v){return’<td class="'+(v?'fc':'zr')+'">’+(v||’’)+’</td>’;}).join(’’)+’<td style="font-weight:700">’+d.tot+’</td><td>’+d.avg.toFixed(1)+’</td></tr>’;
+});
+document.getElementById(‘tbl-dept’).innerHTML=’<thead><tr><th style="text-align:left">#</th><th style="text-align:left">Department</th><th style="text-align:left">Battalion</th>’+yrs.map(function(y){return’<th>’+y+’</th>’;}).join(’’)+’<th>Total</th><th>Avg/Yr</th></tr></thead><tbody>’+rows.join(’’)+’</tbody>’;
 }
 
-// ── IN-PROGRESS ──
 function buildIPUI(){
 const ipYrs=D.metadata.years_in_progress;
-document.getElementById(‘ip-pills’).innerHTML=ipYrs.map((y,i)=>{
-const lm=lastDataMonth(y),has=lm>=0;
-return`<span class="ip ${i===0?'active':''}" onclick="selIPYear(${y},this)">${has?'<span class="ld"></span>':''}${y}${has?` <small style="opacity:.7">thru ${MO[lm]}</small>`:'<small style="opacity:.7"> (no data)</small>'}</span>`;
+document.getElementById(‘ip-pills’).innerHTML=ipYrs.map(function(y,i){
+var lm=lastDataMonth(y),has=lm>=0;
+return’<span class="ip'+(i===0?' active':'')+'" onclick="selIPYear('+y+',this)">’+(has?’<span class="ld"></span>’:’’)+y+(has?’ <small style="opacity:.7">thru ‘+MO[lm]+’</small>’:’<small style="opacity:.7"> (no data)</small>’)+’</span>’;
 }).join(’’);
 renderIPTab(ipYrs[0]);
 }
 
 function selIPYear(yr,el){
 selIPYr=yr;
-document.querySelectorAll(’#ip-pills span’).forEach(p=>p.classList.remove(‘active’));
+document.querySelectorAll(’#ip-pills span’).forEach(function(p){p.classList.remove(‘active’);});
 el.classList.add(‘active’);
 document.getElementById(‘ip-yr-lbl’).textContent=yr;
 renderIPTab(yr);
 }
 
 function renderIPTab(yr){
-const{actual,projected,last}=getProjMonthly(yr);
-const ha=histMonthAvg(),hyrs=getHYrs(),hTots=hyrs.map(y=>getTotal(y));
-const actTot=actual.reduce((a,b)=>a+b,0),projTot=Math.round(projected.reduce((a,b)=>a+b,0));
+const actual=getMonthly(yr),ha=histMonthAvg(),hyrs=getHYrs(),hTots=hyrs.map(function(y){return getTotal(y);});
+const last=lastDataMonth(yr);
+const proj=actual.slice();
+for(var i=last+1;i<12;i++)proj[i]=Math.round(ha[i]*10)/10;
+const actTot=actual.reduce(function(a,b){return a+b;},0);
+const projTot=Math.round(proj.reduce(function(a,b){return a+b;},0));
 const pct=last>=0?Math.round((last+1)/12*100):0;
-const haToDate=Math.round(ha.slice(0,last+1).reduce((a,b)=>a+b,0));
+const haDate=Math.round(ha.slice(0,last+1).reduce(function(a,b){return a+b;},0));
 const cards=[
-{l:‘Fires to Date’,v:actTot,s:last>=0?`Through ${MO[last]}`:‘No data yet’,c:’’},
+{l:‘Fires to Date’,v:actTot,s:last>=0?‘Through ‘+MO[last]:‘No data yet’,c:’’},
 {l:‘Projected Full Year’,v:projTot,s:‘Based on historical avg’,c:‘bl’},
-{l:‘Year Progress’,v:`${pct}%`,s:`${last+1} of 12 months`,c:‘ye’},
-{l:‘vs Historical Avg’,v:(actTot-haToDate>=0?’+’:’’)+(actTot-haToDate),s:`Hist avg to date: ${haToDate}`,c:‘gr’},
+{l:‘Year Progress’,v:pct+’%’,s:(last+1)+’ of 12 months’,c:‘ye’},
+{l:‘vs Historical Avg’,v:(actTot-haDate>=0?’+’:’’)+(actTot-haDate),s:‘Hist avg to date: ‘+haDate,c:‘gr’},
 ];
-document.getElementById(‘sc-ip’).innerHTML=cards.map(c=>`<div class="sc ${c.c}"><div class="sl">${c.l}</div><div class="sv">${c.v}</div><div class="ss">${c.s}</div></div>`).join(’’);
-const actD=MO.map((*,i)=>i<=last?actual[i]:null);
-const prjD=MO.map((*,i)=>i>last?projected[i]:null);
+document.getElementById(‘sc-ip’).innerHTML=cards.map(function(c){return’<div class="sc '+c.c+'"><div class="sl">’+c.l+’</div><div class="sv">’+c.v+’</div><div class="ss">’+c.s+’</div></div>’;}).join(’’);
+const actD=MO.map(function(*,i){return i<=last?actual[i]:null;});
+const prjD=MO.map(function(*,i){return i>last?proj[i]:null;});
 mkChart(‘ch-ip-mo’,{type:‘bar’,data:{labels:MO,datasets:[
-{label:`${yr} Actual`,data:actD,backgroundColor:’#e8500acc’,borderColor:’#e8500a’,borderWidth:1},
-{label:`${yr} Projected`,data:prjD,backgroundColor:’#f59e0b44’,borderColor:’#f59e0b’,borderWidth:1},
+{label:yr+’ Actual’,data:actD,backgroundColor:’#e8500acc’,borderColor:’#e8500a’,borderWidth:1},
+{label:yr+’ Projected’,data:prjD,backgroundColor:’#f59e0b44’,borderColor:’#f59e0b’,borderWidth:1},
 {label:‘Historical Avg’,data:ha,type:‘line’,borderColor:’#2e75b6’,borderWidth:1.5,borderDash:[4,3],pointRadius:2,fill:false,tension:.4}
-]},options:{…CD}});
-const hMin=MO.map((*,m)=>Math.min(…hyrs.map(y=>getMonthly(y)[m])));
-const hMax=MO.map((*,m)=>Math.max(…hyrs.map(y=>getMonthly(y)[m])));
+]},options:CD});
+const hMin=MO.map(function(*,m){return Math.min.apply(null,hyrs.map(function(y){return getMonthly(y)[m];}));});
+const hMax=MO.map(function(*,m){return Math.max.apply(null,hyrs.map(function(y){return getMonthly(y)[m];}));});
 mkChart(‘ch-ip-rng’,{type:‘line’,data:{labels:MO,datasets:[
 {label:‘Max’,data:hMax,borderColor:’#ef444488’,borderWidth:1,fill:false,pointRadius:0,tension:.3},
 {label:‘Avg’,data:ha,borderColor:’#2e75b6’,borderWidth:2,fill:false,pointRadius:2,tension:.3},
 {label:‘Min’,data:hMin,borderColor:’#22c55e88’,borderWidth:1,fill:false,pointRadius:0,tension:.3},
-{label:`${yr} Actual`,data:actD,borderColor:’#e8500a’,borderWidth:2.5,pointRadius:4,fill:false,tension:.2}
-]},options:{…CD}});
-const allD=[…hTots,projTot],allL=[…hyrs,`${yr} Proj.`];
-mkChart(‘ch-ip-proj’,{type:‘bar’,data:{labels:allL,datasets:[{label:‘Total Fires’,data:allD,backgroundColor:allL.map(l=>l.includes(‘Proj’)?’#f59e0b88’:’#2e75b633’),borderColor:allL.map(l=>l.includes(‘Proj’)?’#f59e0b’:’#2e75b6’),borderWidth:1.5}]},
-options:{…CD,plugins:{…CD.plugins,legend:{display:false}}}});
+{label:yr+’ Actual’,data:actD,borderColor:’#e8500a’,borderWidth:2.5,pointRadius:4,fill:false,tension:.2}
+]},options:CD});
+const allD=hTots.concat([projTot]),allL=hyrs.concat([yr+’ Proj.’]);
+mkChart(‘ch-ip-proj’,{type:‘bar’,data:{labels:allL,datasets:[{label:‘Total Fires’,data:allD,backgroundColor:allL.map(function(l){return l.toString().indexOf(‘Proj’)>=0?’#f59e0b88’:’#2e75b633’;}),borderColor:allL.map(function(l){return l.toString().indexOf(‘Proj’)>=0?’#f59e0b’:’#2e75b6’;}),borderWidth:1.5}]},
+options:Object.assign({},CD,{plugins:Object.assign({},CD.plugins,{legend:{display:false}})})});
 renderIPTable();
 }
 
 function renderIPTable(){
 const yr=selIPYr,bf=document.getElementById(‘ip-bat’).value,hyrs=getHYrs();
-const{last}=getProjMonthly(yr);
-const depts=(bf===‘all’?D.departments:D.departments.filter(d=>d.battalion===bf));
-const rows=depts.map(d=>{
-const mo=(D.years[String(yr)]||{})[d.name]||new Array(12).fill(0);
-const tot=mo.reduce((a,b)=>a+b,0);
-const ha=hyrs.reduce((a,y)=>a+((D.years[String(y)]||{})[d.name]||[]).reduce((x,v)=>x+v,0),0)/hyrs.length;
-return{name:d.name,bat:d.battalion,mo,tot,ha:ha.toFixed(1)};
-}).filter(r=>r.tot>0||+r.ha>0.5).sort((a,b)=>b.tot-a.tot);
-const tr=rows.map(r=>`<tr><td style="text-align:left">${r.name}</td><td style="text-align:left">${r.bat}</td>${r.mo.map((v,i)=>`<td class="${i<=last?(v?'fc':'zr'):'zr'}" style="${i>last?'color:#f59e0b;font-size:.7rem':''}">${i<=last?(v||’’):(v?v:’—’)}</td>`).join('')}<td style="font-weight:700">${r.tot}</td><td style="color:var(--text2)">${r.ha}</td></tr>`);
-document.getElementById(‘tbl-ip’).innerHTML=`<thead><tr><th style="text-align:left">Department</th><th style="text-align:left">Battalion</th>${MO.map(m=>`<th>${m}</th>`).join('')}<th>Total</th><th>Hist Avg</th></tr></thead><tbody>${tr.join('')}</tbody>`;
+const last=lastDataMonth(yr);
+var depts=bf===‘all’?D.departments:D.departments.filter(function(d){return d.battalion===bf;});
+var rows=depts.map(function(d){
+var mo=(D.years[String(yr)]||{})[d.name]||new Array(12).fill(0);
+var tot=mo.reduce(function(a,b){return a+b;},0);
+var ha=hyrs.reduce(function(a,y){return a+((D.years[String(y)]||{})[d.name]||[]).reduce(function(x,v){return x+v;},0);},0)/hyrs.length;
+return{name:d.name,bat:d.battalion,mo:mo,tot:tot,ha:ha.toFixed(1)};
+}).filter(function(r){return r.tot>0||+r.ha>0.5;}).sort(function(a,b){return b.tot-a.tot;});
+var tr=rows.map(function(r){
+return’<tr><td style="text-align:left">’+r.name+’</td><td style="text-align:left">’+r.bat+’</td>’+r.mo.map(function(v,i){return’<td class="'+(i<=last?(v?'fc':'zr'):'zr')+'">’+(v||’’)+’</td>’;}).join(’’)+’<td style="font-weight:700">’+r.tot+’</td><td style="color:var(--text2)">’+r.ha+’</td></tr>’;
+});
+document.getElementById(‘tbl-ip’).innerHTML=’<thead><tr><th style="text-align:left">Department</th><th style="text-align:left">Battalion</th>’+MO.map(function(m){return’<th>’+m+’</th>’;}).join(’’)+’<th>Total</th><th>Hist Avg</th></tr></thead><tbody>’+tr.join(’’)+’</tbody>’;
 }
 
-// ── UPDATE ──
 function buildUpdateUI(){
 const ueYr=document.getElementById(‘ue-yr’);
-[…getHYrs(),…D.metadata.years_in_progress].reverse().forEach(y=>ueYr.add(new Option(y,y)));
+getHYrs().concat(D.metadata.years_in_progress).reverse().forEach(function(y){ueYr.add(new Option(y,y));});
 const ueD=document.getElementById(‘ue-dept’);
-D.departments.forEach(d=>ueD.add(new Option(d.name,d.name)));
-ueYr.addEventListener(‘change’,updateForm);ueD.addEventListener(‘change’,updateForm);
+D.departments.forEach(function(d){ueD.add(new Option(d.name,d.name));});
+ueYr.addEventListener(‘change’,updateForm);
+ueD.addEventListener(‘change’,updateForm);
 updateForm();
 }
 
 function updateForm(){
 const yr=document.getElementById(‘ue-yr’).value,dept=document.getElementById(‘ue-dept’).value;
 const cur=(D.years[yr]||{})[dept]||new Array(12).fill(0);
-document.getElementById(‘ue-cur’).textContent=`Current: [${cur.join(', ')}]  (total: ${cur.reduce((a,b)=>a+b,0)})`;
-document.getElementById(‘ue-grid’).innerHTML=MO.map((m,i)=>`<div class="mi"><label>${m}</label><input type="number" id="um${i}" value="${cur[i]}" min="0" max="99"></div>`).join(’’);
+document.getElementById(‘ue-cur’).textContent=‘Current: [’+cur.join(’, ‘)+’]  total: ‘+cur.reduce(function(a,b){return a+b;},0);
+document.getElementById(‘ue-grid’).innerHTML=MO.map(function(m,i){return’<div class="mi"><label>’+m+’</label><input type="number" id="um'+i+'" value="'+cur[i]+'" min="0" max="99"></div>’;}).join(’’);
 }
 
 function genJSON(){
 const yr=document.getElementById(‘ue-yr’).value,dept=document.getElementById(‘ue-dept’).value;
-const vals=MO.map((_,i)=>parseInt(document.getElementById(`um${i}`).value)||0);
-const out=`"${dept}": [${vals.join(', ')}]`;
-document.getElementById(‘ue-out’).textContent=out;document.getElementById(‘ue-out’).style.display=‘block’;
+const vals=MO.map(function(_,i){return parseInt(document.getElementById(‘um’+i).value)||0;});
+const out=’”’+dept+’”: [’+vals.join(’, ‘)+’]’;
+document.getElementById(‘ue-out’).textContent=out;
+document.getElementById(‘ue-out’).style.display=‘block’;
 }
 
 function copyJSON(){
 const out=document.getElementById(‘ue-out’).textContent;
 if(!out){genJSON();return;}
-navigator.clipboard.writeText(out).then(()=>{
-const b=event.target;b.textContent=‘✓ Copied!’;setTimeout(()=>b.textContent=‘Copy to Clipboard’,2000);
+navigator.clipboard.writeText(out).then(function(){
+var b=event.target;b.textContent=‘✓ Copied!’;setTimeout(function(){b.textContent=‘Copy to Clipboard’;},2000);
 });
 }
 
-loadData();
+// Init — no async, no fetch, data is already loaded
+buildOverview();
+buildTrends();
+buildBatUI();
+buildHeatmap();
+buildDeptUI();
+buildIPUI();
+buildUpdateUI();
 </script>
 
 </body>

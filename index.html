@@ -38,7 +38,7 @@ main{padding:18px 20px;max-width:1400px;margin:0 auto;}
 .sc::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);}
 .sc.bl::before{background:var(--blue);}.sc.gr::before{background:var(--green);}.sc.ye::before{background:var(--yellow);}
 .sl{font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text2);margin-bottom:5px;line-height:1.3;}
-.sv{font-size:1.6rem;font-weight:700;line-height:1.1;word-break:break-word;}
+.sv{font-size:1.6rem;font-weight:700;line-height:1.1;word-break:normal;overflow-wrap:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .ss{font-size:.68rem;color:var(--text2);margin-top:3px;word-break:break-word;}
 .sd{font-size:.72rem;font-weight:600;margin-top:3px;}
 .sd.up{color:var(--green);}.sd.dn{color:var(--red);}
@@ -62,8 +62,9 @@ tbody tr.br{background:rgba(46,117,182,.1);}
 tbody tr.br td{font-weight:700;color:var(--blue);}
 td{padding:7px 10px;text-align:right;color:var(--text);}
 td:first-child,td:nth-child(2){text-align:left;color:var(--text2);font-size:.75rem;}
+.dept-name{white-space:nowrap;}
 td.fc{font-weight:600;}td.zr{color:#3a4055;}
-.h1{background:rgba(232,80,10,.15);}.h2{background:rgba(232,80,10,.30);}.h3{background:rgba(232,80,10,.50);color:#fff!important;}.h4{background:rgba(232,80,10,.75);color:#fff!important;font-weight:700!important;}
+.h1{}.h2{}.h3{}.h4{}
 .arr-up{color:var(--red)}.arr-dn{color:var(--green)}.arr-eq{color:var(--text2)}
 .ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
 .ctrl label{font-size:.72rem;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;}
@@ -118,7 +119,7 @@ footer{text-align:center;padding:18px;color:var(--text2);font-size:.7rem;border-
   <button class="active" onclick="showTab('overview',this)">📊 Overview</button>
   <button onclick="showTab('trends',this)">📈 Trends</button>
   <button onclick="showTab('battalions',this)">🚒 Battalions</button>
-  <button onclick="showTab('heatmap',this)">🌡️ Heatmap</button>
+  <button onclick="showTab('heatmap',this)">📅 Monthly Grid</button>
   <button onclick="showTab('departments',this)">🏠 Departments</button>
   <button onclick="showTab('inprogress',this)">⚡ In Progress</button>
   <button onclick="showTab('records',this)">🏆 Records</button>
@@ -139,7 +140,7 @@ footer{text-align:center;padding:18px;color:var(--text2);font-size:.7rem;border-
 </div>
 <div id="tab-trends" class="tab">
   <div class="sh">Year-Over-Year Analysis</div>
-  <div class="cc" style="margin-bottom:14px"><div class="ct"><span class="d"></span>Annual Totals with 3-Year Rolling Average</div><div class="ch-wrap"><canvas id="ch-trend"></canvas></div></div>
+  <div class="cc" style="margin-bottom:14px"><div class="ct"><span class="d"></span>Annual Totals with Rolling Avg (up to 3-Year)</div><div class="ch-wrap"><canvas id="ch-trend"></canvas></div></div>
   <div class="cg">
     <div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span>YoY Change</div><div class="ch-wrap"><canvas id="ch-yoy"></canvas></div></div>
     <div class="cc"><div class="ct"><span class="d" style="background:var(--yellow)"></span>Battalion Trends</div><div class="ch-wrap"><canvas id="ch-btrd"></canvas></div></div>
@@ -158,9 +159,9 @@ footer{text-align:center;padding:18px;color:var(--text2);font-size:.7rem;border-
   <div class="tw"><table id="tbl-bat"></table></div>
 </div>
 <div id="tab-heatmap" class="tab">
-  <div class="sh">Monthly Heatmap</div>
+  <div class="sh">Monthly Fire Grid</div>
   <div class="tw"><table id="tbl-heat"></table></div>
-  <div class="sh">Battalion Heatmap</div>
+  <div class="sh">Battalion Monthly Grid</div>
   <div class="ctrl"><label>Battalion:</label><select id="heat-bat" onchange="renderBatHeat()"></select></div>
   <div class="tw"><table id="tbl-batheat"></table></div>
 </div>
@@ -170,7 +171,7 @@ footer{text-align:center;padding:18px;color:var(--text2);font-size:.7rem;border-
     <label>Sort:</label>
     <select id="dept-sort" onchange="renderDepts()">
       <option value="total">All-Time Total</option><option value="avg">Avg/Year</option>
-      <option value="name">Name</option><option value="recent">Most Recent</option>
+      <option value="name">Name</option>
     </select>
     <input id="dept-search" placeholder="Search..." oninput="renderDepts()" style="min-width:140px">
   </div>
@@ -202,7 +203,6 @@ footer{text-align:center;padding:18px;color:var(--text2);font-size:.7rem;border-
     <label>Year A:</label><select id="cmp-a"></select>
     <label>Year B:</label><select id="cmp-b"></select>
     <button class="btn" onclick="runCompare()">Compare</button>
-    <button class="btn o sm" onclick="window.print()">🖨️ Print</button>
   </div>
   <div id="cmp-stats" class="sg" style="margin-bottom:18px"></div>
   <div class="cg">
@@ -372,10 +372,13 @@ function buildOverview(){
     return '<div class="sc '+c.c+'"><div class="sl">'+c.l+'</div><div class="sv">'+c.v+'</div><div class="ss">'+c.s+'</div>'+(c.delta!==undefined?'<div class="sd '+(c.delta>=0?'dn':'up')+'">'+(c.delta>=0?'▲':'▼')+' '+Math.abs(c.delta)+' ('+c.pct+'%) vs prior year</div>':'')+'</div>';
   }).join('');
   var roll=tots.map(function(_,i){var s=tots.slice(Math.max(0,i-2),i+1);return Math.round(s.reduce(function(a,b){return a+b;},0)/s.length);});
+  var rollLabel='Rolling Avg (up to 3-Yr)';
+  var lastDelta=tots[tots.length-1]-tots[tots.length-2];
+  var vsAnnotPlugin={id:'vsAnnot',afterDatasetsDraw:function(chart){var ctx=chart.ctx,ds=chart.getDatasetMeta(0),last=ds.data[ds.data.length-1];if(!last)return;var x=last.x,y=last.y,txt=(lastDelta>=0?'▲+':'▼')+lastDelta+' vs '+yrs[yrs.length-2],col=lastDelta>=0?'#ef4444':'#22c55e';ctx.save();ctx.font='bold 11px "Segoe UI",Arial,sans-serif';ctx.fillStyle=col;ctx.textAlign='center';ctx.fillText(txt,x,y-8);ctx.restore();}};
   mkChart('ch-annual',{type:'bar',data:{labels:yrs,datasets:[
     {label:'Annual Total',data:tots,backgroundColor:tots.map(function(t){return t===Math.max.apply(null,tots)?'#e8500a':'#2e75b633';}),borderColor:'#2e75b6',borderWidth:1.5,order:2},
-    {label:'3-Yr Avg',data:roll,type:'line',borderColor:'#f59e0b',borderWidth:2,pointRadius:3,fill:false,tension:.4,order:1}
-  ]},options:CD});
+    {label:rollLabel,data:roll,type:'line',borderColor:'#f59e0b',borderWidth:2,pointRadius:3,fill:false,tension:.4,order:1}
+  ]},options:CD,plugins:[vsAnnotPlugin]});
   var bt=bats.map(function(b){return yrs.reduce(function(a,y){return a+getTotal(y,b);},0);});
   mkChart('ch-pie',{type:'doughnut',data:{labels:bats.map(function(b){return b.replace('Battalion ','Bn ');}),datasets:[{data:bt,backgroundColor:BC,borderColor:'#0d0f14',borderWidth:2}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#8a93a8',font:{size:10},padding:8}}}}});
@@ -390,7 +393,7 @@ function buildTrends(){
   var roll=tots.map(function(_,i){var s=tots.slice(Math.max(0,i-2),i+1);return Math.round(s.reduce(function(a,b){return a+b;},0)/s.length);});
   mkChart('ch-trend',{type:'line',data:{labels:yrs,datasets:[
     {label:'Annual Total',data:tots,borderColor:'#e8500a',backgroundColor:'rgba(232,80,10,.1)',borderWidth:2,fill:true,tension:.3,pointRadius:5,pointBackgroundColor:'#e8500a'},
-    {label:'3-Yr Avg',data:roll,borderColor:'#f59e0b',borderWidth:2,borderDash:[5,4],fill:false,tension:.4,pointRadius:0}
+    {label:'Rolling Avg (up to 3-Yr)',data:roll,borderColor:'#f59e0b',borderWidth:2,borderDash:[5,4],fill:false,tension:.4,pointRadius:0}
   ]},options:CD});
   var yoy=yrs.slice(1).map(function(y,i){return getTotal(y)-getTotal(yrs[i]);});
   mkChart('ch-yoy',{type:'bar',data:{labels:yrs.slice(1),datasets:[{label:'YoY',data:yoy,backgroundColor:yoy.map(function(v){return v>=0?'#ef444488':'#22c55e88';}),borderColor:yoy.map(function(v){return v>=0?'#ef4444':'#22c55e';}),borderWidth:1.5}]},
@@ -409,7 +412,7 @@ function buildTrends(){
     var arr=yoyv===null?'':yoyv>0?'<span class="arr-up">▲</span>':yoyv<0?'<span class="arr-dn">▼</span>':'<span class="arr-eq">—</span>';
     return '<tr><td style="text-align:left;font-weight:700">'+y+'</td><td>'+t+'</td><td>'+arr+' '+(yoyv===null?'—':(yoyv>=0?'+':'')+yoyv)+'</td><td style="color:'+(!pct?'#8a93a8':+pct>=0?'#ef4444':'#22c55e')+'">'+(pct?(+pct>=0?'+':'')+pct+'%':'—')+'</td><td>'+rv+'</td><td style="color:'+((t-rv)>=0?'#ef4444':'#22c55e')+'">'+(t-rv>=0?'+':'')+(t-rv)+'</td><td>'+pk+'</td><td>'+Math.max.apply(null,mo)+'</td><td>'+lw+'</td><td>'+Math.min.apply(null,mo)+'</td></tr>';
   });
-  document.getElementById('tbl-trend').innerHTML='<thead><tr><th>Year</th><th>Total</th><th>YoY</th><th>%</th><th>3-Yr Avg</th><th>vs Avg</th><th>Peak Mo</th><th>Peak #</th><th>Low Mo</th><th>Low #</th></tr></thead><tbody>'+rows.join('')+'</tbody>';
+  document.getElementById('tbl-trend').innerHTML='<thead><tr><th>Year</th><th>Total</th><th>YoY</th><th>%</th><th>Roll Avg</th><th>vs Avg</th><th>Peak Mo</th><th>Peak #</th><th>Low Mo</th><th>Low #</th></tr></thead><tbody>'+rows.join('')+'</tbody>';
 }
 
 function buildBatUI(){
@@ -466,7 +469,7 @@ function renderDepts(){
   var mx=Math.max.apply(null,wd.map(function(d){return d.tot;}));
   var rows=wd.map(function(d,i){
     var bar='<div style="display:inline-block;width:'+Math.round(d.tot/mx*50)+'px;height:4px;background:var(--accent);border-radius:2px;vertical-align:middle;margin-left:5px"></div>';
-    return '<tr><td style="text-align:left;color:var(--text2)">'+(i+1)+'</td><td style="text-align:left">'+d.name+bar+'</td><td style="text-align:left;color:var(--text2)">'+d.battalion.replace('Battalion ','Bn ')+'</td>'+d.yr.map(function(v){return '<td class="'+(v?'fc':'zr')+'">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+d.tot+'</td><td>'+d.avg.toFixed(1)+'</td><td>'+trendArrow(d.yr)+'</td><td style="color:var(--yellow)">'+d.peak+'</td><td style="color:var(--text2)">'+d.zeros+'</td></tr>';
+    return '<tr><td style="text-align:left;color:var(--text2)">'+(i+1)+'</td><td style="text-align:left" class="dept-name">'+d.name+bar+'</td><td style="text-align:left;color:var(--text2)">'+d.battalion.replace('Battalion ','Bn ')+'</td>'+d.yr.map(function(v){return '<td class="'+(v?'fc':'zr')+'">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+d.tot+'</td><td>'+d.avg.toFixed(1)+'</td><td>'+trendArrow(d.yr)+'</td><td style="color:var(--yellow)">'+d.peak+'</td><td style="color:var(--text2)">'+d.zeros+'</td></tr>';
   });
   document.getElementById('tbl-dept').innerHTML='<thead><tr><th style="text-align:left">#</th><th style="text-align:left">Department</th><th style="text-align:left">Bat.</th>'+yrs.map(function(y){return '<th>'+y+'</th>';}).join('')+'<th>Total</th><th>Avg</th><th>Trend</th><th>Best Yr</th><th>Zero Yrs</th></tr></thead><tbody>'+rows.join('')+'</tbody>';
 }
@@ -498,7 +501,7 @@ function renderIPTable(){
   var yr=selIPYr,bf=document.getElementById('ip-bat').value,hyrs=getHYrs(),last=lastDataMonth(yr);
   var depts=(bf==='all'?getDepts():getDepts().filter(function(d){return d.battalion===bf;}));
   var rows=depts.map(function(d){var mo=(getYrData(yr)||{})[d.name]||new Array(12).fill(0),tot=mo.reduce(function(a,b){return a+b;},0),ha=hyrs.reduce(function(a,y){return a+((getYrData(y)||{})[d.name]||[]).reduce(function(x,v){return x+v;},0);},0)/hyrs.length;return{name:d.name,bat:d.battalion,mo:mo,tot:tot,ha:ha.toFixed(1)};}).filter(function(r){return r.tot>0||+r.ha>0.5;}).sort(function(a,b){return b.tot-a.tot;});
-  document.getElementById('tbl-ip').innerHTML='<thead><tr><th style="text-align:left">Department</th><th style="text-align:left">Bat.</th>'+MO.map(function(m){return '<th>'+m+'</th>';}).join('')+'<th>Total</th><th>Hist Avg</th></tr></thead><tbody>'+rows.map(function(r){return '<tr><td style="text-align:left">'+r.name+'</td><td style="text-align:left">'+r.bat.replace('Battalion ','Bn ')+'</td>'+r.mo.map(function(v,i){return '<td class="'+(i<=last?(v?'fc':'zr'):'zr')+'">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+r.tot+'</td><td style="color:var(--text2)">'+r.ha+'</td></tr>';}).join('')+'</tbody>';
+  document.getElementById('tbl-ip').innerHTML='<thead><tr><th style="text-align:left">Department</th><th style="text-align:left">Bat.</th>'+MO.map(function(m){return '<th>'+m+'</th>';}).join('')+'<th>Total</th><th>Hist Avg</th></tr></thead><tbody>'+rows.map(function(r){return '<tr><td style="text-align:left;white-space:nowrap">'+r.name+'</td><td style="text-align:left">'+r.bat.replace('Battalion ','Bn ')+'</td>'+r.mo.map(function(v,i){return '<td class="'+(i<=last?(v?'fc':'zr'):'zr')+'">'+(v||'')+'</td>';}).join('')+'<td style="font-weight:700">'+r.tot+'</td><td style="color:var(--text2)">'+r.ha+'</td></tr>';}).join('')+'</tbody>';
 }
 
 function buildRecords(){
@@ -527,7 +530,7 @@ function buildRecords(){
     {l:'Most Consistent',v:lzD.name.split(' ').slice(1).join(' '),s:'only '+lzD.zeros+' zero-fire year(s)',cls:'green'},
   ].map(function(r){return '<div class="rc '+r.cls+'"><div class="rl">'+r.l+'</div><div class="rv">'+r.v+'</div><div class="rs">'+r.s+'</div></div>';}).join('');
   document.getElementById('rec-monthly').innerHTML=MO.map(function(m,mi){var vals=yrs.map(function(y){return getMonthly(y)[mi];});var pk=Math.max.apply(null,vals),avg=Math.round(vals.reduce(function(a,b){return a+b;},0)/vals.length*10)/10;return '<div class="rc"><div class="rl">'+m+'</div><div class="rv">'+pk+'</div><div class="rs">Peak: '+yrs[vals.indexOf(pk)]+' · Avg: '+avg+'</div></div>';}).join('');
-  var zrows=dd.filter(function(d){return d.zeros>0;}).sort(function(a,b){return b.zeros-a.zeros;}).slice(0,20).map(function(d){var zList=yrs.filter(function(y,i){return d.yr[i]===0;}).join(', ');return '<tr><td style="text-align:left">'+d.name+'</td><td>'+d.zeros+'</td><td style="text-align:left;color:var(--text2)">'+zList+'</td></tr>';});
+  var zrows=dd.filter(function(d){return d.zeros>0;}).sort(function(a,b){return b.zeros-a.zeros;}).slice(0,20).map(function(d){var zList=yrs.filter(function(y,i){return d.yr[i]===0;}).join(', ');return '<tr><td style="text-align:left;white-space:nowrap">'+d.name+'</td><td>'+d.zeros+'</td><td style="text-align:left;color:var(--text2)">'+zList+'</td></tr>';});
   document.getElementById('tbl-zeros').innerHTML='<thead><tr><th style="text-align:left">Department</th><th>Zero-Fire Yrs</th><th style="text-align:left">Which Years</th></tr></thead><tbody>'+zrows.join('')+'</tbody>';
 }
 
@@ -557,12 +560,12 @@ function renderCmpTable(){
   var bf=document.getElementById('cmp-bat-filter').value;
   var depts=bf==='all'?getDepts():getDepts().filter(function(d){return d.battalion===bf;});
   var rows=depts.map(function(d){var a=getTotal(cmpA,null,d.name),b=getTotal(cmpB,null,d.name),diff=b-a;return{name:d.name,bat:d.battalion,a:a,b:b,diff:diff};}).filter(function(r){return r.a>0||r.b>0;}).sort(function(a,b){return Math.abs(b.diff)-Math.abs(a.diff);});
-  document.getElementById('tbl-cmp').innerHTML='<thead><tr><th style="text-align:left">Department</th><th style="text-align:left">Bat.</th><th>'+cmpA+'</th><th>'+cmpB+'</th><th>Change</th></tr></thead><tbody>'+rows.map(function(r){var col=r.diff>0?'var(--red)':r.diff<0?'var(--green)':'var(--text2)';return '<tr><td style="text-align:left">'+r.name+'</td><td style="text-align:left">'+r.bat.replace('Battalion ','Bn ')+'</td><td>'+r.a+'</td><td>'+r.b+'</td><td style="color:'+col+';font-weight:700">'+(r.diff>0?'▲':r.diff<0?'▼':'—')+' '+(r.diff>=0?'+':'')+r.diff+'</td></tr>';}).join('')+'</tbody>';
+  document.getElementById('tbl-cmp').innerHTML='<thead><tr><th style="text-align:left">Department</th><th style="text-align:left">Bat.</th><th>'+cmpA+'</th><th>'+cmpB+'</th><th>Change</th></tr></thead><tbody>'+rows.map(function(r){var col=r.diff>0?'var(--red)':r.diff<0?'var(--green)':'var(--text2)';return '<tr><td style="text-align:left;white-space:nowrap">'+r.name+'</td><td style="text-align:left">'+r.bat.replace('Battalion ','Bn ')+'</td><td>'+r.a+'</td><td>'+r.b+'</td><td style="color:'+col+';font-weight:700">'+(r.diff>0?'▲':r.diff<0?'▼':'—')+' '+(r.diff>=0?'+':'')+r.diff+'</td></tr>';}).join('')+'</tbody>';
 }
 
 function buildUpdateUI(){
   var ueYr=document.getElementById('ue-yr');while(ueYr.options.length)ueYr.remove(0);
-  getHYrs().concat(getIPYrs()).reverse().forEach(function(y){ueYr.add(new Option(y,y));});
+  getHYrs().concat(getIPYrs()).concat([2027,2028,2029,2030]).reverse().forEach(function(y){ueYr.add(new Option(y,y));});
   var ueD=document.getElementById('ue-dept');while(ueD.options.length)ueD.remove(0);
   getDepts().forEach(function(d){ueD.add(new Option(d.name,d.name));});
   ueYr.onchange=updateForm;ueD.onchange=updateForm;updateForm();

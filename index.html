@@ -36,7 +36,7 @@ var AC={},selBatYr='all',selIPYr=2026,curCounty='nassau',cmpA=2024,cmpB=2025,D=n
 async function loadData(){
   try{
     if(window.__FIRE_DATA__){init(window.__FIRE_DATA__);return;}
-    var r=await fetch('fires.json',{cache:'no-store'});
+    var r=await fetch('fires.json?v='+Date.now(),{cache:'no-store'});
     if(!r.ok)throw new Error('fires.json returned '+r.status);
     init(await r.json());
   }catch(e){showLoadError(e);}

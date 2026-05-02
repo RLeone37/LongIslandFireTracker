@@ -1,6 +1,6 @@
 # Long Island Fire Tracker
 
-A static GitHub Pages dashboard for tracking Long Island fire counts by year, month, battalion, and department.
+A static GitHub Pages dashboard for tracking Long Island fire counts by year, month, and department.
 
 ## Files
 
@@ -27,6 +27,17 @@ A static GitHub Pages dashboard for tracking Long Island fire counts by year, mo
   }
 }
 ```
+
+## County structure differences
+
+Nassau and Suffolk use different organizational structures:
+
+- **Nassau** departments are grouped by **battalions**. Department numbers are plain integers (e.g. `720 Hempstead`).
+- **Suffolk** departments are grouped by **divisions**. Department numbers use a dashed format (e.g. `1-1-0 Amityville`).
+
+The dashboard detects which structure is in use and adjusts all labels and grouping logic accordingly. Battalion/division filters, charts, and table headers update automatically when switching between counties.
+
+## Department data
 
 Each department/year entry uses a 12-number monthly array (January through December):
 

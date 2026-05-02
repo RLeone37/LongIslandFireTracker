@@ -1,26 +1,45 @@
 # Long Island Fire Tracker
 
-A static GitHub Pages dashboard for tracking Long Island fire counts by year, month, and department.
+A static GitHub Pages dashboard for tracking Nassau and Suffolk County working fire counts by year, month, battalion/division, and department.
 
 ## Files
 
 - `index.html` — the dashboard application.
 - `fires.json` — the data file loaded by the dashboard.
 
+## Tabs
+
+| Tab | Description |
+|-----|-------------|
+| **Overview** | Summary stat cards, annual totals bar chart, battalion/division share donut, average monthly pattern, and stacked-by-division chart |
+| **Trends** | Year-over-year line and bar charts, battalion average bar chart, and a detailed annual trends table |
+| **Battalions/Divisions** | Monthly fire grid broken down by battalion or division, with an Avg row |
+| **Monthly Grid** | Full county monthly fire grid by year, with an Avg row |
+| **Departments** | Sortable, searchable department table with per-year totals, averages, trends, and peak years |
+| **In Progress** | Live-year tracking with projected full-year totals based on historical averages |
+| **Records** | All-time records for the county, individual departments, and each calendar month |
+| **Compare** | Side-by-side comparison of Nassau vs. Suffolk |
+| **Update Data** | Password-protected data entry form for adding new fire counts |
+
 ## Data format
 
-`fires.json` contains a metadata block and county/department entries:
+`fires.json` should include:
 
 ```json
 {
   "metadata": {
-    "last_updated": "YYYY-MM-DD",
-    "years_complete": [],
-    "years_in_progress": []
+    "last_updated": "2025-12-31",
+    "years_complete": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "years_in_progress": [2026]
   },
   "counties": {
     "nassau": {
       "name": "Nassau County",
+      "departments": [],
+      "years": {}
+    },
+    "suffolk": {
+      "name": "Suffolk County",
       "departments": [],
       "years": {}
     }
@@ -28,33 +47,35 @@ A static GitHub Pages dashboard for tracking Long Island fire counts by year, mo
 }
 ```
 
-## County structure differences
-
-Nassau and Suffolk use different organizational structures:
-
-- **Nassau** departments are grouped by **battalions**. Department numbers are plain integers (e.g. `720 Hempstead`).
-- **Suffolk** departments are grouped by **divisions**. Department numbers use a dashed format (e.g. `1-1-0 Amityville`).
-
-The dashboard detects which structure is in use and adjusts all labels and grouping logic accordingly. Battalion/division filters, charts, and table headers update automatically when switching between counties.
-
-## Department data
-
-Each department/year entry uses a 12-number monthly array (January through December):
+Each department/year entry uses a 12-number monthly array:
 
 ```json
 "720 Hempstead": [1, 2, 0, 1, 0, 3, 1, 1, 2, 4, 0, 2]
 ```
 
+Month order is January through December.
+
 ## Updating data
 
 1. Open `fires.json` in GitHub.
-2. Search for the department name.
-3. Update the monthly numbers.
+2. Search for the department name, for example `720 Hempstead`.
+3. Update the 12 monthly numbers.
 4. Update `metadata.last_updated` to the actual last data update date.
 5. Commit the change.
 
-The dashboard header displays `Last data update:` from `metadata.last_updated`, not the site push/build date.
+The dashboard header displays `Last data update:` using `metadata.last_updated`, not the site push/build date.
 
 ## Deployment notes
 
-Place `index.html` and `fires.json` in the same GitHub Pages directory. If using a separate branch or `/docs` folder for Pages, both files must be in that published location. The dashboard loads `fires.json` with `cache: no-store` and will show an error if the file is missing or invalid.
+Place `index.html` and `fires.json` in the same GitHub Pages directory. If using a separate branch or `/docs` folder for Pages, both files must be in that published location.
+
+## Recent changes
+
+- Battalions tab renamed to Battalions/Divisions.
+- Most Active Division stat card now abbreviates "Division" to "Div" (consistent with "Bn" for Battalion).
+- Average Monthly Pattern chart no longer highlights the peak month in orange — all bars now use the uniform blue style matching Nassau.
+- Removed rolling-average wording, chart lines, and table columns from the index.
+- Monthly Fire Grid now highlights only the current month name in the header, not the whole column.
+- Battalion Monthly Grid now includes an `Avg` row matching the Monthly Fire Grid style.
+- Header date changed to `Last data update:`.
+- Dashboard now attempts to load `fires.json` with `cache: no-store` and shows a clear error message if the file is missing or invalid.

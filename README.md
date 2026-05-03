@@ -102,6 +102,7 @@ Data-only updates to `fires.json` can be committed directly to `main`. All `inde
 
 ### v2.0.6 — 2026-05-03
 - Average Monthly Pattern chart (Overview) peak bar no longer highlights in orange — all bars now uniform blue
+- Annual Totals bar chart (Overview) peak bar no longer highlights in red — all bars now uniform blue
 - In Progress tab subtitle updated from "Solid = actual" to "Red = actual" for clarity
 
 ### v2.0.5 — 2026-05-03

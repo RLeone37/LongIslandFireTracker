@@ -1,6 +1,6 @@
 # Long Island Fire Tracker
 
-**Current version: v2.0.5**
+**Current version: v2.0.6**
 
 A static GitHub Pages dashboard for tracking Nassau and Suffolk County working fire counts by year, month, battalion/division, and department.
 
@@ -99,6 +99,11 @@ Update the version number in two places when releasing:
 Data-only updates to `fires.json` can be committed directly to `main`. All `index.html` changes should go through `dev` first.
 
 ## Changelog
+
+### v2.0.6 — 2026-05-03
+- Average Monthly Pattern chart (Overview) peak bar no longer highlights in orange — all bars now uniform blue
+- Annual Totals bar chart (Overview) peak bar no longer highlights in red — all bars now uniform blue
+- In Progress tab subtitle updated from "Solid = actual" to "Red = actual" for clarity
 
 ### v2.0.5 — 2026-05-03
 - Added RJLdrone logo to header beneath title, left-justified

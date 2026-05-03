@@ -70,7 +70,7 @@ Month order is January through December.
 4. Update `metadata.last_updated` to the actual last data update date.
 5. Commit the change.
 
-The dashboard header displays `Last data update:` using `metadata.last_updated`, not the site push/build date.
+The `metadata.last_updated` field is used internally but is no longer displayed in the header (replaced by version number as of v2.0.4).
 
 ## Deployment notes
 
@@ -98,13 +98,19 @@ Update the version number in two places when releasing:
 
 Data-only updates to `fires.json` can be committed directly to `main`. All `index.html` changes should go through `dev` first.
 
-## Recent changes
+## Changelog
 
-- Battalions tab renamed to Battalions/Divisions.
-- Most Active Division stat card now abbreviates "Division" to "Div" (consistent with "Bn" for Battalion).
-- Average Monthly Pattern chart no longer highlights the peak month in orange — all bars now use the uniform blue style matching Nassau.
-- Removed rolling-average wording, chart lines, and table columns from the index.
-- Monthly Fire Grid now highlights only the current month name in the header, not the whole column.
-- Battalion Monthly Grid now includes an `Avg` row matching the Monthly Fire Grid style.
-- Header date changed to `Last data update:`.
-- Dashboard now attempts to load `fires.json` with `cache: no-store` and shows a clear error message if the file is missing or invalid.
+### v2.0.4 — 2026-05-03
+- Replaced last data update date in header with version number
+- Added `VERSION` constant to `index.html` for single-source version management
+- Added version comment at top of `index.html`
+
+### v2.0.3 and earlier
+- Battalions tab renamed to Battalions/Divisions
+- Most Active Division stat card now abbreviates "Division" to "Div" (consistent with "Bn" for Battalion)
+- Average Monthly Pattern chart no longer highlights the peak month in orange — all bars now use uniform blue style matching Nassau
+- Removed rolling-average wording, chart lines, and table columns
+- Monthly Fire Grid now highlights only the current month name in the header, not the whole column
+- Battalion Monthly Grid includes an `Avg` row matching the Monthly Fire Grid style
+- Header date label changed to `Last data update:`
+- Dashboard attempts to load `fires.json` with `cache: no-store` and shows a clear error message if the file is missing or invalid

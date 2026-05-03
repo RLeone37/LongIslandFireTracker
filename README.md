@@ -1,5 +1,7 @@
 # Long Island Fire Tracker
 
+**Current version: v2.0.4**
+
 A static GitHub Pages dashboard for tracking Nassau and Suffolk County working fire counts by year, month, battalion/division, and department.
 
 ## Files
@@ -68,6 +70,28 @@ The dashboard header displays `Last data update:` using `metadata.last_updated`,
 ## Deployment notes
 
 Place `index.html` and `fires.json` in the same GitHub Pages directory. If using a separate branch or `/docs` folder for Pages, both files must be in that published location.
+
+## Versioning
+
+This project uses [Semantic Versioning](https://semver.org/): `vMAJOR.MINOR.PATCH`
+
+| Part | When to bump | Example |
+|------|-------------|---------|
+| **MAJOR** | Breaking change to `fires.json` format, or complete UI overhaul | `v2.0.0` → `v3.0.0` |
+| **MINOR** | New tab, new chart, or new feature added | `v2.0.4` → `v2.1.0` |
+| **PATCH** | Bug fix, label tweak, cosmetic change | `v2.0.3` → `v2.0.4` |
+
+Update the version number in two places when releasing:
+- The `# Long Island Fire Tracker` header in this README
+- The comment at the top of `index.html`: `<!-- LI Fire Tracker vX.X.X | YYYY-MM-DD -->`
+
+### Branch strategy
+
+- **`main`** — live production branch, served by GitHub Pages. Never develop directly here.
+- **`dev`** — working branch for all new features and UI changes. Test locally, then merge to `main`.
+- **`hotfix/xyz`** — for urgent fixes branched off `main` when needed.
+
+Data-only updates to `fires.json` can be committed directly to `main`. All `index.html` changes should go through `dev` first.
 
 ## Recent changes
 

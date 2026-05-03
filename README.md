@@ -1,6 +1,6 @@
 # Long Island Fire Tracker
 
-**Current version: v2.0.4**
+**Current version: v2.0.5**
 
 A static GitHub Pages dashboard for tracking Nassau and Suffolk County working fire counts by year, month, battalion/division, and department.
 
@@ -84,7 +84,7 @@ This project uses [Semantic Versioning](https://semver.org/): `vMAJOR.MINOR.PATC
 |------|-------------|---------|
 | **MAJOR** | Breaking change to `fires.json` format, or complete UI overhaul | `v2.0.0` → `v3.0.0` |
 | **MINOR** | New tab, new chart, or new feature added | `v2.0.4` → `v2.1.0` |
-| **PATCH** | Bug fix, label tweak, cosmetic change | `v2.0.3` → `v2.0.4` |
+| **PATCH** | Bug fix, label tweak, cosmetic change | `v2.0.4` → `v2.0.5` |
 
 Update the version number in two places when releasing:
 - The `# Long Island Fire Tracker` header in this README
@@ -99,6 +99,10 @@ Update the version number in two places when releasing:
 Data-only updates to `fires.json` can be committed directly to `main`. All `index.html` changes should go through `dev` first.
 
 ## Changelog
+
+### v2.0.5 — 2026-05-03
+- Added RJLdrone logo to header beneath title, left-justified
+- Logo rendered from transparency-processed PNG (`RJLdrone_transparent.png`)
 
 ### v2.0.4 — 2026-05-03
 - Replaced last data update date in header with version number

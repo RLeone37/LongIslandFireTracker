@@ -4,6 +4,11 @@
 
 A static GitHub Pages dashboard for tracking Nassau and Suffolk County working fire counts by year, month, battalion/division, and department.
 
+## Links
+
+- **Live site:** https://rleone37.github.io/LongIslandFireTracker/
+- **Dev preview:** https://raw.githack.com/rleone37/LongIslandFireTracker/dev/index.html
+
 ## Files
 
 - `index.html` — the dashboard application.

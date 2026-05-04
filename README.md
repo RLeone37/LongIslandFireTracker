@@ -108,38 +108,10 @@ Update the version number in two places when releasing:
 
 ## Changelog
 
-### v2.0.7 — 2026-05-03
-- Most Active Battalion/Division stat card now auto-scales font size to prevent text from being cut off
-- Removed logo from header
-- Removed colored dot indicators from all chart and graph titles
-- Chart titles upgraded: brighter text color, added bottom border separator
-- Chart cards now have a 2px accent-colored top border
-- Section headers restyled: CSS bar element replaces text character, fire-orange color, heavier weight
-- Battalion/division labels reformatted to ordinal-first across all charts, legends, and tables (e.g. "1st Battalion", "3rd Division") for Nassau and Suffolk
-- Battalion/Division Share and Stacked charts now use full spelled-out labels consistent with the above format
-- Departments table column header now reads "Battalion" or "Division" depending on county (was abbreviated "Bat.")
-- Department names no longer display "F.D." suffix in any table across Nassau and Suffolk
-- Most Active Dept stat card (Overview) now correctly strips "F.D." from the displayed department name
-- Removed proportional bar indicators from department name cells in the Departments table
+See [CHANGELOG.md](CHANGELOG.md) for full version history.
 
-### v2.0.6 — 2026-05-03
-- Average Monthly Pattern chart (Overview) peak bar no longer highlights in orange — all bars now uniform blue
-- Annual Totals bar chart (Overview) peak bar no longer highlights in red — all bars now uniform blue
-- In Progress tab subtitle updated from "Solid = actual" to "Red = actual" for clarity
+## License
 
-### v2.0.5 — 2026-05-03
-- Added logo to header beneath title
+© 2026 RLeone37. All rights reserved. See [LICENSE](LICENSE) for details.
 
-### v2.0.4 — 2026-05-03
-- Replaced last data update date in header with version number
-- Added version comment at top of `index.html`
-
-### v2.0.3 and earlier
-- Battalions tab renamed to Battalions/Divisions
-- Most Active Division stat card abbreviates "Division" to "Div" (consistent with "Bn" for Battalion)
-- Average Monthly Pattern chart no longer highlights the peak month — all bars use uniform blue
-- Removed rolling-average lines and table columns
-- Monthly Fire Grid highlights only the current month name in the header
-- Battalion Monthly Grid includes an Avg row matching the Monthly Fire Grid style
-- Header date label changed to `Last data update:`
-- Dashboard loads `fires.json` with `cache: no-store` and shows a clear error if the file is missing or invalid
+This project is not open source. No part of the code, data, or documentation may be copied, modified, or used in any form without explicit written permission from the author.

@@ -107,6 +107,8 @@ Update the version number in two places when releasing:
 - Battalion/Division Share and Stacked charts now use full spelled-out labels consistent with the above format
 - Departments table column header now reads "Battalion" or "Division" depending on county (was abbreviated "Bat.")
 - Department names no longer display "F.D." suffix in any table across Nassau and Suffolk
+- Most Active Dept stat card (Overview) now correctly strips "F.D." from the displayed department name
+- Removed proportional bar indicators from department name cells in the Departments table
 
 ### v2.0.6 — 2026-05-03
 - Average Monthly Pattern chart (Overview) peak bar no longer highlights in orange — all bars now uniform blue

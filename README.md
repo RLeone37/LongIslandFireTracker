@@ -97,6 +97,7 @@ Update the version number in two places when releasing:
 ## Changelog
 
 ### v2.0.7 — 2026-05-03
+- Most Active Battalion/Division stat card now auto-scales font size to prevent text from being cut off
 - Removed logo from header
 - Removed colored dot indicators from all chart and graph titles
 - Chart titles upgraded: brighter text color, added bottom border separator

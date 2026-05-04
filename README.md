@@ -102,6 +102,10 @@ Update the version number in two places when releasing:
 - Chart titles upgraded: brighter text color, added bottom border separator
 - Chart cards now have a 2px accent-colored top border
 - Section headers restyled: CSS bar element replaces text character, fire-orange color, heavier weight
+- Battalion/division labels reformatted to ordinal-first across all charts, legends, and tables (e.g. "1st Battalion", "3rd Division") for Nassau and Suffolk
+- Battalion/Division Share and Stacked charts now use full spelled-out labels consistent with the above format
+- Departments table column header now reads "Battalion" or "Division" depending on county (was abbreviated "Bat.")
+- Department names no longer display "F.D." suffix in any table across Nassau and Suffolk
 
 ### v2.0.6 — 2026-05-03
 - Average Monthly Pattern chart (Overview) peak bar no longer highlights in orange — all bars now uniform blue

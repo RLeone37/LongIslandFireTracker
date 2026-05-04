@@ -4,6 +4,18 @@
 
 A static GitHub Pages dashboard for tracking Nassau and Suffolk County working fire counts by year, month, battalion/division, and department.
 
+## iOS Web App (Add to Home Screen)
+
+The dashboard can be installed on an iPhone or iPad as a full-screen web app:
+
+1. Open the live site in **Safari**: https://rleone37.github.io/LongIslandFireTracker/
+2. Tap the **Share** button (box with an arrow pointing up) in the Safari toolbar.
+3. Scroll down and tap **Add to Home Screen**.
+4. Edit the name if desired (e.g. "LI Fire Tracker"), then tap **Add**.
+5. The app icon will appear on your Home Screen and launch in full-screen mode without the Safari browser chrome.
+
+> **Note:** Add to Home Screen only works in Safari on iOS. It will not appear as an option in Chrome or other iOS browsers.
+
 ## Links
 
 - **Live site:** https://rleone37.github.io/LongIslandFireTracker/

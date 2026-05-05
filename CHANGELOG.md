@@ -8,9 +8,13 @@ This project follows [Semantic Versioning](https://semver.org/): `vMAJOR.MINOR.P
 |------|-------------|---------|
 | **MAJOR** | Breaking change to `fires.json` format, or complete UI overhaul | `v2.0.0` → `v3.0.0` |
 | **MINOR** | New tab, new chart, or new feature | `v2.0.7` → `v2.1.0` |
-| **PATCH** | Bug fix, label tweak, or cosmetic change | `v2.0.6` → `v2.0.7` |
+| **PATCH** | Bug fix, label tweak, or cosmetic change | `v2.0.7` → `v2.0.8` |
 
 ---
+
+## [v2.0.8] — 2026-05-04
+
+- Battalion/Division Monthly Grid now highlights the current month column header, matching the county-wide Monthly Fire Grid
 
 ## [v2.0.7] — 2026-05-03
 

@@ -12,6 +12,10 @@ This project follows [Semantic Versioning](https://semver.org/): `vMAJOR.MINOR.P
 
 ---
 
+## [v2.1.2] — 2026-05-04
+
+- Removed Update Data tab from both Nassau and Suffolk — nav button, tab content, password check, and all associated JS removed
+
 ## [v2.1.1] — 2026-05-04
 
 - In Progress tab: renamed "Month Trend" stat card label to "Month Projection" for consistency with tab's projection terminology

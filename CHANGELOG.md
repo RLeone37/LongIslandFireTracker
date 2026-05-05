@@ -12,6 +12,10 @@ This project follows [Semantic Versioning](https://semver.org/): `vMAJOR.MINOR.P
 
 ---
 
+## [v2.1.1] — 2026-05-04
+
+- In Progress tab: renamed "Month Trend" stat card label to "Month Projection" for consistency with tab's projection terminology
+
 ## [v2.1.0] — 2026-05-04
 
 - In Progress tab: added Pace vs Last Year stat card — shows "On Track / Ahead / Behind" compared to the prior year's fire count through the same month

@@ -12,6 +12,13 @@ This project follows [Semantic Versioning](https://semver.org/): `vMAJOR.MINOR.P
 
 ---
 
+## [v2.1.0] — 2026-05-04
+
+- In Progress tab: added Pace vs Last Year stat card — shows "On Track / Ahead / Behind" compared to the prior year's fire count through the same month
+- In Progress tab: added Month Trend stat card — projects current month's final count based on days elapsed (if partial data exists) or historical average
+- README: removed dev branch preview link and dev/hotfix branch strategy; main is the only branch
+- CLAUDE.md: removed dev branch workflow references
+
 ## [v2.0.8] — 2026-05-04
 
 - Battalion/Division Monthly Grid now highlights the current month column header, matching the county-wide Monthly Fire Grid

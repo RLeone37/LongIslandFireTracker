@@ -1,6 +1,6 @@
 # Long Island Fire Tracker
 
-**Current version: v2.0.8**
+**Current version: v2.1.0**
 
 A static GitHub Pages dashboard for tracking Nassau and Suffolk County working fire counts by year, month, battalion/division, and department.
 
@@ -19,8 +19,6 @@ The dashboard can be installed on an iPhone or iPad as a full-screen web app:
 ## Links
 
 - **Live site:** https://rleone37.github.io/LongIslandFireTracker/
-- **Dev preview:** https://raw.githack.com/rleone37/LongIslandFireTracker/dev/index.html
-
 ## Files
 
 - `index.html` — the dashboard application
@@ -35,7 +33,7 @@ The dashboard can be installed on an iPhone or iPad as a full-screen web app:
 | **Battalions/Divisions** | Fire totals broken down by battalion or division, filterable by year, with monthly breakdown charts and a summary table |
 | **Monthly Grid** | Full county monthly fire grid by year with an Avg row; secondary grid filterable by battalion/division — both grids highlight the current month |
 | **Departments** | Sortable, searchable department table with per-year totals, averages, trends, peak years, and zero-fire year counts |
-| **In Progress** | Live-year tracking with projected full-year totals based on historical averages, plus range comparison against historical min/avg/max |
+| **In Progress** | Live-year tracking with pace indicator (on track / ahead / behind last year), current month trend projection, projected full-year totals based on historical averages, and range comparison against historical min/avg/max |
 | **Records** | All-time records for the county, individual departments, and each calendar month |
 | **Compare** | Side-by-side year-to-year comparison with monthly and battalion/division breakdowns |
 | **Update Data** | Password-protected data entry form for adding or correcting monthly fire counts |
@@ -80,7 +78,7 @@ Each department entry under `years` uses a 12-number monthly array (January thro
 4. Update `metadata.last_updated` to the actual date of the last data entry.
 5. Commit the change.
 
-Data-only updates to `fires.json` can be committed directly to `main`. All `index.html` changes should go through `dev` first.
+Data-only updates to `fires.json` can be committed directly to `main`.
 
 ## Deployment
 
@@ -102,9 +100,7 @@ Update the version number in two places when releasing:
 
 ## Branch strategy
 
-- **`main`** — live production branch, served by GitHub Pages. Never develop directly here.
-- **`dev`** — working branch for all features and UI changes. Test locally, then merge to `main`.
-- **`hotfix/xyz`** — for urgent fixes branched off `main` when needed.
+- **`main`** — live production branch, served by GitHub Pages.
 
 ## Changelog
 

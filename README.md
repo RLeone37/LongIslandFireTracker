@@ -1,6 +1,6 @@
 # Long Island Fire Tracker
 
-**Current version: v2.0.7**
+**Current version: v2.0.8**
 
 A static GitHub Pages dashboard for tracking Nassau and Suffolk County working fire counts by year, month, battalion/division, and department.
 
@@ -33,7 +33,7 @@ The dashboard can be installed on an iPhone or iPad as a full-screen web app:
 | **Overview** | Summary stat cards, annual totals bar chart, battalion/division share donut, average monthly pattern, and stacked-by-division chart |
 | **Trends** | Year-over-year line and bar charts, battalion average bar chart, and a detailed annual trends table |
 | **Battalions/Divisions** | Fire totals broken down by battalion or division, filterable by year, with monthly breakdown charts and a summary table |
-| **Monthly Grid** | Full county monthly fire grid by year with an Avg row; secondary grid filterable by battalion/division |
+| **Monthly Grid** | Full county monthly fire grid by year with an Avg row; secondary grid filterable by battalion/division — both grids highlight the current month |
 | **Departments** | Sortable, searchable department table with per-year totals, averages, trends, peak years, and zero-fire year counts |
 | **In Progress** | Live-year tracking with projected full-year totals based on historical averages, plus range comparison against historical min/avg/max |
 | **Records** | All-time records for the county, individual departments, and each calendar month |
@@ -94,7 +94,7 @@ This project follows [Semantic Versioning](https://semver.org/): `vMAJOR.MINOR.P
 |------|-------------|---------|
 | **MAJOR** | Breaking change to `fires.json` format, or complete UI overhaul | `v2.0.0` → `v3.0.0` |
 | **MINOR** | New tab, new chart, or new feature | `v2.0.7` → `v2.1.0` |
-| **PATCH** | Bug fix, label tweak, or cosmetic change | `v2.0.6` → `v2.0.7` |
+| **PATCH** | Bug fix, label tweak, or cosmetic change | `v2.0.7` → `v2.0.8` |
 
 Update the version number in two places when releasing:
 - The version line at the top of this README

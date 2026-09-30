@@ -12,6 +12,10 @@ This project follows [Semantic Versioning](https://semver.org/): `vMAJOR.MINOR.P
 
 ---
 
+## [v2.3.4] — 2026-09-30
+
+- Footer is now pinned to the bottom of the window, so the version, data date, and copyright notice are always visible instead of only after scrolling to the end of the page
+
 ## [v2.3.3] — 2026-09-30
 
 - Standardized copyright and license notices to match RLeone37's other projects: updated `LICENSE` wording (explicitly not open source), expanded the source header in `index.html`, footer now reads "© 2026 RLeone37. All Rights Reserved." with a License link to GitHub, and refreshed the README License section

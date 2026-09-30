@@ -12,6 +12,10 @@ This project follows [Semantic Versioning](https://semver.org/): `vMAJOR.MINOR.P
 
 ---
 
+## [v2.3.0] — 2026-09-30
+
+- Trends tab's Annual Totals line chart now includes the current in-progress year (e.g. 2026), shown as a dashed segment ending in a yellow point labeled "(YTD)" so it's visually distinct from completed years; applies uniformly to both Nassau and Suffolk
+
 ## [v2.2.0] — 2026-09-29
 
 - On load, `fires.json` is now validated: department name mismatches between `departments` and `years`, arrays without exactly 12 entries, and non-numeric monthly values are caught and surfaced as a dismissible warning banner (plus `console.warn`) instead of silently reading as 0

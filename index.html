@@ -1,6 +1,12 @@
-<!-- Long Island Fire Tracker v2.3.2 | 2026-09-30 -->
-<!-- Copyright (c) 2026 RLeone37 (https://github.com/RLeone37). All rights reserved. Proprietary software — no copying, reuse, or redistribution without explicit written permission. See LICENSE. -->
+<!-- Long Island Fire Tracker v2.3.3 | 2026-09-30 -->
 <!DOCTYPE html>
+<!--
+  Long Island Fire Tracker
+  Copyright (c) 2026 RLeone37 (https://github.com/RLeone37). All rights reserved.
+  Proprietary and confidential — NOT open source. No part of this source code,
+  data, design, or documentation may be copied, modified, distributed, or used
+  in any form without explicit written permission. See the LICENSE file.
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -27,7 +33,7 @@
 <div id="tab-inprogress" class="tab"><div class="pb"><div style="font-size:1.3rem">📡</div><div><strong>Live Year Tracking with Projection</strong><p>Red = actual · Yellow = projected from historical averages</p></div></div><div class="yp" id="ip-pills"></div><div id="sc-ip" class="sg"></div><div class="cg"><div class="cc"><div class="ct">Actual vs Projected — <span id="ip-yr-lbl">2026</span></div><div class="ch-wrap"><canvas id="ch-ip-mo"></canvas></div></div><div class="cc"><div class="ct">vs Historical Min/Avg/Max</div><div class="ch-wrap"><canvas id="ch-ip-rng"></canvas></div></div></div><div class="cc" style="margin-bottom:14px"><div class="ct">Projected Year-End vs Historical</div><div class="ch-wrap"><canvas id="ch-ip-proj"></canvas></div></div><div class="sh">Department Breakdown</div><div class="ctrl"><label id="lbl-ipbat">Battalion/Division:</label><select id="ip-bat" onchange="renderIPTable()"><option value="all" id="lbl-iball">All Battalions/Divisions</option></select></div><div class="tw"><table id="tbl-ip"></table></div></div>
 <div id="tab-records" class="tab"><div class="sh">County Records</div><div class="rec-grid" id="rec-county"></div><div class="sh">Department Records</div><div class="rec-grid" id="rec-dept"></div><div class="sh">Monthly Records</div><div class="rec-grid" id="rec-monthly"></div><div class="sh">Zero-Fire Years by Department</div><div class="tw"><table id="tbl-zeros"></table></div></div>
 <div id="tab-compare" class="tab"><div class="sh">Year-to-Year Comparison</div><div class="ctrl"><label>Year A:</label><select id="cmp-a"></select><label>Year B:</label><select id="cmp-b"></select><button class="btn" onclick="runCompare()">Compare</button></div><div id="cmp-stats" class="sg" style="margin-bottom:18px"></div><div class="cg"><div class="cc"><div class="ct">Monthly</div><div class="ch-wrap"><canvas id="ch-cmp-mo"></canvas></div></div><div class="cc"><div class="ct"><span class="d" style="background:var(--blue)"></span id="lbl-cmpbatcol">By Battalion/Division</div><div class="ch-wrap"><canvas id="ch-cmp-bat"></canvas></div></div></div><div class="sh">Department Diff</div><div class="ctrl"><label id="lbl-cmpbat">Battalion/Division:</label><select id="cmp-bat-filter" onchange="renderCmpTable()"><option value="all">All</option></select></div><div class="tw"><table id="tbl-cmp"></table></div></div>
-</main><footer>Long Island Fire Tracker · Robert Leone<span id="ft-site-updated"> &middot; v2.3.2</span><span id="ft-data-updated"></span> &middot; <a href="LICENSE" target="_blank" rel="noopener">© 2026 All Rights Reserved</a></footer>
+</main><footer>Long Island Fire Tracker · Robert Leone<span id="ft-site-updated"> &middot; v2.3.3</span><span id="ft-data-updated"></span> &middot; © 2026 RLeone37. All Rights Reserved. <a href="https://github.com/RLeone37/LongIslandFireTracker/blob/main/LICENSE" target="_blank" rel="noopener">License</a></footer>
 <script>
 var MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 var BC=['#e8500a','#f0900a','#2e75b6','#22c55e','#a855f7','#ec4899','#14b8a6','#f59e0b','#64748b'];

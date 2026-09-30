@@ -12,6 +12,10 @@ This project follows [Semantic Versioning](https://semver.org/): `vMAJOR.MINOR.P
 
 ---
 
+## [v2.3.3] — 2026-09-30
+
+- Standardized copyright and license notices to match RLeone37's other projects: updated `LICENSE` wording (explicitly not open source), expanded the source header in `index.html`, footer now reads "© 2026 RLeone37. All Rights Reserved." with a License link to GitHub, and refreshed the README License section
+
 ## [v2.3.2] — 2026-09-30
 
 - Footer now links to `LICENSE` with a visible "© 2026 All Rights Reserved" notice, so the site's proprietary terms are apparent to every visitor, not just people who find the LICENSE file in the repo

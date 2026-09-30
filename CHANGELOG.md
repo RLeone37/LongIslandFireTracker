@@ -12,6 +12,10 @@ This project follows [Semantic Versioning](https://semver.org/): `vMAJOR.MINOR.P
 
 ---
 
+## [v2.3.1] — 2026-09-30
+
+- Added a copyright/license notice comment to the top of `index.html` so the "all rights reserved" terms are visible in the source itself, not just in `LICENSE`
+
 ## [v2.3.0] — 2026-09-30
 
 - Trends tab's Annual Totals line chart now includes the current in-progress year (e.g. 2026), shown as a dashed segment ending in a yellow point labeled "(YTD)" so it's visually distinct from completed years; applies uniformly to both Nassau and Suffolk

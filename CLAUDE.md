@@ -5,4 +5,5 @@
 - Add a dated entry to CHANGELOG.md for every index.html change
 - .gitignore is present — do not commit node_modules or other ignored files
 - `fires.json` data-only fixes can be committed directly to `main`
+- Whenever `fires.json` data changes, update `metadata.last_updated` to that change's date — it drives the footer's "Data updated" date and the load-time validation
 - Version format is `vMAJOR.MINOR.PATCH` — bug fixes and cosmetic changes are PATCH only

@@ -12,6 +12,10 @@ This project follows [Semantic Versioning](https://semver.org/): `vMAJOR.MINOR.P
 
 ---
 
+## [v2.3.2] — 2026-09-30
+
+- Footer now links to `LICENSE` with a visible "© 2026 All Rights Reserved" notice, so the site's proprietary terms are apparent to every visitor, not just people who find the LICENSE file in the repo
+
 ## [v2.3.1] — 2026-09-30
 
 - Added a copyright/license notice comment to the top of `index.html` so the "all rights reserved" terms are visible in the source itself, not just in `LICENSE`

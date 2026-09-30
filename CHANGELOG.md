@@ -12,6 +12,10 @@ This project follows [Semantic Versioning](https://semver.org/): `vMAJOR.MINOR.P
 
 ---
 
+## [v2.2.0] — 2026-09-29
+
+- On load, `fires.json` is now validated: department name mismatches between `departments` and `years`, arrays without exactly 12 entries, and non-numeric monthly values are caught and surfaced as a dismissible warning banner (plus `console.warn`) instead of silently reading as 0
+
 ## [v2.1.3] — 2026-05-04
 
 - Records tab tiles now highlight on hover, matching behavior of other tabs

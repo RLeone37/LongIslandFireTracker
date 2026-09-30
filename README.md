@@ -1,6 +1,6 @@
 # Long Island Fire Tracker
 
-**Current version: v2.1.3**
+**Current version: v2.2.0**
 
 A static GitHub Pages dashboard for tracking Nassau and Suffolk County working fire counts by year, month, battalion/division, and department.
 
@@ -78,6 +78,8 @@ Each department entry under `years` uses a 12-number monthly array (January thro
 5. Commit the change.
 
 Data-only updates to `fires.json` can be committed directly to `main`.
+
+On load, the dashboard validates `fires.json` (department names matching between `departments` and `years`, and each monthly array having exactly 12 numeric values) and shows a dismissible warning banner — plus a `console.warn` — if anything doesn't match, since a mismatched name or bad value otherwise fails silently by reading as 0.
 
 ## Deployment
 
